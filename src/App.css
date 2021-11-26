@@ -1,38 +1,84 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  
+  background-color: #cfcfcf;
+  background-image: linear-gradient(to right, rgba(253, 253, 253, 0), rgb(145, 145, 145)) ;
+  
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
+  height: 100%;
+  width:100%
+  
+}
+.logom{
+height:100px ;
+width: 200px;
+position: relative;
+display: inline;
+
+
+}
+.logohead {
+height: 70px;
+margin-top: 20px;
+margin-left: 20px;
+float: left;
+
+}
+.hermes{
+  font-size: 40px;
+  color: rgb(21, 14, 48);
+  margin-top: 30px;
+  float: left;
+  margin-left: 10px;
+ 
+}
+.loginphoto{
+ width:100%;
+ position: r;
+ margin-right: 0;
+ margin-bottom: 40px;
+ display: inline-block;
+
+}
+.layered-image {
+  background: linear-gradient(to right, transparent, mistyrose),
+      url("./img/login.jpeg");
+}
+.logincomp{
+  margin-top: 130px;
+  margin-left: 100px;
+  border:solid;
+  border-radius: 1%;
+  border-color: rgb(21, 14, 48);
+  border-width: 3px;
+  background-color:rgb(122, 123, 146);
+  height: 400px;
+  width: 300px;
+  display: row;
+ 
+
+
+}
+.loginx{
+
+  margin-left: 40%;
+}
+.texta{
+  width: 200px;
+  margin-top: 10px;
+  margin-left: 15px;
+  position: center;
 }
 
-.App-link {
-  color: #61dafb;
+.textb{
+  width: 200px;
+  margin-top: 10px;
+  margin-left: 45px;
+  position: center;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.newemployee{
+  margin-top: 25px;
+  margin-left: 15px;
+  margin-bottom: 30px;
 }
