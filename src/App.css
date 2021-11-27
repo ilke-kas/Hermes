@@ -1,8 +1,6 @@
 .App {
-  
-  background-color: #cfcfcf;
-  background-image: linear-gradient(to right, rgba(253, 253, 253, 0), rgb(145, 145, 145)) ;
-  
+  background-color: azure;
+  /* background-image: linear-gradient(to right, rgba(253, 253, 253, 0), rgb(145, 145, 145)) ; */
   min-height: 100vh;
   display: flex;
   color: white;
@@ -46,39 +44,52 @@ float: left;
       url("./img/login.jpeg");
 }
 .logincomp{
-  margin-top: 130px;
-  margin-left: 100px;
-  border:solid;
-  border-radius: 1%;
-  border-color: rgb(21, 14, 48);
-  border-width: 3px;
-  background-color:rgb(122, 123, 146);
-  height: 400px;
-  width: 300px;
-  display: row;
- 
-
+  width: 30%;           
+  height: 30%;          
+  position: absolute;
+  top: 35%;
+  left: 44%;
+  margin-top: -100px;    
+  margin-left: -150px; 
 
 }
-.loginx{
 
-  margin-left: 40%;
-}
-.texta{
-  width: 200px;
-  margin-top: 10px;
-  margin-left: 15px;
-  position: center;
-}
-
-.textb{
-  width: 200px;
-  margin-top: 10px;
-  margin-left: 45px;
-  position: center;
-}
 .newemployee{
   margin-top: 25px;
   margin-left: 15px;
   margin-bottom: 30px;
+}
+
+.login-header {
+  font-family: 'Century Gothic';
+  color: black;
+}
+
+.email-password {
+  width: 85%;
+}
+
+.login-button {
+  border-radius: 20px;
+  width: 50%;
+}
+.create-account {
+  color:rgba(37, 33, 48, 0.596);
+}
+
+hr {
+  border: none;
+  border-top: 1px double #333;
+  color: #333;
+  overflow: visible;
+  text-align: center;
+  height: 5px;
+}
+
+hr:after {
+  background: azure;
+  content: 'or';
+  padding: 0 4px;
+  position: relative;
+  top: -13px;
 }
