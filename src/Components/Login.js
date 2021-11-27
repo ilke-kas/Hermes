@@ -1,18 +1,17 @@
-import { Box, Button, TextField } from '@material-ui/core';
+import {TextField} from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import './App.css';
-
+import Logo from '../Logo';
 
 function Login() {
   return (
     <div>
+      <Logo></Logo>
       <div className="logincomp">
         <center>
           <h2 className="display-5 mt-3 login-header">Welcome to Hermes</h2>
           <TextField className="email-password mt-3" id="email" label="Email" variant="outlined"/>
           <br/><br/>
-          <TextField className="email-password" id="password" label="Password" variant="outlined"/>
+          <TextField className="email-password" type="password" id="password" label="Password" variant="outlined"/>
           <br/><br/>
           <button type="button" className="btn btn-secondary btn-lg login-button">Sign In</button><br/><br/>
           <hr/>

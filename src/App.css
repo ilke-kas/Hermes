@@ -1,18 +1,13 @@
 .App {
-  background-color: azure;
-  /* background-image: linear-gradient(to right, rgba(253, 253, 253, 0), rgb(145, 145, 145)) ; */
-  min-height: 100vh;
-  display: flex;
-  color: white;
-  height: 100%;
-  width:100%
+  background-color:white;
+  color: black;
   
 }
 .logom{
-height:100px ;
-width: 200px;
-position: relative;
-display: inline;
+  height:100px ;
+  width: 200px;
+  position: relative;
+  display: inline;
 
 
 }
@@ -21,8 +16,8 @@ height: 70px;
 margin-top: 20px;
 margin-left: 20px;
 float: left;
-
 }
+
 .hermes{
   font-size: 40px;
   color: rgb(21, 14, 48);
@@ -87,9 +82,45 @@ hr {
 }
 
 hr:after {
-  background: azure;
+  background: white;
   content: 'or';
   padding: 0 4px;
   position: relative;
   top: -13px;
+}
+
+.navbar-edit {
+  font-size: 20px;
+}
+
+.customer-page-logo {
+  height: 300px;
+  width: 300px;
+}
+
+.customer-page-option {
+  color:rgba(67, 65, 73, 0.644);
+  font-size: 20px;
+  text-align: center;
+}
+
+.option-table {
+  border-collapse: separate;
+  border-spacing: 100px 5px;
+  position: absolute;
+  top: 35%;
+  left: 31%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+}
+
+.option-form {
+  position: absolute;
+  top: 42%;
+  left: 40%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 30px;
 }

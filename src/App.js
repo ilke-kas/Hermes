@@ -1,18 +1,14 @@
 import Logo from './Logo';
 import './App.css';
-import Login from './Login';
-import login from "./img/login.jpeg";
+import {Route, Link} from 'react-router-dom';
+import Login from './Components/Login.js';
+import Customer from './Components/Customer';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-      
-       <Logo/>
-       
-       <Login/>
-       
-      </header>
+      <Route exact path="/" component={Login} />
+      <Route exact path="/Customer" component={Customer} />
     </div>
   );
 }
