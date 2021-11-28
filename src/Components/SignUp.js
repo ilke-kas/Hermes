@@ -48,7 +48,6 @@ function SignUp() {
           <TextField className="signuptextfield" id="userid" label="User ID" variant="outlined"/>
           <TextField className="signuptextfield mt-3" id="email" label="Email" variant="outlined"/>
           <TextField className="signuptextfield mt-3" id="name" label="Name" variant="outlined"/>
-          <TextField className="signuptextfield mt-3" id="surname" label="Surname" variant="outlined"/>
           <TextField className="signuptextfield mt-3" id="phone" label="Phone Number" variant="outlined"/>
           <TextField className="signuptextfield mt-3" type="password" id="password" label="Password" variant="outlined"/>
           {selected ?  employee() :customer() }

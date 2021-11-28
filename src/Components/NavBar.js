@@ -6,7 +6,7 @@ function NavBar() {
             <nav className="navbar navbar-expand-md navbar-dark bg-secondary py-3 navbar-edit">
                 <a className="navbar-brand" href="#">
                 <div className='logom2'>
-                <img src={HermesLogo} className="logohead2" alt="logo"/>
+                <img src={HermesLogo} className="logohead2 mt-2" alt="logo"/>
                  <h1 className='hermes2'> Hermes</h1>
                  </div>
 
