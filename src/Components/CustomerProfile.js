@@ -19,7 +19,7 @@ function CustomerProfile() {
                             <center><h2>My Packages</h2></center>
                             <h3 className="mt-3">Delivered Packages</h3>
                             <ul>
-                                <li>Refrigerator&emsp;<button type="button" className="btn btn-success">See Details</button></li>
+                                <li>Refrigerator&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></li>
                             </ul>
                             <h3 className="mt-5">Not Delivered Packages</h3>
                             <ul>
