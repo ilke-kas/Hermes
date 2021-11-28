@@ -6,7 +6,10 @@ function CourierHomePage() {
     return (
         <div>
             <NavBar></NavBar>
-            <PackageAcceptance></PackageAcceptance>
+            <PackageAcceptance>
+                
+            </PackageAcceptance>
+            
         </div>
     );
 }

@@ -1,20 +1,24 @@
 import React from "react";
 
-function PackageAcceptance() {
+import NavBar from "./NavBar";
+
+
+function ShipperHomePage() {
     return (
         <div>
+            <NavBar></NavBar>
             <center>
-            <h5>Customer to Branch</h5>
-
+            <h5>Branch to Branch</h5>
                 <div className="package-acceptance">
+                    
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>218</td>
+                            <td>200</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>melek.bastaci</td>
+                            <td>selena.gomez</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -22,24 +26,22 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>cem.alkan</td>
+                            <td>miley.cyrus</td>
                         </tr>
                         
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
-                
                 <div className="package-acceptance2">
-                
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>209</td>
+                            <td>249</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>mehmet.efkan</td>
+                            <td>paul.wesley</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -47,7 +49,7 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>cem.yuncu</td>
+                            <td>ian.somerholder</td>
                         </tr>
                         
                     </table>
@@ -59,11 +61,11 @@ function PackageAcceptance() {
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>236</td>
+                            <td>226</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>ahmet.yildiz</td>
+                            <td>deniz.seki</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -71,23 +73,22 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>bliz.deniz</td>
+                            <td>candan.ercetin</td>
                         </tr>
                         
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
-                <h5 className="btoc">Branch to Customer </h5>
                 <div className="package-acceptance21">
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>177</td>
+                            <td>233</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>halime.sucu</td>
+                            <td>irem.ozdemir</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -95,9 +96,9 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>ali.okcu</td>
+                            <td>nesibe.yerlikaya</td>
                         </tr>
-                        
+                      
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
@@ -107,11 +108,11 @@ function PackageAcceptance() {
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>206</td>
+                            <td>212</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>ahmet.celebi</td>
+                            <td>dilhun.polat</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -119,9 +120,9 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>ahmet.kaya</td>
+                            <td>yaren.duzgun</td>
                         </tr>
-                        
+                      
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
@@ -130,11 +131,11 @@ function PackageAcceptance() {
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
-                            <td>299</td>
+                            <td>245</td>
                         </tr>
                         <tr>
                             <td>User ID:</td>
-                            <td>mehmet.olaycı</td>
+                            <td>furkan.cakar</td>
                         </tr>
                         <tr>
                             <td>Address:</td>
@@ -142,9 +143,9 @@ function PackageAcceptance() {
                         </tr>
                         <tr>
                             <td>Recipient ID:&emsp;&emsp;</td>
-                            <td> fatma.aliye</td>
+                            <td>kerem.ciftci</td>
                         </tr>
-                       
+                        
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
@@ -154,4 +155,4 @@ function PackageAcceptance() {
     );
 }
 
-export default PackageAcceptance;
+export default ShipperHomePage;

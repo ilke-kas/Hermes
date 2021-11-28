@@ -6,7 +6,7 @@ import Customer from './Components/Customer';
 import CustomerProfile from './Components/CustomerProfile';
 
 import PackageManager from './Components/PackageManager'
-
+import ShipperHomePage from './Components/ShipperHomePage';
 import CourierHomePage from './Components/CourierHomePage';
 import CompanyProfile from './Components/CompanyProfile';
 import ShipperCourier from './Components/ShipperCourier';
@@ -24,6 +24,7 @@ function App() {
       <Route exact path="/CompanyProfile" component={CompanyProfile} />
       <Route exact path="/ShipperCourier" component={ShipperCourier} />
       <Route exact path="/PackageManager" component={PackageManager} />
+      <Route exact path="/Shipper" component={ShipperHomePage} />
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
       <Route exact path="/CompanyHomePage" component={CompanyHomePage} />
 

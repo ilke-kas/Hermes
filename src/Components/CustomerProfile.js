@@ -6,6 +6,8 @@ import {AiOutlineDash} from "react-icons/ai";
 import SeeDetailsPopup from "./SeeDetailsPopup";
 import CreateReportPopup from "./CreateReportPopup";
 import CreateReportPopup2 from "./CreateReportPopup2";
+import {TextField} from '@material-ui/core';
+
 
 function CustomerProfile() {
     const [popup, setPopup] = React.useState(false);
@@ -16,7 +18,15 @@ function CustomerProfile() {
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="info-table2"><CustomerInformation></CustomerInformation></td>
+                    <td className="info-table2"><CustomerInformation></CustomerInformation>
+                    <p>Wallet Amount:70₺</p> 
+                    <h5>Points Collected:7</h5> 
+                    </td>
+                    <td className="info-table21"><h6>Load Money</h6>
+                        <TextField type="amount" id="amount" label="Amount to load ₺" variant="outlined"></TextField>
+                        <td><button className="load">Load</button></td>
+                        </td>
+                       
                     <td className="info-table3">
                         <div>
                             <center><h2>My Packages</h2></center>
