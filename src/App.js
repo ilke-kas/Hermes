@@ -11,6 +11,7 @@ import CourierHomePage from './Components/CourierHomePage';
 import CompanyProfile from './Components/CompanyProfile';
 import ShipperCourier from './Components/ShipperCourier';
 import PackageManagerHomePage from './Components/PackageManagerHomePage';
+import CompanyHomePage from './Components/CompanyHomePage';
 
 function App() {
   return (
@@ -22,11 +23,9 @@ function App() {
       <Route exact path="/Courier" component={CourierHomePage} />
       <Route exact path="/CompanyProfile" component={CompanyProfile} />
       <Route exact path="/ShipperCourier" component={ShipperCourier} />
-
       <Route exact path="/PackageManager" component={PackageManager} />
-
-
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
+      <Route exact path="/CompanyHomePage" component={CompanyHomePage} />
 
     </div>
   );

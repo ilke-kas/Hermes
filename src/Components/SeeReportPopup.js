@@ -1,40 +1,40 @@
 import React from "react";
 
-function SeeDetailsPopup(props) {
+function SeeReportPopup(props) {
 
     function insidePopup() {
         return (
             <div className="popup">
-                <div className="popup-inner">
+                <div className="popup-inner3">
                     <br></br>
                     <center>
                     <table>
                         <tr>
-                            <td>Title(type):</td>
+                            <td><strong>Type:</strong></td>
                             <td>Malformed Package</td>   
                         </tr>
                         <tr>
-                            <td>Weight:</td>
+                            <td><strong>Weight:</strong></td>
                             <td>400 kg</td>
                         </tr>
                         <tr>
-                            <td>Volume:</td>
+                            <td><strong>Volume:</strong></td>
                             <td>2m³</td>
                         </tr>
                         <tr>
-                            <td>Recipient ID:</td>
+                            <td><strong>Recipient ID:&emsp;&emsp;</strong></td>
                             <td>hazal.kaya</td>
                         </tr>
                         <tr>
-                            <td>Branch Name:</td>
+                            <td><strong>Branch Name:</strong></td>
                             <td>Bilkent</td>
                         </tr>
                         <tr>
-                            <td>Employee Name:&emsp;&emsp;</td>
+                            <td><strong>Employee Name:</strong></td>
                             <td>Ali Atay</td>
                         </tr>
                         <tr>
-                            <td>Description:</td>
+                            <td><strong>Description:</strong></td>
                             <td>My package had a dozen glasses in it and half of them was broken when I recieved the package</td>
                         </tr>
                     </table>
@@ -51,4 +51,4 @@ function SeeDetailsPopup(props) {
     );
 }
 
-export default SeeDetailsPopup;
+export default SeeReportPopup;

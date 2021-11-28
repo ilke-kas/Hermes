@@ -26,7 +26,7 @@ function PackageAcceptance() {
                             <td>Select Shipper:&emsp;</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Shipper Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -63,7 +63,7 @@ function PackageAcceptance() {
                             <td>Select Shipper:&emsp;</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Shipper Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">

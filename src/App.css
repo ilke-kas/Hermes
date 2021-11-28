@@ -42,8 +42,8 @@ float: left;
 }
 
 .hermes2{
-  font-size: 25px;
-  color: rgb(2, 41, 92);
+  font-size: 22px;
+  color: white;
   margin-top: 10px;
   float: left;
   margin-left: 10px;
@@ -188,8 +188,8 @@ hr:after {
   border: 1px solid;
   box-shadow: 5px 10px #888888;
   position: absolute;
-  top: 35%;
-  left: 15%;
+  top: 40%;
+  left: 50%;
   margin-top: -100px;    
   margin-left: -150px; 
   border: 2px solid;
@@ -303,6 +303,15 @@ ul {
   max-width: 1100px;
 }
 
+.popup-inner3 {
+  border: 5px solid rgb(184, 68, 68);
+  position: relative;
+  padding: 30px;
+  width: 60%;
+  background-color: #FFF;
+  max-width: 1100px;
+}
+
 .package-acceptance {
   background-color: white;
   width: 25%;
@@ -332,4 +341,11 @@ ul {
 .report-table {
   border-collapse: separate;
   border-spacing: 40px 0;
+}
+
+.table-td {
+  width: 200px;
+  background: white;
+  text-align: center;
+  word-wrap:break-word;
 }

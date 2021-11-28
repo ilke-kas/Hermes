@@ -5,12 +5,10 @@ function NavBar() {
         <div>
             <nav className="navbar navbar-expand-md navbar-dark bg-secondary py-3 navbar-edit">
                 <a className="navbar-brand" href="#">
-                <div className='logom2'>
-                <img src={HermesLogo} className="logohead2 mt-2" alt="logo"/>
-                 <h1 className='hermes2'> Hermes</h1>
+                <div>
+                    <img src={HermesLogo} className="logohead2 mt-1" alt="logo"/>
+                    <a className='nav-link'> Hermes</a>
                  </div>
-
-
                 </a>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav">

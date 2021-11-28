@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "./NavBar";
-import ReportPopUp from "./ReportPopUp";
+import SeeReportPopup from "./SeeReportPopup";
 import PackageManagerInfo from "./PackageManagerInfo";
 import AssignPopUp from "./AssignPopUp"
 
@@ -75,7 +75,7 @@ function CompanyProfile() {
                     </td>
                 </tr>
             </table>
-            <ReportPopUp trigger={popup} setTrigger={setPopup}></ReportPopUp>
+            <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
             <AssignPopUp trigger={Assignpopup} setTrigger={setAssignPopup}></AssignPopUp>
         </div>
     );

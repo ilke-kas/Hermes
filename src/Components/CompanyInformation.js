@@ -26,6 +26,10 @@ function CompanyInformation() {
                         <td>Address:</td>
                         <td>Trendyol A.Ş./ANKARA</td>
                     </tr>
+                    <tr>
+                        <td>Budget:</td>
+                        <td>75000</td>
+                    </tr>
                 </table>
             </div>
         </div>
