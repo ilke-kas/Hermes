@@ -23,16 +23,16 @@ function PackageAcceptance() {
                             <td>cem.alkan</td>
                         </tr>
                         <tr>
-                            <td>Select Employee:&emsp;</td>
+                            <td>Select Shipper:&emsp;</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Ela Nur</a></li>
-                                        <li><a href="#">Ahmet Aksöz</a></li>
-                                        <li><a href="#">Ala Tokel</a></li>
+                                        <li><a href="#">Mesut Yılmaz</a></li>
+                                        <li><a href="#">Hüseyin Akalmaz</a></li>
+                                        <li><a href="#">Erman Rok</a></li>
                                     </ul>
                                 </div>
                             </td>
@@ -60,16 +60,16 @@ function PackageAcceptance() {
                             <td>rasim.yaşar</td>
                         </tr>
                         <tr>
-                            <td>Select Employee:&emsp;</td>
+                            <td>Select Shipper:&emsp;</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Ela Nur</a></li>
-                                        <li><a href="#">Ahmet Aksöz</a></li>
-                                        <li><a href="#">Ala Tokel</a></li>
+                                        <li><a href="#">Mesut Yılmaz</a></li>
+                                        <li><a href="#">Hüseyin Akalmaz</a></li>
+                                        <li><a href="#">Erman Rok</a></li>
                                     </ul>
                                 </div>
                             </td>

@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import NavBar from "./NavBar";
 import CourierLogo from '../img/courier.png';
 import InPersonLogo from '../img/inPerson.png';
