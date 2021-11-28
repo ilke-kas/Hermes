@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import NavBar from "./NavBar";
 import CourierLogo from '../img/courier.png';
-import InPersonLogo from '../img/inPerson2.jpg';
+import InPersonLogo from '../img/inPerson.png';
 
 
 function openForm(trigger) {
@@ -174,7 +174,7 @@ function Customer() {
                         <img onClick={e => { setTrigger(false);}} src={CourierLogo} className="customer-page-logo" alt="logo"/>
                     </td>
                     <td>
-                        <img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo" alt="logo"/>
+                        <img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo2" alt="logo"/>
                     </td>
                 </tr>
                 <tr>
