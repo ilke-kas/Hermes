@@ -4,7 +4,7 @@ import Logo from '../Logo';
 
 
 
-function Login() {
+function SignIn() {
 
     const [selected, setSelected] = useState('');
   
@@ -60,8 +60,6 @@ function Login() {
           <br/><br/>
           <TextField className="signintextfield mt-3" id="name" label="Name" variant="outlined"/>
           <br/><br/>
-          <TextField className="signintextfield mt-3" id="surname" label="Surname" variant="outlined"/>
-          <br/><br/>
           <TextField className="signintextfield mt-3" id="phone" label="Phone Number" variant="outlined"/>
           <br/><br/>
           <TextField className="signintextfield mt-3" type="password" id="password" label="Password" variant="outlined"/>
@@ -76,4 +74,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;

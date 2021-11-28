@@ -26,6 +26,7 @@ function CustomerInformation() {
                         <td>Address:</td>
                         <td>Bilkent/ANKARA</td>
                     </tr>
+                    
                 </table>
             </div>
         </div>

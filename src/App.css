@@ -20,8 +20,31 @@ float: left;
 
 .hermes{
   font-size: 40px;
-  color: rgb(21, 14, 48);
+  color: rgb(2, 41, 92);
   margin-top: 30px;
+  float: left;
+  margin-left: 10px;
+ 
+}
+.logom2{
+  height:30px ;
+  width: 20px;
+  position: relative;
+  display: inline;
+
+
+}
+.logohead2 {
+height: 35px;
+margin-top: 0px;
+margin-left: 0px;
+float: left;
+}
+
+.hermes2{
+  font-size: 25px;
+  color: rgb(2, 41, 92);
+  margin-top: 10px;
   float: left;
   margin-left: 10px;
  
@@ -165,7 +188,7 @@ hr:after {
   border: 1px solid;
   box-shadow: 5px 10px #888888;
   position: absolute;
-  top: 70%;
+  top: 75%;
   left: 15%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -190,7 +213,7 @@ hr:after {
   box-shadow: 5px 10px 18px #888888;
   position: absolute;
   top: 35%;
-  left: 42%;
+  left: 38%;
   margin-top: -100px;    
   margin-left: -150px; 
   border: 2px solid;
@@ -202,14 +225,25 @@ hr:after {
   box-shadow: 5px 10px 18px #888888;
   position: absolute;
   top: 35%;
-  left: 65%;
+  left: 64%;
   margin-top: -100px;    
   margin-left: -150px; 
   border: 2px solid;
   padding: 15px;
   border-radius: 10px;
 }
-
+.completeorder2 {
+  border: 1px solid;
+  box-shadow: 5px 10px 18px #888888;
+  position: absolute;
+  top: 35%;
+  left: 91%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 10px;
+}
 
 ul {
   list-style: square;

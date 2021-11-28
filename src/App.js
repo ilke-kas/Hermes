@@ -5,7 +5,7 @@ import Login from './Components/Login.js';
 import Signin from './Components/SignIn.js';
 import Customer from './Components/Customer';
 import CustomerProfile from './Components/CustomerProfile';
-
+import PackageManager from './Components/PackageManager'
 import CourierHomePage from './Components/CourierHomePage';
 
 import CompanyProfile from './Components/CompanyProfile';
@@ -25,6 +25,7 @@ function App() {
 
       <Route exact path="/CompanyProfile" component={CompanyProfile} />
       <Route exact path="/ShipperCourier" component={ShipperCourier} />
+      <Route exact path="/PackageManager" component={PackageManager} />
 
     </div>
   );
