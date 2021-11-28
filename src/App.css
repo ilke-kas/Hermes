@@ -63,7 +63,10 @@ float: left;
 .email-password {
   width: 85%;
 }
-
+.signintextfield {
+  width: 90%;
+  
+}
 .login-button {
   border-radius: 20px;
   width: 50%;
@@ -146,7 +149,30 @@ hr:after {
   padding: 15px;
   border-radius: 30px;
 }
-
+.info-tablecomp{
+  border: 1px solid;
+  box-shadow: 5px 10px #888888;
+  position: absolute;
+  top: 35%;
+  left: 15%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 30px;
+}
+.info-tablecomp2{
+  border: 1px solid;
+  box-shadow: 5px 10px #888888;
+  position: absolute;
+  top: 70%;
+  left: 15%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 30px;
+}
 .info-table3 {
   border: 1px solid;
   box-shadow: 5px 10px 18px #888888;
@@ -159,6 +185,31 @@ hr:after {
   padding: 15px;
   border-radius: 30px;
 }
+.completeorder {
+  border: 1px solid;
+  box-shadow: 5px 10px 18px #888888;
+  position: absolute;
+  top: 35%;
+  left: 42%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 10px;
+}
+.incompleteorder {
+  border: 1px solid;
+  box-shadow: 5px 10px 18px #888888;
+  position: absolute;
+  top: 35%;
+  left: 65%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 2px solid;
+  padding: 15px;
+  border-radius: 10px;
+}
+
 
 ul {
   list-style: square;

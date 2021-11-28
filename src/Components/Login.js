@@ -9,7 +9,7 @@ function Login() {
       <div className="logincomp">
         <center>
           <h2 className="display-5 mt-3 login-header">Welcome to Hermes</h2>
-          <TextField className="email-password mt-3" id="email" label="Email" variant="outlined"/>
+          <TextField className="email-password mt-3" id="userid" label="User ID" variant="outlined"/>
           <br/><br/>
           <TextField className="email-password" type="password" id="password" label="Password" variant="outlined"/>
           <br/><br/>
