@@ -2,7 +2,7 @@ import Logo from './Logo';
 import './App.css';
 import {Route, Link} from 'react-router-dom';
 import Login from './Components/Login.js';
-import Signin from './Components/SignIn.js';
+import SignUp from './Components/SignUp.js';
 import Customer from './Components/Customer';
 import CustomerProfile from './Components/CustomerProfile';
 
@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       
       <Route exact path="/" component={Login} />
-      <Route exact path="/SignIn" component={Signin} />
+      <Route exact path="/SignUp" component={SignUp} />
       <Route exact path="/Customer" component={Customer} />
       <Route exact path="/CustomerProfile" component={CustomerProfile} />
 
