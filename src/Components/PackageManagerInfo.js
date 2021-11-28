@@ -1,6 +1,6 @@
 import React from "react";
 
-function CourierInformation() {
+function PackageManagerInfo() {
     return (
         <div>
             <div>
@@ -8,15 +8,15 @@ function CourierInformation() {
                 <table>
                     <tr>
                         <td>User ID:</td>
-                        <td>courier1</td>
+                        <td>manager1</td>
                     </tr>
                     <tr>
                         <td>User Name:</td>
-                        <td>Mehmet Taşkaya</td>
+                        <td>Hasan Başer</td>
                     </tr>
                     <tr>
                         <td>Email: </td>
-                        <td>mehmet.taski@gmail.com</td>
+                        <td>hb@gmail.com</td>
                     </tr>
                     <tr>
                         <td>Phone Number:&emsp;</td>
@@ -24,11 +24,10 @@ function CourierInformation() {
                     </tr>
                     <tr>
                         <td>Address:</td>
-                        <td>Eryaman/ANKARA</td>
+                        <td>Dikmen/ANKARA</td>
                     </tr>
                     <tr>
-                        <td>Vehicle:</td>
-                        <td>06XX0001</td>
+                       
                     </tr>
                 </table>
             </div>
@@ -36,4 +35,4 @@ function CourierInformation() {
     );
 }
 
-export default CourierInformation;
+export default PackageManagerInfo;

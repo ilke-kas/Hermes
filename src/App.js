@@ -4,6 +4,9 @@ import Login from './Components/Login.js';
 import SignUp from './Components/SignUp.js';
 import Customer from './Components/Customer';
 import CustomerProfile from './Components/CustomerProfile';
+
+import PackageManager from './Components/PackageManager'
+
 import CourierHomePage from './Components/CourierHomePage';
 import CompanyProfile from './Components/CompanyProfile';
 import ShipperCourier from './Components/ShipperCourier';
@@ -19,7 +22,12 @@ function App() {
       <Route exact path="/Courier" component={CourierHomePage} />
       <Route exact path="/CompanyProfile" component={CompanyProfile} />
       <Route exact path="/ShipperCourier" component={ShipperCourier} />
-      <Route exact path="/PackageManager" component={PackageManagerHomePage} />
+
+      <Route exact path="/PackageManager" component={PackageManager} />
+
+
+      <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
+
     </div>
   );
 }
