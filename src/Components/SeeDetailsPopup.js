@@ -6,16 +6,36 @@ function SeeDetailsPopup(props) {
         return (
             <div className="popup">
                 <div className="popup-inner">
-                    <strong><center><p>Please enter nonempty values for error name and content!</p></center></strong>
+                    <br></br>
+                    <center>
                     <table>
                         <tr>
-                            <td><input type="textarea"  style={{width: "400px", height: "120px"}} className="form-control" id="floatingInput" step="any"/></td>
-                            <td><input type="textarea"  style={{width: "400px", height: "120px"}} className="form-control" step="any" id="floatingPassword"/></td>
+                            <td>Description:</td>
+                            <td>Refrigerator</td>   
+                        </tr>
+                        <tr>
+                            <td>Weight:</td>
+                            <td>400 kg</td>
+                        </tr>
+                        <tr>
+                            <td>Volume:</td>
+                            <td>2m³</td>
+                        </tr>
+                        <tr>
+                            <td>Recipient ID:</td>
+                            <td>cem.alkan</td>
+                        </tr>
+                        <tr>
+                            <td>Branch Name:</td>
+                            <td>Bilkent</td>
+                        </tr>
+                        <tr>
+                            <td>Employee Name:&emsp;&emsp;</td>
+                            <td>Ahmet Aksöz</td>
                         </tr>
                     </table>
-                    <br></br>
-                    <button type="button" className="btn btn-success">Save</button>
-                    <button type="button" onClick={e => props.setTrigger(false)} className="btn btn-danger popup-close-button">Close</button>
+                    <button type="button" onClick={e => props.setTrigger(false)} className="btn btn-danger mt-3">Close</button>
+                    </center>
                 </div>
             </div>
         )

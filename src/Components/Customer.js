@@ -95,7 +95,10 @@ function openForm2(trigger) {
                 </td>
                 <td>
                     <input type="text"></input>
-                </td>   
+                </td>  
+                <td>
+                    <label>kg</label>
+                </td> 
             </tr>
             <tr>
                 <td>
