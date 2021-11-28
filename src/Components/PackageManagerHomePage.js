@@ -1,12 +1,12 @@
 import React from "react";
 import NavBar from "./NavBar";
-import PackageAcceptance from "./PackageAcceptance";
+import ManagerPackageAcceptance from "./ManagerPackageAcceptance";
 
 function CourierHomePage() {
     return (
         <div>
             <NavBar></NavBar>
-            <PackageAcceptance></PackageAcceptance>
+            <ManagerPackageAcceptance></ManagerPackageAcceptance>
         </div>
     );
 }

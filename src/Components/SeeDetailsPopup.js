@@ -14,6 +14,10 @@ function SeeDetailsPopup(props) {
                             <td>Refrigerator</td>   
                         </tr>
                         <tr>
+                            <td>Package ID:</td>
+                            <td>2098</td>
+                        </tr>
+                        <tr>
                             <td>Weight:</td>
                             <td>400 kg</td>
                         </tr>
