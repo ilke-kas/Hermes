@@ -15,8 +15,7 @@ function ShipperCourier() {
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="info-tablecomp"><CourierInformation/></td>
-                    
+                    <td className="info-tablecomp"><CourierInformation/></td>       
                 </tr>
             </table>
         </div>
