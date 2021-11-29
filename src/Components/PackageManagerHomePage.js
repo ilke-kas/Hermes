@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "./NavBar";
 import ManagerPackageAcceptance from "./ManagerPackageAcceptance";
-import SeeReportPopup from "./SeeReportPopup";
+import SeeReportPopupPackageManager from "./SeeReportPopupPackageManager";
 
 function PackageManagerHomePage() {
     const [popup, setPopup] = React.useState(false);
@@ -29,7 +29,7 @@ function PackageManagerHomePage() {
                     </tr>
                 </table>
             </div>
-            <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
+            <SeeReportPopupPackageManager trigger={popup} setTrigger={setPopup}></SeeReportPopupPackageManager>
         </div>
 
     );

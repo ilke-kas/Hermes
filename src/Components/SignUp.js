@@ -4,6 +4,7 @@ import Logo from '../Logo';
 
 function SignUp() {
     const [selected, setSelected] = useState('');
+    const [selected2, setSelected2] = useState('');
 
     const selectionChangeHandler = (event) => {
       setSelected(event.target.value);
@@ -12,19 +13,31 @@ function SignUp() {
     function employee() {
       return (
         <div>
-          <RadioGroup className="d-flex justify-content-center mt-3" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group"> 
+          {/* <TextField className="signuptextfield mt-3" id="branch-id" label="Branch ID" variant="outlined"/> */}
+          <RadioGroup className="d-flex justify-content-center mt-3" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group" value={selected2} onChange={event => setSelected2(event.target.value)}> 
             <FormControlLabel value="Shipper" control={<Radio />} label="Shipper" />
             <FormControlLabel value="PackageManager" control={<Radio />} label="PackageManager" />
             <FormControlLabel value="Courier" control={<Radio />} label="Courier" />
           </RadioGroup>
+          {selected2 == "PackageManager" ? <TextField className="signuptextfield" id="branch-id" label="Branch ID" variant="outlined"/> : 
+          <TextField className="signuptextfield" id="branch-id" label="Vehicle ID" variant="outlined"/>}
+          <br></br><br></br>
         </div>
       );
     }
     function customer() {
       return ( 
         <div>
-          <TextField className="signuptextfield mt-3" id="address" label="Address" variant="outlined"/>
-          <RadioGroup className="mt-3 d-flex justify-content-center" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group"> 
+          <div style={{width:"90%"}} className="input-group">
+            <TextField className="form-control mt-3" id="street" label="Street" variant="outlined"/>
+            <TextField className="form-control mt-3" id="apt-number" label="Apt Number" variant="outlined"/>
+          </div>
+          <div style={{width:"90%"}} className="input-group mt-3">
+            <TextField className="form-control mt-3" id="city" label="City" variant="outlined"/>
+            <TextField className="form-control mt-3" id="state" label="State" variant="outlined"/>
+            <TextField className="form-control mt-3" id="zip" label="Zip" variant="outlined"/>
+          </div>
+          <RadioGroup className="mt-4 d-flex justify-content-center" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group"> 
             <FormControlLabel value="Corporate" control={<Radio />} label="Corporate" />
             <FormControlLabel value="Individual" control={<Radio />} label="Individual" />
           </RadioGroup>

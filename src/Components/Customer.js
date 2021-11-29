@@ -40,10 +40,19 @@ function openForm(trigger) {
             </tr>
             <tr>
                 <td>
-                    <label>Enter the user ID of the recipient of the item:&emsp;</label>
+                    <label>Select recipient of the item:&emsp;</label>
                 </td>
                 <td>
-                    <input type="text"></input>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Recipient ID
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">emre.ak</a></li>
+                            <li><a href="#">buse.demir</a></li>
+                            <li><a href="#">hakan.doğru</a></li>
+                        </ul>
+                    </div>
                 </td>   
             </tr>
             <tr>
@@ -64,6 +73,7 @@ function openForm(trigger) {
                 </td>
             </tr>
         </table>
+        <strong>Current Total Price: 47.93₺</strong><br></br>
         <button className="mt-3 btn btn-success" type="button">Submit</button>
         <hr/>
         <button onClick={e => { trigger(true);}} className="btn btn-primary" type="button">Go Back to Selection</button>
@@ -112,10 +122,19 @@ function openForm2(trigger) {
             </tr>
             <tr>
                 <td>
-                    <label>Enter the user ID of the recipient of the item:&emsp;</label>
+                    <label>Select recipient of the item:&emsp;</label>
                 </td>
                 <td>
-                    <input type="text"></input>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Recipient ID
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">emre.ak</a></li>
+                            <li><a href="#">buse.demir</a></li>
+                            <li><a href="#">hakan.doğru</a></li>
+                        </ul>
+                    </div>
                 </td>   
             </tr>
             <tr>
@@ -153,6 +172,7 @@ function openForm2(trigger) {
                 </td>
             </tr>
         </table>
+        <strong>Current Total Price: 40.52₺</strong><br></br>
         <button className="mt-3 btn btn-success" type="button">Submit</button>
         <hr/>
         <button onClick={e => { trigger(true);}} className="btn btn-primary" type="button">Go Back to Selection</button>

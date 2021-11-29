@@ -14,7 +14,7 @@ function Login() {
           <TextField className="email-password" type="password" id="password" label="Password" variant="outlined"/>
           <br/><br/>
           <button type="button" className="btn btn-secondary btn-lg login-button">Sign In</button><br/><br/>
-          <hr/>
+          <hr className="hr-login"/>
           <p className="mt-4 create-account">New to Hermes? Create Account</p>
         </center>
       </div>

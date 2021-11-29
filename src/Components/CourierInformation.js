@@ -8,27 +8,23 @@ function CourierInformation() {
                 <table>
                     <tr>
                         <td>User ID:</td>
-                        <td>courier1</td>
+                        <td>FastHüsnü</td>
                     </tr>
                     <tr>
                         <td>User Name:</td>
-                        <td>Mehmet Taşkaya</td>
+                        <td>Hüsnü Çoban</td>
                     </tr>
                     <tr>
                         <td>Email: </td>
-                        <td>mehmet.taski@gmail.com</td>
+                        <td>hüsnü.çob@gmail.com</td>
                     </tr>
                     <tr>
                         <td>Phone Number:&emsp;</td>
                         <td>0555 555 55 55</td>
                     </tr>
                     <tr>
-                        <td>Address:</td>
-                        <td>Eryaman/ANKARA</td>
-                    </tr>
-                    <tr>
-                        <td>Vehicle:</td>
-                        <td>06XX0001</td>
+                        <td>Vehicle ID:</td>
+                        <td>06T190</td>
                     </tr>
                 </table>
             </div>

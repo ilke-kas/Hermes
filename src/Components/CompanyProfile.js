@@ -10,7 +10,12 @@ function CompanyProfile() {
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="company-info"><CompanyInformation/></td>
+                    <td className="company-info2"><CompanyInformation/></td>
+                    <td className="company-load-money">
+                        <center><h2>Load Money</h2></center>
+                        <center><input type="amount" id="amount" placeholder="Amount to Load"></input></center><br></br>
+                        <center><button className="btn btn-secondary">Load</button></center>
+                    </td>
                 </tr>
             </table>
         </div>

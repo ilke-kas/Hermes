@@ -11,7 +11,7 @@ function ShipperHomePage() {
             <h5 className="mt-4">Branch to Branch</h5>
                 <div className="package-acceptance">
                     
-                    <table className="mt-3">
+                    <table className="mt-5">
                         <tr>
                             <td>Package ID:</td>
                             <td>200</td>

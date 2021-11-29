@@ -74,8 +74,7 @@ function PackageAcceptance() {
                         </tr>
                         
                     </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
                 </div>
                 <h5 className="header-branch-customer">Branch to Customer </h5>
                 <div className="package-acceptance21">
@@ -98,8 +97,8 @@ function PackageAcceptance() {
                         </tr>
                         
                     </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
+            
                 </div>
                 <div className="package-acceptance3">
                     <table className="mt-3">
@@ -121,8 +120,7 @@ function PackageAcceptance() {
                         </tr>
                         
                     </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance23">
                     <table className="mt-3">

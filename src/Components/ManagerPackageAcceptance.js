@@ -38,6 +38,21 @@ function ManagerPackageAcceptance() {
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Select Branch:&emsp;</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Branch Name
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Trabzon</a></li>
+                                        <li><a href="#">Tekirdağ</a></li>
+                                        <li><a href="#">Mersin</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
@@ -65,7 +80,7 @@ function ManagerPackageAcceptance() {
                             <td>Select Courier:&emsp;</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Courier Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -77,8 +92,7 @@ function ManagerPackageAcceptance() {
                             </td>
                         </tr>
                     </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance1">
                     <h5 className="mt-2">Assign Shipper</h5>
@@ -114,6 +128,21 @@ function ManagerPackageAcceptance() {
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>Select Branch:&emsp;</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Branch Name
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#">Kırşehir</a></li>
+                                        <li><a href="#">İzmir</a></li>
+                                        <li><a href="#">Adıyaman</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
@@ -141,7 +170,7 @@ function ManagerPackageAcceptance() {
                             <td>Select Courier:&emsp;</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Employee Name
+                                    <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">Courier Name
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -153,8 +182,7 @@ function ManagerPackageAcceptance() {
                             </td>
                         </tr>
                     </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
                 </div>
             </center>
         </div>

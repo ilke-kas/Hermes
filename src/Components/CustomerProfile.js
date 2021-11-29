@@ -6,13 +6,15 @@ import {AiOutlineDash} from "react-icons/ai";
 import SeeDetailsPopup from "./SeeDetailsPopup";
 import CreateReportPopup from "./CreateReportPopup";
 import CreateReportPopup2 from "./CreateReportPopup2";
-import {TextField} from '@material-ui/core';
+import {RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
+import ConfirmationPopup from "./ConfirmationPopup";
 
 
 function CustomerProfile() {
     const [popup, setPopup] = React.useState(false);
     const [popup2, setPopup2] = React.useState(false);
     const [popup3, setPopup3] = React.useState(false);
+    const [popup4, setPopup4] = React.useState(false);
 
     return (
         <div>
@@ -27,6 +29,10 @@ function CustomerProfile() {
                     </td>
                     <td className="info-table3">
                         <div>
+                            <RadioGroup className="d-flex justify-content-center mt-3" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group"> 
+                                <FormControlLabel value="Shipper" control={<Radio />} label="Sender" />
+                                <FormControlLabel value="PackageManager" control={<Radio />} label="Recipient" />
+                            </RadioGroup><hr style={{height:"2px"}}></hr>
                             <center><h2>My Packages</h2></center>
                             <h3 className="mt-3">Delivered Packages</h3>
                             <ul>
@@ -34,7 +40,9 @@ function CustomerProfile() {
                             </ul>
                             <h3 className="mt-5">Not Delivered Packages</h3>
                             <ul>
-                                <li>Television&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;<button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button></li>
+                                <li>Television&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>&emsp;
+                                <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button></li>
                                 <BiCurrentLocation size="2em" className="mt-5"/><AiOutlineDash className="mt-5"/><AiOutlineDash className="mt-5"/><AiOutlineDash className="mt-5"/>
                                 <BiCurrentLocation size="2em" className="mt-5"/><AiOutlineDash className="mt-5"/><AiOutlineDash className="mt-5"/><AiOutlineDash className="mt-5"/>
                                 <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;<BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;<BiCurrentLocation size="2em" className="mt-5"/>
@@ -55,6 +63,7 @@ function CustomerProfile() {
             <SeeDetailsPopup trigger={popup} setTrigger={setPopup}></SeeDetailsPopup>
             <CreateReportPopup trigger={popup2} setTrigger={setPopup2}></CreateReportPopup>
             <CreateReportPopup2 trigger={popup3} setTrigger={setPopup3}></CreateReportPopup2>
+            <ConfirmationPopup trigger={popup4} setTrigger={setPopup4}></ConfirmationPopup>
         </div>
     );
 }

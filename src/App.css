@@ -101,7 +101,6 @@ float: left;
   height: 50px;
 }
 
-
 .login-button {
   border-radius: 20px;
   width: 50%;
@@ -111,7 +110,7 @@ float: left;
   color:rgba(37, 33, 48, 0.596);
 }
 
-hr {
+.hr-login {
   border: none;
   border-top: 1px double #333;
   color: #333;
@@ -120,7 +119,7 @@ hr {
   height: 5px;
 }
 
-hr:after {
+.hr-login:after {
   background: white;
   content: 'or';
   padding: 0 4px;
@@ -338,7 +337,7 @@ ul {
 .package-acceptance {
   background-color: white;
   width: 25%;
-  top: 32%;
+  top: 29%;
   left: 20%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -361,10 +360,11 @@ ul {
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.05), 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
+
 .package-acceptance1 {
   background-color: white;
   width: 25%;
-  top: 72%;
+  top: 71%;
   left: 20%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -451,6 +451,41 @@ ul {
   margin-top: -100px;    
   margin-left: -150px; 
   border: 0px solid;
+  padding: 15px;
+  border-radius: 30px;
+}
+
+.company-info2 {
+  border: 0px solid;
+  box-shadow: 3px 3px 3px 3px #888888;
+  position: absolute;
+  top: 35%;
+  left: 49%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 0px solid;
+  padding: 15px;
+  border-radius: 30px;
+}
+
+.form-group {
+  margin: 30px auto;
+  width: 450px;
+}
+
+.form-control {
+  float: left;
+}
+
+.company-load-money {
+  border: 0px solid;
+  box-shadow: 2px 2px 2px 2px #888888;
+  position: absolute;
+  width: 23%;
+  top: 75%;
+  left: 48%;
+  margin-top: -100px;    
+  margin-left: -150px;  
   padding: 15px;
   border-radius: 30px;
 }
