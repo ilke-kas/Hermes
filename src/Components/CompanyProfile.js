@@ -10,7 +10,7 @@ function CompanyProfile() {
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="info-tablecomp"><CompanyInformation/></td>
+                    <td className="company-info"><CompanyInformation/></td>
                 </tr>
             </table>
         </div>

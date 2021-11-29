@@ -13,20 +13,18 @@ function CustomerProfile() {
     const [popup, setPopup] = React.useState(false);
     const [popup2, setPopup2] = React.useState(false);
     const [popup3, setPopup3] = React.useState(false);
+
     return (
         <div>
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="info-table2"><CustomerInformation></CustomerInformation>
-                    <p>Wallet Amount:70₺</p> 
-                    <h5>Points Collected:7</h5> 
+                    <td className="info-table2"><CustomerInformation></CustomerInformation></td>
+                    <td className="info-table21">
+                        <center><h2>Load Money</h2></center>
+                        <center><input type="amount" id="amount" placeholder="Amount to Load"></input></center><br></br>
+                        <center><button className="btn btn-secondary">Load</button></center>
                     </td>
-                    <td className="info-table21"><h6>Load Money</h6>
-                        <TextField type="amount" id="amount" label="Amount to load ₺" variant="outlined"></TextField>
-                        <td><button className="load">Load</button></td>
-                        </td>
-                       
                     <td className="info-table3">
                         <div>
                             <center><h2>My Packages</h2></center>

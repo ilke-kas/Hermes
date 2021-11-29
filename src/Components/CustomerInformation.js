@@ -4,7 +4,7 @@ function CustomerInformation() {
     return (
         <div>
             <div>
-                <h2>My Information</h2>
+                <center><h2>My Information</h2></center>
                 <table>
                     <tr>
                         <td>User ID:</td>
@@ -26,7 +26,14 @@ function CustomerInformation() {
                         <td>Address:</td>
                         <td>Bilkent/ANKARA</td>
                     </tr>
-                    
+                    <tr>
+                        <td>Balance:</td>
+                        <td>70₺</td> 
+                    </tr>
+                    <tr>
+                        <td>Points Collected:</td>
+                        <td>7</td> 
+                    </tr>
                 </table>
             </div>
         </div>

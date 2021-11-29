@@ -27,7 +27,6 @@ function App() {
       <Route exact path="/Shipper" component={ShipperHomePage} />
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
       <Route exact path="/CompanyHomePage" component={CompanyHomePage} />
-
     </div>
   );
 }

@@ -4,8 +4,7 @@ function PackageAcceptance() {
     return (
         <div>
             <center>
-            <h5>Customer to Branch</h5>
-
+            <h5 className="mt-4">Customer to Branch</h5>
                 <div className="package-acceptance">
                     <table className="mt-3">
                         <tr>
@@ -78,7 +77,7 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
-                <h5 className="btoc">Branch to Customer </h5>
+                <h5 className="header-branch-customer">Branch to Customer </h5>
                 <div className="package-acceptance21">
                     <table className="mt-3">
                         <tr>
@@ -103,7 +102,6 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance3">
-               
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>

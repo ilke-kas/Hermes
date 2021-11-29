@@ -22,7 +22,7 @@ function SeeReportPopup(props) {
                             <td>2m³</td>
                         </tr>
                         <tr>
-                            <td><strong>Recipient ID:&emsp;&emsp;</strong></td>
+                            <td><strong>Recipient ID:</strong></td>
                             <td>hazal.kaya</td>
                         </tr>
                         <tr>

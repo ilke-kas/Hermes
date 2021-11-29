@@ -7,7 +7,6 @@ function CourierHomePage() {
         <div>
             <NavBar></NavBar>
             <PackageAcceptance>
-                
             </PackageAcceptance>
             
         </div>

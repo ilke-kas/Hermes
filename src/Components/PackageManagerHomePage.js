@@ -1,32 +1,38 @@
 import React from "react";
 import NavBar from "./NavBar";
 import ManagerPackageAcceptance from "./ManagerPackageAcceptance";
-import ReportPopUp from "./ReportPopUp";
+import SeeReportPopup from "./SeeReportPopup";
 
-function CourierHomePage() {
+function PackageManagerHomePage() {
     const [popup, setPopup] = React.useState(false);
 
     return (
         <div>
             <NavBar></NavBar>
-            
             <ManagerPackageAcceptance/>
-            <td className="info-tablecomp23">
-                    <h6>Reports</h6> 
-                    <tr><h6>Order Number</h6></tr>   
-                    <tr>OrderID&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></tr>
-                    <br></br><tr>OrderID&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></tr>
-                    <br></br>
-                    <tr>OrderID&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></tr>
-                    <br></br><tr>OrderID&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></tr>
-                    <br></br><tr>OrderID&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></tr>
-                    <br></br>
-                    
-                    </td>
-                    <ReportPopUp trigger={popup} setTrigger={setPopup}></ReportPopUp>
+            <div className="info-tablecomp23">
+                <table>
+                    <tr>
+                        <td><h5>Reports</h5></td>
+                    </tr>
+                    <tr>
+                        <td><h6>Package ID</h6></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>725</td>
+                        <td>&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></td>
+                    </tr>
+                    <tr>
+                        <td>532</td>
+                        <td>&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></td>
+                    </tr>
+                </table>
+            </div>
+            <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
         </div>
 
     );
 }
 
-export default CourierHomePage;
+export default PackageManagerHomePage;

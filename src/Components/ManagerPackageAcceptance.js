@@ -1,13 +1,11 @@
 import React from "react";
 
-function PackageAcceptance() {
+function ManagerPackageAcceptance() {
     return (
         <div>
             <center>
-            
                 <div className="package-acceptance">
-                    <h6>Assign Shipper</h6>
-                    
+                    <h5 className="mt-2">Assign Shipper</h5>
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -45,7 +43,7 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance2">
-                <h6>Assign Courier</h6>
+                <h5 className="mt-2">Assign Courier</h5>
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -83,6 +81,7 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance1">
+                    <h5 className="mt-2">Assign Shipper</h5>
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -120,6 +119,7 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
                 <div className="package-acceptance21">
+                    <h5 className="mt-2">Assign Courier</h5>
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -161,4 +161,4 @@ function PackageAcceptance() {
     );
 }
 
-export default PackageAcceptance;
+export default ManagerPackageAcceptance;

@@ -8,7 +8,7 @@ function ShipperHomePage() {
         <div>
             <NavBar></NavBar>
             <center>
-            <h5>Branch to Branch</h5>
+            <h5 className="mt-4">Branch to Branch</h5>
                 <div className="package-acceptance">
                     
                     <table className="mt-3">

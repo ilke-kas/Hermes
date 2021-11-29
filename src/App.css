@@ -106,10 +106,7 @@ float: left;
   border-radius: 20px;
   width: 50%;
 }
-.load {
-  border-radius: 30px;
-  width: 360%;
-}
+
 .create-account {
   color:rgba(37, 33, 48, 0.596);
 }
@@ -184,7 +181,6 @@ hr:after {
   left: 25%;
   margin-top: -100px;    
   margin-left: -150px; 
-  
   padding: 15px;
   border-radius: 30px;
 }
@@ -192,11 +188,11 @@ hr:after {
   border: 0px solid;
   box-shadow: 5px 10px #888888;
   position: absolute;
+  width: 23%;
   top: 75%;
   left: 25%;
   margin-top: -100px;    
-  margin-left: -150px; 
-  
+  margin-left: -150px;  
   padding: 15px;
   border-radius: 30px;
 }
@@ -204,8 +200,8 @@ hr:after {
   border: 0px solid;
   box-shadow: 5px 10px #888888;
   position: absolute;
-  top: 40%;
-  left: 50%;
+  top: 50%;
+  left: 20%;
   margin-top: -100px;    
   margin-left: -150px; 
   border: 0px solid;
@@ -225,11 +221,10 @@ hr:after {
   border-radius: 30px;
 }
 .info-tablecomp23{
-  
-  box-shadow: 5px 10px #888888;
+  box-shadow: 3px 5px #888888;
   position: absolute;
-  top: 35%;
-  left: 79%;
+  top: 55%;
+  left: 82%;
   margin-top: -100px;    
   margin-left: -150px; 
   border: 0px solid;
@@ -343,7 +338,7 @@ ul {
 .package-acceptance {
   background-color: white;
   width: 25%;
-  top: 35%;
+  top: 32%;
   left: 20%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -356,7 +351,7 @@ ul {
 .package-acceptance2 {
   background-color: white;
   width: 25%;
-  top: 35%;
+  top: 32%;
   left: 50%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -369,7 +364,7 @@ ul {
 .package-acceptance1 {
   background-color: white;
   width: 25%;
-  top: 75%;
+  top: 72%;
   left: 20%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -382,7 +377,7 @@ ul {
 .package-acceptance21 {
   background-color: white;
   width: 25%;
-  top: 75%;
+  top: 72%;
   left: 50%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -395,7 +390,7 @@ ul {
 .package-acceptance3 {
   background-color: white;
   width: 25%;
-  top: 75%;
+  top: 72%;
   left: 80%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -408,7 +403,7 @@ ul {
 .package-acceptance23 {
   background-color: white;
   width: 25%;
-  top: 35%;
+  top: 32%;
   left: 80%;
   margin-top: -100px;    
   margin-left: -150px; 
@@ -429,8 +424,33 @@ ul {
   word-wrap:break-word;
 }
 
-.btoc {
-  top: 56%;
-  left: 43%;
-  position:absolute;
+.header-branch-customer {
+  position: absolute;
+  top: 55%;
+  left: 44.5%;
+}
+
+.package-manager-info {
+  border: 0px solid;
+  box-shadow: 2px 2px 2px 2px #888888;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  padding: 15px;
+  border-radius: 30px;
+}
+
+.company-info {
+  border: 0px solid;
+  box-shadow: 5px 10px #888888;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;    
+  margin-left: -150px; 
+  border: 0px solid;
+  padding: 15px;
+  border-radius: 30px;
 }
