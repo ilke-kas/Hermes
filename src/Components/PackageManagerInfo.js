@@ -23,10 +23,6 @@ function PackageManagerInfo() {
                         <td>0555 555 55 55</td>
                     </tr>
                     <tr>
-                        <td>Address:</td>
-                        <td>Dikmen/ANKARA</td>
-                    </tr>
-                    <tr>
                        
                     </tr>
                 </table>
