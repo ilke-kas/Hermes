@@ -1,6 +1,7 @@
 import React from "react";
 import NavBar from "./NavBar";
 import PackageAcceptance from "./PackageAcceptance";
+import {useCookies} from "react-cookie";
 
 function CourierHomePage() {
     return (

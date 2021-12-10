@@ -1,13 +1,17 @@
 import {TextField} from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import Logo from '../Logo';
-import axios from 'axios';
+import {useCookies} from "react-cookie";
+import { Route,Link } from 'react-router-dom';
+import SignUp from './SignUp';
 
 function Login() {
+  const [cookies, setCookie] = useCookies(["userId"])
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   var temp; 
   var temp2;
+  var temp3;
   async function checkLogin(e) {
     e.preventDefault();
     debugger; 
@@ -20,7 +24,39 @@ function Login() {
     .then(data => {
         temp = data.isValid;
         temp2 = data.userId;
+        temp3= data.userType;
+        console.log(temp);
+        console.log(temp2);
+        console.log(temp3);
+        if (temp) {
+          const remember = localStorage.setItem("user", temp2)
+          if(temp3 == 'packagemanager'){
+            window.location = "/PackageManagerHomePage";
+          }
+          else if( temp3 == 'shipper'){
+            window.location = "/Shipper";
+          }
+          else if( temp3 == 'courier'){
+            window.location = "/Courier";
+          }
+          else if( temp3 == 'corporate'){
+            window.location = "/CompanyHomePage";
+          }
+          else if( temp3 == 'courier'){
+            window.location = "/Courier";
+          }
+          else if( temp3 == 'individual'){
+            window.location = "/Customer";
+          }
+      }
+      else {
+          alert("Login Failed, Please Try Again");
+          window.location = "/";
+      }
     });
+    setCookie("userId", temp2, {
+      path: "/"
+  });
 }
   return (
     <div>
@@ -36,11 +72,11 @@ function Login() {
           <br/><br/>
           <button onClick={checkLogin} type="button" className="btn btn-secondary btn-lg login-button">Sign In</button><br/><br/>
           <hr className="hr-login"/>
-          <p className="mt-4 create-account">New to Hermes? Create Account</p>
+          <Link to="/SignUp" className="mt-4 create-account">New to Hermes? Create Account</Link>
+
         </center>
       </div>
     </div>
   );
 }
-
 export default Login;
