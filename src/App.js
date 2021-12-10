@@ -9,7 +9,8 @@ import PackageManager from './Components/PackageManager'
 import ShipperHomePage from './Components/ShipperHomePage';
 import CourierHomePage from './Components/CourierHomePage';
 import CompanyProfile from './Components/CompanyProfile';
-import ShipperCourier from './Components/ShipperCourier';
+import ShipperProfile from './Components/ShipperProfile';
+import CourierProfile from './Components/CourierProfile';
 import PackageManagerHomePage from './Components/PackageManagerHomePage';
 import CompanyHomePage from './Components/CompanyHomePage';
 
@@ -20,9 +21,10 @@ function App() {
       <Route exact path="/SignUp" component={SignUp} />
       <Route exact path="/Customer" component={Customer} />
       <Route exact path="/CustomerProfile" component={CustomerProfile} />
-      <Route exact path="/Courier" component={CourierHomePage} />
+      <Route exact path="/CourierHome" component={CourierHomePage} />
       <Route exact path="/CompanyProfile" component={CompanyProfile} />
-      <Route exact path="/ShipperCourier" component={ShipperCourier} />
+      <Route exact path="/CourierProfile" component={CourierProfile} />
+      <Route exact path="/ShipperProfile" component={ShipperProfile} />
       <Route exact path="/PackageManager" component={PackageManager} />
       <Route exact path="/Shipper" component={ShipperHomePage} />
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
