@@ -1,7 +1,16 @@
 import React from "react";
 import HermesLogo from "../img/thelogo.png"
+import {useCookies, Cookies} from "react-cookie";
 function NavBar() {
-    return (
+    const cookies = new Cookies();
+    const userId = cookies.get("userId");
+    function logout(){
+        //remove cookies
+        cookies.remove("userId");
+        //direct to the login page
+        window.location ="/";
+    }
+       return (
         <div>
             <nav className="navbar navbar-expand-md navbar-dark bg-secondary py-3 navbar-edit">
                 <a className="navbar-brand" href="#">
@@ -22,7 +31,7 @@ function NavBar() {
                     <div className="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <a className="nav-link" href="#">Log Out</a>
+                                <a className="nav-link" href="#" onClick={logout} >Log Out</a>
                             </li>
                         </ul>
                     </div>
