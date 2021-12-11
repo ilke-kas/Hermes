@@ -80,7 +80,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.packagestatus}</td>
                         <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
                         </tr>
-                    
+
                     })
 
                     }
