@@ -483,7 +483,13 @@ app.post("/companyHomePage", async (req, res) => {
         if(rowcount != 0){
             console.log(rowcount);
             for (let i = 0; i <rowcount; i++) {
-                order ={pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
+                //get the branch names
+                const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
+                const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
+                //find package status
+                const packageStatus = db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(await allOrders).rows[i].p_id]);
+
+                order ={packagestatus:(await packageStatus).rows[0].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
                     price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
                 orders.push(order);
             }
