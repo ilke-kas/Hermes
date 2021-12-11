@@ -3,7 +3,8 @@ import Navbar from "./NavBar";
 import SeeReportPopup from "./SeeReportPopup";
 import {Cookies, useCookies} from "react-cookie";
 import { render } from "react-dom";
-import {BrowserRouter} from "react-router-dom"
+import {BrowserRouter} from "react-router-dom";
+import {TextField, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
 
 function CompanyHomePage() {
     const [popup, setPopup] = React.useState(false);
@@ -13,9 +14,11 @@ function CompanyHomePage() {
     var size, orders;
     let orderList =[];
     const [userData, setUserData] =useState([]);
+    const [selected, setSelected] = useState('');
     React.useEffect(() => {
+        console.log(selected);
         homePage();
-    },[]);
+    },[selected]);
     async function homePage(){
         const response = await fetch('http://localhost:3001/companyHomePage', {
             method: "POST",
@@ -28,22 +31,34 @@ function CompanyHomePage() {
             console.log('here');
             console.log(size);
             console.log(orders);
-            setUserData(orders);
+            radiobuttons(selected);
         });
+    }
+    function radiobuttons(selected){
+        if(selected=="undelivered"){
+            //list undelievere ones
+            console.log("undelivered");
+        }
+        else if(selected =="delivered"){
+            //list delivered ones
+            console.log("delivered");
+        }
+        else if(selected == ""){
+            //list all
+            setUserData(orders);
+        }
     }
     return (
         <div>
             <Navbar></Navbar><br></br>
             <center>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
-                    <label class="form-check-label" for="flexRadioDefault1">Delivered Items</label>&emsp;&emsp;
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                    <label class="form-check-label" for="flexRadioDefault2">Undelivered Items</label>&emsp;&emsp;
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                    <label class="form-check-label" for="flexRadioDefault2">List All</label>
-                </div>
+                <RadioGroup className="mt-4 d-flex justify-content-center" row aria-label="employeekind" name="row-radio-buttons-group" value={selected} onChange={event => {setSelected(event.target.value)} }> 
+                    <FormControlLabel value="undelivered" control={<Radio />} label="Undelivered" />
+                    <FormControlLabel value="delivered" control={<Radio />} label="Delivered" />
+                    <FormControlLabel value="" control={<Radio />} label="All" />
+                </RadioGroup>
             </center>
+
             <nav className="navbar navbar-light mt-3">
                 <div className="mx-auto" style={{width:"500px"}}> 
                     <form className="d-flex">
@@ -67,9 +82,10 @@ function CompanyHomePage() {
                         <br></br><br></br>
                     </tr>
                     <>
-                    {userData.map((data,id)=>{
-
-                        return  <tr> 
+                    {selected == "" ?
+                    userData.map((data,id) => {
+                        //for all orders
+                        return  <tr key={id}> 
                         <td  className="table-td">{data.pid}</td>
                         <td  className="table-td">{data.itemdescription}</td>
                         <td  className="table-td">{data.takeindvid}</td>
@@ -81,9 +97,45 @@ function CompanyHomePage() {
                         <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
-                    })
+                    }) : (selected== "delivered" ? 
+                    //for delivered orders
+                    userData.map((data,id) => {
+                        if(data.packagestatus == "Delivered"){
 
+                        return  <tr key={id}> 
+                        <td  className="table-td">{data.pid}</td>
+                        <td  className="table-td">{data.itemdescription}</td>
+                        <td  className="table-td">{data.takeindvid}</td>
+                        <td  className="table-td">{data.weight}</td>
+                        <td  className="table-td">{data.volume}</td>
+                        <td  className="table-td">{data.destinationbid}</td>
+                        <td  className="table-td">{data.sendbid}</td>
+                        <td  className="table-td">{data.packagestatus}</td>
+                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
+                        </tr>
+                    
                     }
+                    }) :
+                    //for undelivered orders
+                    userData.map((data,id) => {
+                        if(data.packagestatus != "Delivered"){
+
+                        return  <tr key={id}> 
+                        <td  className="table-td">{data.pid}</td>
+                        <td  className="table-td">{data.itemdescription}</td>
+                        <td  className="table-td">{data.takeindvid}</td>
+                        <td  className="table-td">{data.weight}</td>
+                        <td  className="table-td">{data.volume}</td>
+                        <td  className="table-td">{data.destinationbid}</td>
+                        <td  className="table-td">{data.sendbid}</td>
+                        <td  className="table-td">{data.packagestatus}</td>
+                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
+                        </tr>
+                    
+                    }
+                    })
+                    )
+                }
                     </>
                 </table>
             </center>
