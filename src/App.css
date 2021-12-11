@@ -173,11 +173,12 @@ float: left;
 }
 
 .info-table2 {
+  max-width: 40%;
   border: 0px solid;
   box-shadow: 5px 10px #888888;
   position: absolute;
   top: 35%;
-  left: 25%;
+  left: 15%;
   margin-top: -100px;    
   margin-left: -150px; 
   padding: 15px;
@@ -188,7 +189,7 @@ float: left;
   box-shadow: 5px 10px #888888;
   position: absolute;
   width: 23%;
-  top: 75%;
+  top: 83%;
   left: 25%;
   margin-top: -100px;    
   margin-left: -150px;  
@@ -458,11 +459,6 @@ ul {
 .company-info2 {
   border: 0px solid;
   box-shadow: 3px 3px 3px 3px #888888;
-  position: absolute;
-  top: 35%;
-  left: 49%;
-  margin-top: -100px;    
-  margin-left: -150px; 
   border: 0px solid;
   padding: 15px;
   border-radius: 30px;

@@ -568,6 +568,7 @@ app.post("/companyProfilePage", async (req, res) => {
     }
 
 });
+
 app.post("/companyLoadMoney", async (req, res) => {
     const {userid, amount} = req.body;
     const findOldBudget = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
@@ -585,11 +586,13 @@ app.post("/companyLoadMoney", async (req, res) => {
     else{
         console.log("There is an error");
     }
-
 });
+
 app.post("/CustomerProfile", async (req, res) => {
+    console.log("aaaaaaaaaaaaa");
     const {userid} = req.body;
-    const userInfo = await db.query('SELECT * FROM customer NATURAL JOIN customercardWHERE u_id = $1', [userid]);
+    console.log(userid);
+    const userInfo = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
     if(userInfo.rowCount != 0){
         //direct to individual home page
         //create address
@@ -598,10 +601,30 @@ app.post("/CustomerProfile", async (req, res) => {
          userInfo.rows[0].city +'/' + userInfo.rows[0].state + ' ' + userInfo.rows[0].zip;
         res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,address: addrs,balance: userInfo.rows[0].money,points: userInfo.rows[0].point});
     }
-    else{
+    else {
         console.log("There is an error");
     }
 
+});
+
+app.post("/customerLoadMoney", async (req, res) => {
+    console.log("bbbbbbbbbbb");
+    const {userid, amount} = req.body;
+    const findOldBudget = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
+    if(findOldBudget.rowCount != 0){
+        //direct to individual home page
+        //create address
+        console.log("serverda");
+        oldBudget = parseInt(findOldBudget.rows[0].money);
+        amount2 = parseInt(amount);
+        newbudget = oldBudget + amount2;
+        //update budget
+        const updateBudget = await db.query('UPDATE customercard SET money =$2 WHERE u_id = $1', [userid, newbudget]);
+        res.json({success:true});
+    }
+    else{
+        console.log("There is an error");
+    }
 });
 
 
