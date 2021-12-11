@@ -61,7 +61,10 @@ function CompanyHomePage() {
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Recipient ID</strong></td>
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Weight</strong></td>
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Volume</strong></td>
-                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Branch Name</strong></td><br></br><br></br>
+                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Destination Branch Name</strong></td>
+                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Sent Branch Name</strong></td>
+                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Package Status</strong></td>
+                        <br></br><br></br>
                     </tr>
                     <>
                     {userData.map((data,id)=>{
@@ -72,7 +75,9 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.takeindvid}</td>
                         <td  className="table-td">{data.weight}</td>
                         <td  className="table-td">{data.volume}</td>
-                        <td  className="table-td">Branch Name</td>
+                        <td  className="table-td">{data.destinationbid}</td>
+                        <td  className="table-td">{data.sendbid}</td>
+                        <td  className="table-td">{data.packagestatus}</td>
                         <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
