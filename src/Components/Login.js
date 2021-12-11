@@ -37,13 +37,10 @@ function Login() {
             window.location = "/Shipper";
           }
           else if( temp3 == 'courier'){
-            window.location = "/Courier";
+            window.location = "/CourierHome";
           }
           else if( temp3 == 'corporate'){
             window.location = "/CompanyHomePage";
-          }
-          else if( temp3 == 'courier'){
-            window.location = "/Courier";
           }
           else if( temp3 == 'individual'){
             window.location = "/Customer";

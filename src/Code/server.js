@@ -467,3 +467,78 @@ app.post("/registerCourier", async (req, res) => {
         res.json({isValid: false, type: "userid"});
     }
 });
+
+app.post("/companyHomePage", async (req, res) => {
+    const {userid} = req.body;
+    console.log("user id in company Home Page is");
+    console.log(userid);
+    orders =[];
+    //by using this user id find orders and packages from order table
+        const allOrders = db.query('SELECT * FROM package NATURAL JOIN "Order" WHERE send_corporate_id =$1', [userid]);
+        rowcount = (await allOrders).rowCount;
+        if(rowcount != 0){
+            console.log(rowcount);
+            for (let i = 0; i <rowcount; i++) {
+                order ={pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
+                    price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
+                orders.push(order);
+            }
+            res.json({size: rowcount, orders:orders});
+        }
+        else{
+            console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+        }
+});
+app.post("/getUserType", async (req, res) => {
+    const {userId} = req.body;
+    var usertype = '';
+    console.log(userId);
+    const inPackageManager = await db.query('SELECT * FROM packagemanager WHERE u_id = $1', [userId]);
+    if(inPackageManager.rowCount != 0){
+        //direct to package manage home page
+        usertype='packagemanager';
+        console.log(usertype);
+        res.json({userType: usertype});
+    }
+    else{
+        const inShipper = await db.query('SELECT * FROM shipper WHERE u_id = $1', [userId]);
+        if(inShipper.rowCount != 0){
+            //direct to shipper home
+            usertype='shipper';
+            console.log(usertype);
+            res.json({userType: usertype});
+        }
+        else{
+            const inCourier = await db.query('SELECT * FROM courier WHERE u_id = $1', [userId]);
+            if(inCourier.rowCount != 0){
+                //direct to courier page
+                usertype='courier';
+                console.log(usertype);
+                res.json({userType: usertype});
+            }
+            else{
+                const inCorporate = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userId]);
+                if(inCorporate.rowCount != 0){
+                    //direct to corporate home page
+                    usertype='corporate';
+                    console.log(usertype);
+                    res.json({userType: usertype});
+                }
+                else{
+                    const inIndividual = await db.query('SELECT * FROM individual WHERE u_id = $1', [userId]);
+                    if(inIndividual.rowCount != 0){
+                        //direct to individual home page
+                        usertype='individual';
+                        console.log(usertype);
+                        res.json({userType: usertype});
+                    }
+                    else{
+                        console.log("There is an error");
+                    }
+                }
+            }
+        }
+    }
+
+});

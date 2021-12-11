@@ -1,12 +1,38 @@
-import React from "react";
+import React, {Component, useEffect, useState} from "react";
 import Navbar from "./NavBar";
 import SeeReportPopup from "./SeeReportPopup";
+import {Cookies, useCookies} from "react-cookie";
+import { render } from "react-dom";
+import {BrowserRouter} from "react-router-dom"
 
 function CompanyHomePage() {
     const [popup, setPopup] = React.useState(false);
-
+    const cookies = new Cookies();
+    const userid = cookies.get(["userId"]);
+    const body = {userid};
+    var size, orders;
+    let orderList =[];
+    const [userData, setUserData] =useState([]);
+    React.useEffect(() => {
+        homePage();
+    },[]);
+    async function homePage(){
+        const response = await fetch('http://localhost:3001/companyHomePage', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            size = data.size;
+            orders = data.orders;
+            console.log('here');
+            console.log(size);
+            console.log(orders);
+            setUserData(orders);
+        });
+    }
     return (
-        <div> 
+        <div>
             <Navbar></Navbar><br></br>
             <center>
                 <div class="form-check">
@@ -37,30 +63,27 @@ function CompanyHomePage() {
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Volume</strong></td>
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Branch Name</strong></td><br></br><br></br>
                     </tr>
-                    <tr>
-                        <td className="table-td">2098</td>
-                        <td className="table-td">Refrigerator</td>
-                        <td className="table-td">cem.alkan</td>
-                        <td className="table-td">400 kg</td>
-                        <td className="table-td">2 m³</td>
-                        <td className="table-td">Bilkent</td>
+                    <>
+                    {userData.map((data,id)=>{
+
+                        return  <tr> 
+                        <td  className="table-td">{data.pid}</td>
+                        <td  className="table-td">{data.itemdescription}</td>
+                        <td  className="table-td">{data.takeindvid}</td>
+                        <td  className="table-td">{data.weight}</td>
+                        <td  className="table-td">{data.volume}</td>
+                        <td  className="table-td">Branch Name</td>
                         <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
-                    </tr>
-                    <tr>
-                        <td className="table-td">2156</td>
-                        <td className="table-td">Television</td>
-                        <td className="table-td">cem.alkan</td>
-                        <td className="table-td">20 kg</td>
-                        <td className="table-td">0.5 m³</td>
-                        <td className="table-td">Kızılay</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
-                    </tr>
+                        </tr>
+                    
+                    })
+
+                    }
+                    </>
                 </table>
             </center>
             <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
         </div>
     );
-
 }
-
 export default CompanyHomePage;
