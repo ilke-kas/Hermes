@@ -552,3 +552,39 @@ app.post("/getUserType", async (req, res) => {
     }
 
 });
+app.post("/companyProfilePage", async (req, res) => {
+    const {userid} = req.body;
+    const corporate = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
+    if(corporate.rowCount != 0){
+        //direct to individual home page
+        //create address
+        console.log("serverda");
+        let addrs = corporate.rows[0].street + ' ' + corporate.rows[0].apt_number + ' ' +
+         corporate.rows[0].city +'/' + corporate.rows[0].state + ' ' + corporate.rows[0].zip;
+        res.json({username: corporate.rows[0].name,email: corporate.rows[0].email,phone:corporate.rows[0].phone,address:addrs,budget: corporate.rows[0].budget});
+    }
+    else{
+        console.log("There is an error");
+    }
+
+});
+app.post("/companyLoadMoney", async (req, res) => {
+    const {userid, amount} = req.body;
+    const findOldBudget = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
+    if(findOldBudget.rowCount != 0){
+        //direct to individual home page
+        //create address
+        console.log("serverda");
+        oldBudget = parseInt(findOldBudget.rows[0].budget);
+        amount2 = parseInt(amount);
+        newbudget = oldBudget + amount2;
+        //update budget
+        const updateBudget = await db.query('UPDATE corporate SET budget =$2 WHERE u_id = $1', [userid,newbudget]);
+        res.json({success:true});
+    }
+    else{
+        console.log("There is an error");
+    }
+
+});
+
