@@ -587,4 +587,21 @@ app.post("/companyLoadMoney", async (req, res) => {
     }
 
 });
+app.post("/CustomerProfile", async (req, res) => {
+    const {userid} = req.body;
+    const userInfo = await db.query('SELECT * FROM customer NATURAL JOIN customercardWHERE u_id = $1', [userid]);
+    if(userInfo.rowCount != 0){
+        //direct to individual home page
+        //create address
+        console.log("serverda");
+        let addrs = userInfo.rows[0].street + ' ' + userInfo.rows[0].apt_number + ' ' +
+         userInfo.rows[0].city +'/' + userInfo.rows[0].state + ' ' + userInfo.rows[0].zip;
+        res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,address: addrs,balance: userInfo.rows[0].money,points: userInfo.rows[0].point});
+    }
+    else{
+        console.log("There is an error");
+    }
+
+});
+
 
