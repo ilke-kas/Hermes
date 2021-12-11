@@ -16,6 +16,7 @@ function Login() {
     e.preventDefault();
     debugger; 
     const body = {email, password};
+    debugger;
     const response = await fetch('http://localhost:3001/login', {
         method: "POST",
         headers: { "Content-Type": "application/json" },

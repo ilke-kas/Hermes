@@ -10,7 +10,8 @@ app.listen(3001, function x() {
     console.log("server is running on port 3001");
 })
 
-app.post("/login", async (req, res) => {
+app.post("/login", async (req, res, next) => {
+    try {
     const {email, password} = req.body;
     var usertype= '';
     const newLogin = await db.query('SELECT * FROM "User" WHERE u_id = $1 AND password = $2', [email, password]);
@@ -68,6 +69,9 @@ app.post("/login", async (req, res) => {
         console.log("Try again");
         res.json(false);
     }
+} catch (err) {
+    next(err);
+}
 });
 
 app.post("/registerIndividual", async (req, res) => {
