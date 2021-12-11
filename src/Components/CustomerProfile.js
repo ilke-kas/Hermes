@@ -8,6 +8,7 @@ import CreateReportPopup from "./CreateReportPopup";
 import CreateReportPopup2 from "./CreateReportPopup2";
 import {RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
 import ConfirmationPopup from "./ConfirmationPopup";
+import { Cookies } from "react-cookie";
 
 
 function CustomerProfile() {
@@ -15,13 +16,31 @@ function CustomerProfile() {
     const [popup2, setPopup2] = React.useState(false);
     const [popup3, setPopup3] = React.useState(false);
     const [popup4, setPopup4] = React.useState(false);
+    const [userInfo, setUserInfo] = React.useState([]);
+    const cookies = new Cookies();
+    const userid = cookies.get(["userId"]);
+
+    React.useEffect(() => {
+        customerInfo();
+    },[]);
+
+    async function customerInfo() {
+        const body = {userid};
+        const response = await fetch('http://localhost:3001/CustomerProfile', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+        const jsonData = await response.json();
+        setUserInfo(jsonData);
+    }
 
     return (
         <div>
             <NavBar></NavBar>
             <table>
                 <tr>
-                    <td className="info-table2"><CustomerInformation></CustomerInformation></td>
+                    <td className="info-table2"><CustomerInformation data={userInfo}></CustomerInformation></td>
                     <td className="info-table21">
                         <center><h2>Load Money</h2></center>
                         <center><input type="amount" id="amount" placeholder="Amount to Load"></input></center><br></br>

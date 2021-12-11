@@ -1,6 +1,6 @@
 import React from "react";
 
-function CustomerInformation() {
+function CustomerInformation(props) {
     return (
         <div>
             <div>
@@ -8,7 +8,7 @@ function CustomerInformation() {
                 <table>
                     <tr>
                         <td>User ID:</td>
-                        <td>ahmet.yildiz</td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>User Name:</td>
