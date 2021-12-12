@@ -589,10 +589,11 @@ app.post("/companyLoadMoney", async (req, res) => {
 app.post("/CustomerProfile", async (req, res) => {
     const {userid} = req.body;
     console.log(userid);
-    const userInfo = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
+    const userInfo = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
     if(userInfo.rowCount != 0){
         //direct to individual home page
         //create address
+        console.log(userInfo.rows[0].email);
         let addrs = userInfo.rows[0].street + ' ' + userInfo.rows[0].apt_number + ' ' +
          userInfo.rows[0].city +'/' + userInfo.rows[0].state + ' ' + userInfo.rows[0].zip;
         res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,address: addrs,balance: userInfo.rows[0].money,points: userInfo.rows[0].point});
@@ -600,12 +601,11 @@ app.post("/CustomerProfile", async (req, res) => {
     else {
         console.log("There is an error");
     }
-
 });
 
 app.post("/customerLoadMoney", async (req, res) => {
     const {userid, amount} = req.body;
-    const findOldBudget = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
+    const findOldBudget = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
     if(findOldBudget.rowCount != 0){
         //direct to individual home page
         //create address
