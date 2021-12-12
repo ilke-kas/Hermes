@@ -17,7 +17,7 @@ function OpenForm(props) {
     const [clickedSenderBranch, setClickedSenderBranch] = React.useState("");
     const [clickedDestinationBranch, setClickedDestinationBranch] = React.useState("");
     const [price,setPrice] = React.useState("");
-    const [success,setSuccess] = React.useState("");
+    const [success, setSuccess] = React.useState([]);
     const [header,setHeader] = React.useState(props.location.state);
 
     //send inpouts to back 
@@ -45,7 +45,7 @@ function OpenForm(props) {
             setSuccess(data.success);
             console.log("success" + success);
             if(success){
-                alert("You Successufully submit your package");
+                alert("You successfully submitted your package");
             }
             else{
                 alert("You could not submit your package");
