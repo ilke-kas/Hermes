@@ -486,6 +486,12 @@ ul {
   border-radius: 30px;
 }
 
+.unstyled-button {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
 .loading-position {
   position: absolute;
   top: 62%;

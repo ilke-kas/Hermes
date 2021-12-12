@@ -13,6 +13,7 @@ import ShipperProfile from './Components/ShipperProfile';
 import CourierProfile from './Components/CourierProfile';
 import PackageManagerHomePage from './Components/PackageManagerHomePage';
 import CompanyHomePage from './Components/CompanyHomePage';
+import OpenForm from './Components/OpenForm';
 
 function App() {
   return (
@@ -29,6 +30,8 @@ function App() {
       <Route exact path="/Shipper" component={ShipperHomePage} />
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
       <Route exact path="/CompanyHomePage" component={CompanyHomePage} />
+      <Route exact path="/OpenForm" component={OpenForm} />
+      
     </div>
   );
 }
