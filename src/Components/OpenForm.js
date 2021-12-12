@@ -16,7 +16,7 @@ function OpenForm() {
     const [clickedSenderBranch, setClickedSenderBranch] = React.useState("");
     const [clickedDestinationBranch, setClickedDestinationBranch] = React.useState("");
     const [price,setPrice] = React.useState("");
-    const [success,setSuccess] = React.useState("");
+    const [success,setSuccess] = React.useState([]);
     //send inpouts to back 
     async function calculatePrice(){
         const body2 ={weight,volume};
@@ -40,7 +40,7 @@ function OpenForm() {
         }).then(x => x.json())
         .then(data => {
             setSuccess(data.success);
-            console.log(success);
+            console.log("success" + success);
             if(success){
                 alert("You Successufully submit your package");
             }
