@@ -43,7 +43,7 @@ function OpenForm(props) {
         }).then(x => x.json())
         .then(data => {
             setSuccess(data.success);
-            console.log(success);
+            console.log("success" + success);
             if(success){
                 alert("You Successufully submit your package");
             }
