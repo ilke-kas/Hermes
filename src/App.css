@@ -485,3 +485,11 @@ ul {
   padding: 15px;
   border-radius: 30px;
 }
+
+.loading-position {
+  position: absolute;
+  top: 62%;
+  left: 58%;
+  margin-top: -100px;    
+  margin-left: -150px;  
+}

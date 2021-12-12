@@ -9,7 +9,7 @@ import CreateReportPopup2 from "./CreateReportPopup2";
 import {RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
 import ConfirmationPopup from "./ConfirmationPopup";
 import { Cookies } from "react-cookie";
-
+import * as ReactBootStrap from "react-bootstrap"
 
 function CustomerProfile() {
     const [popup, setPopup] = React.useState(false);
@@ -17,6 +17,7 @@ function CustomerProfile() {
     const [popup3, setPopup3] = React.useState(false);
     const [popup4, setPopup4] = React.useState(false);
     const [clickedButton, setClickedButton] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);    
 
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
@@ -55,11 +56,13 @@ function CustomerProfile() {
             console.log('here');
             });
         }
+        setLoading(true);
     }
   
     return (
         <div>
             <NavBar></NavBar>
+            {loading ?
             <table>
                 <tr>
                     <td className="info-table2"><CustomerInformation></CustomerInformation></td>
@@ -287,6 +290,9 @@ function CustomerProfile() {
                     </td>
                 </tr>
             </table>
+            :
+            <center><ReactBootStrap.Spinner style={{width: "75px", height:"75px"}} variant="primary" className="loading-position" animation="border" /></center>
+            }
             <SeeDetailsPopup trigger={popup} setTrigger={setPopup} id={clickedButton}></SeeDetailsPopup>
             <CreateReportPopup trigger={popup2} setTrigger={setPopup2}></CreateReportPopup>
             <CreateReportPopup2 trigger={popup3} setTrigger={setPopup3}></CreateReportPopup2>
