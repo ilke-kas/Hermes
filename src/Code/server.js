@@ -706,5 +706,23 @@ app.post("/courierProfilePage", async (req, res) => {
         console.log("There is an error");
     }
 });
+app.post("/SeeDetails", async (req, res) => {
+    const {userid,packageid} = req.body;
+    console.log("in see details");
+    const packageInfo = await db.query('SELECT * FROM package NATURAL JOIN "Order" NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
+    if(packageInfo.rowCount != 0){
+        //direct to individual home page
+        const senderBranch =  await db.query('SELECT * FROM branch WHERE b_id =$1', [packageInfo.rows[0].send_b_id]);
+        senderBranchName = senderBranch.rows[0].name;
+        const destinationBranch = await db.query('SELECT * FROM branch WHERE b_id =$1', [packageInfo.rows[0].destination_b_id]);
+        destinationBranchName = destinationBranch.rows[0].name;
+        //create address
+        console.log({description: packageInfo.rows[0].item_dscrptn,packageid: packageid, weight: packageInfo.rows[0].weight,volume: packageInfo.rows[0].volume,recipient:packageInfo.rows[0].take_indv_id,senderBranchName: senderBranchName, destinationBranchName: destinationBranchName,packagestatus:packageInfo.rows[0].name});
+        res.json({description: packageInfo.rows[0].item_dscrptn,packageid: packageid, weight: packageInfo.rows[0].weight,volume: packageInfo.rows[0].volume,recipient:packageInfo.rows[0].take_indv_id,senderBranchName: senderBranchName, destinationBranchName: destinationBranchName,packagestatus:packageInfo.rows[0].name});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
 
 

@@ -16,6 +16,7 @@ function CustomerProfile() {
     const [popup2, setPopup2] = React.useState(false);
     const [popup3, setPopup3] = React.useState(false);
     const [popup4, setPopup4] = React.useState(false);
+    const [clickedButton, setClickedButton] = React.useState([]);
 
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
@@ -75,8 +76,8 @@ function CustomerProfile() {
                                     userData.map((data,id) => {
                                         if(data.packagestatus == "Delivered"){
                                          return  <li>{data.itemdescription}&emsp;
-                                                        <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
-                                                        <button onClick={e => { setPopup2(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                        <button type="button" onClick={e => { setPopup(true); setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                                                        <button onClick={e => { setPopup2(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                                 </li>
                                         }
                                     }) 
@@ -91,7 +92,7 @@ function CustomerProfile() {
                                         if(data.packagestatus != "Delivered"){
                                             if(data.packagestatus == "Courier to Branch"){
                                                 return  <div><li>{data.itemdescription}&emsp;
-                                                        <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                                        <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                                         <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                                 </li>                       
@@ -115,7 +116,7 @@ function CustomerProfile() {
                                         }
                                         else if(data.packagestatus == "Sender Branch"){
                                             return  <div><li>{data.itemdescription}&emsp;
-                                            <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                            <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                             <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                             <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                          </li>                       
@@ -142,7 +143,7 @@ function CustomerProfile() {
                                     }
                                     else if(data.packagestatus == "Shipper"){
                                         return  <div><li>{data.itemdescription}&emsp;
-                                        <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                        <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                         <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                         </li>                       
@@ -172,7 +173,7 @@ function CustomerProfile() {
                                 }
                                 else if(data.packagestatus == "Destination Branch"){
                                     return  <div><li>{data.itemdescription}&emsp;
-                                    <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                    <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                     <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                     <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                     </li>                       
@@ -205,7 +206,7 @@ function CustomerProfile() {
                             }
                             else if(data.packagestatus == "Courier to Recipient"){
                                 return  <div><li>{data.itemdescription}&emsp;
-                                <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                                <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                         <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                 </li>                       
@@ -241,7 +242,7 @@ function CustomerProfile() {
                         }
                         else if(data.packagestatus == "Holdout"){
                             return  <div><li>{data.itemdescription}&emsp;
-                            <button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button>&emsp;
+                            <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                             <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                             <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                             </li>                       
@@ -286,7 +287,7 @@ function CustomerProfile() {
                     </td>
                 </tr>
             </table>
-            <SeeDetailsPopup trigger={popup} setTrigger={setPopup}></SeeDetailsPopup>
+            <SeeDetailsPopup trigger={popup} setTrigger={setPopup} id={clickedButton}></SeeDetailsPopup>
             <CreateReportPopup trigger={popup2} setTrigger={setPopup2}></CreateReportPopup>
             <CreateReportPopup2 trigger={popup3} setTrigger={setPopup3}></CreateReportPopup2>
             <ConfirmationPopup trigger={popup4} setTrigger={setPopup4}></ConfirmationPopup>
