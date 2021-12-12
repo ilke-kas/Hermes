@@ -485,3 +485,8 @@ ul {
   padding: 15px;
   border-radius: 30px;
 }
+.unstyled-button {
+  border: none;
+  padding: 0;
+  background: none;
+}

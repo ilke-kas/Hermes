@@ -90,7 +90,7 @@ function CustomerProfile() {
                                     userData.map((data,id) => {
 
                                         if(data.packagestatus != "Delivered"){
-                                            if(data.packagestatus == "Courier to Branch"){
+                                            if(data.packagestatus == "Submitted"){
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
@@ -102,8 +102,39 @@ function CustomerProfile() {
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <table>
                                                 <tr>
+                                                    <td><p className="location">Submitted&emsp;</p></td>
+                                                    <td><p className="location">Courier&emsp;</p></td>
+                                                    <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
+                                                    <td><p className="location">Shipper&emsp;</p></td>
+                                                    <td><p className="location">Destination&emsp;</p></td>
+                                                    <td><p className="location">Courier&emsp;</p></td>
+                                                    <td><p className="location">Holdout&emsp;</p></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        }
+                                            else if(data.packagestatus == "Courier to Branch"){
+                                                return  <div><li>{data.itemdescription}&emsp;
+                                                        <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                        <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
+                                                </li>
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp; 
+                                                    <AiOutlineDash className="mt-5"/>
+                                                    <AiOutlineDash className="mt-5"/>
+                                                    <AiOutlineDash className="mt-5"/>                      
+                                                <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                                <table>
+                                                <tr>
+                                                    <td><p className="location">Submitted&emsp;</p></td>
                                                     <td><p className="location">Courier&emsp;</p></td>
                                                     <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                                     <td><p className="location">Shipper&emsp;</p></td>
@@ -124,6 +155,10 @@ function CustomerProfile() {
                                             <AiOutlineDash className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
+                                        <BiCurrentLocation size="2em" className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
                                         <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
@@ -131,6 +166,7 @@ function CustomerProfile() {
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                             <table>
                                             <tr>
+                                                <td><p className="location">Submitted&emsp;</p></td>
                                                 <td><p className="location">Courier&emsp;</p></td>
                                                 <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                                 <td><p className="location">Shipper&emsp;</p></td>
@@ -155,12 +191,17 @@ function CustomerProfile() {
                                             <AiOutlineDash className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
+                                        <BiCurrentLocation size="2em" className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
                                         <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                         <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                         <table>
                                         <tr>
+                                            <td><p className="location">Submitted&emsp;</p></td>
                                             <td><p className="location">Courier&emsp;</p></td>
                                             <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                             <td><p className="location">Shipper&emsp;</p></td>
@@ -182,6 +223,10 @@ function CustomerProfile() {
                                         <AiOutlineDash className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
                                     <BiCurrentLocation size="2em" className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                            <AiOutlineDash className="mt-5"/>
+                                    <BiCurrentLocation size="2em" className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
@@ -194,6 +239,7 @@ function CustomerProfile() {
                                     <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                     <table>
                                     <tr>
+                                        <td><p className="location">Submitted&emsp;</p></td>
                                         <td><p className="location">Courier&emsp;</p></td>
                                         <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                         <td><p className="location">Shipper&emsp;</p></td>
@@ -218,6 +264,10 @@ function CustomerProfile() {
                                     <AiOutlineDash className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
+                                <BiCurrentLocation size="2em" className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
                                 <BiCurrentLocation size="2em"  className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -230,6 +280,7 @@ function CustomerProfile() {
                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
                                 <table>
                                 <tr>
+                                    <td><p className="location">Submitted&emsp;</p></td>
                                     <td><p className="location">Courier&emsp;</p></td>
                                     <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                     <td><p className="location">Shipper&emsp;</p></td>
@@ -247,6 +298,10 @@ function CustomerProfile() {
                             <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                             </li>                       
                             <BiCurrentLocation size="2em" className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
+                                    <AiOutlineDash className="mt-5"/>
+                             <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -269,6 +324,7 @@ function CustomerProfile() {
                                 <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                             <table>
                             <tr>
+                                <td><p className="location">Submitted&emsp;</p></td>
                                 <td><p className="location">Courier&emsp;</p></td>
                                 <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
                                 <td><p className="location">Shipper&emsp;</p></td>

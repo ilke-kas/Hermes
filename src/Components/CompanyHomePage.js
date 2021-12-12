@@ -34,6 +34,9 @@ function CompanyHomePage() {
             radiobuttons(selected);
         });
     }
+    function directSendPackage(){
+        window.location="/Customer";
+    }
     function radiobuttons(selected){
         if(selected=="undelivered"){
             //list undelievere ones
@@ -138,6 +141,10 @@ function CompanyHomePage() {
                 }
                     </>
                 </table>
+                <div>
+                    <br></br><br></br><br></br>
+                <button onClick={directSendPackage} className="btn btn-outline-success ml-1" type="submit">Send Package</button>
+                </div>
             </center>
             <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
         </div>
