@@ -24,6 +24,7 @@ function CustomerProfile() {
     const body = {userid};
     const [selected, setSelected] = useState('');
     const [userData, setUserData] =useState([]);
+    const [deliveredStatus, setDeliveredStatus] =useState([]);
     React.useEffect(() => {
         console.log(selected);
         homePage();
@@ -215,6 +216,7 @@ function CustomerProfile() {
                                     return  <div><li>{data.itemdescription}&emsp;
                                     <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                     <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+
                                     </li>                       
                                     <BiCurrentLocation size="2em" className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
@@ -252,7 +254,7 @@ function CustomerProfile() {
                                 return  <div><li>{data.itemdescription}&emsp;
                                 <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                        <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
+                                        <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid);}} className="btn btn-info">I Received The Package</button>
                                 </li>                       
                                 <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -293,10 +295,7 @@ function CustomerProfile() {
                             return  <div><li>{data.itemdescription}&emsp;
                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                             <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                            {
-
-                            }
-                            <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
+                            <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid);}} className="btn btn-info">I Received The Package</button>
                             </li>                       
                             <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -350,7 +349,7 @@ function CustomerProfile() {
             <SeeDetailsPopup trigger={popup} setTrigger={setPopup} id={clickedButton}></SeeDetailsPopup>
             <CreateReportPopup trigger={popup2} setTrigger={setPopup2}></CreateReportPopup>
             <CreateReportPopup2 trigger={popup3} setTrigger={setPopup3}></CreateReportPopup2>
-            <ConfirmationPopup trigger={popup4} setTrigger={setPopup4}></ConfirmationPopup>
+            <ConfirmationPopup trigger={popup4} setTrigger={setPopup4} setId={deliveredStatus}></ConfirmationPopup>
         </div>
     );
 }

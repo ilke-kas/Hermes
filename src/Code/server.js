@@ -872,6 +872,25 @@ else{
     }
 }
 });
+app.post("/makePackageDelivered", async (req, res) => {
+    const {pid} = req.body;
+    console.log("makePackageDelivered");
+    // current date
+    let date_ob = new Date();
+// adjust 0 before single digit date
+let date = ("0" + date_ob.getDate()).slice(-2);
 
+// current month
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+// current year
+let year = date_ob.getFullYear();
+
+// prints date in YYYY-MM-DD format
+currentdate = year + "-" + month + "-" + date;
+    const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
+    const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id, pid, 0]);
+    res.json();
+});
 
 
