@@ -97,7 +97,6 @@ function CustomerProfile() {
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                                        <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                                 </li>                       
                                                 <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
@@ -123,7 +122,6 @@ function CustomerProfile() {
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                                        <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                                 </li>
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp; 
                                                     <AiOutlineDash className="mt-5"/>
@@ -152,7 +150,6 @@ function CustomerProfile() {
                                             return  <div><li>{data.itemdescription}&emsp;
                                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                             <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                            <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                          </li>                       
                                          <BiCurrentLocation size="2em" className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
@@ -184,7 +181,6 @@ function CustomerProfile() {
                                         return  <div><li>{data.itemdescription}&emsp;
                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                        <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                         </li>                       
                                         <BiCurrentLocation size="2em" className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
@@ -219,7 +215,6 @@ function CustomerProfile() {
                                     return  <div><li>{data.itemdescription}&emsp;
                                     <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                     <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                    <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                                     </li>                       
                                     <BiCurrentLocation size="2em" className="mt-5"/>
                                         <AiOutlineDash className="mt-5"/>
@@ -298,6 +293,9 @@ function CustomerProfile() {
                             return  <div><li>{data.itemdescription}&emsp;
                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                             <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                            {
+
+                            }
                             <button type="button" onClick={e => setPopup4(true)} className="btn btn-info">I Received The Package</button>
                             </li>                       
                             <BiCurrentLocation size="2em" className="mt-5"/>
