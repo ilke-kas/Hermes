@@ -478,7 +478,7 @@ app.post("/companyHomePage", async (req, res) => {
     console.log(userid);
     orders =[];
     //by using this user id find orders and packages from order table
-        const allOrders = db.query('SELECT * FROM package NATURAL JOIN "Order" WHERE send_corporate_id =$1', [userid]);
+        const allOrders = db.query('SELECT * FROM ONLY package NATURAL JOIN "Order" WHERE send_corporate_id =$1', [userid]);
         rowcount = (await allOrders).rowCount;
         if(rowcount != 0){
             console.log(rowcount);
@@ -487,7 +487,7 @@ app.post("/companyHomePage", async (req, res) => {
                 const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
                 const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
                 //find package status
-                const packageStatus = db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(await allOrders).rows[i].p_id]);
+                const packageStatus = db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(await allOrders).rows[i].p_id]);
 
                 order ={packagestatus:(await packageStatus).rows[0].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
                     price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
@@ -624,13 +624,13 @@ app.post("/customerLoadMoney", async (req, res) => {
 app.post("/individualProfileRecipient", async (req, res) => {
     const {userid} = req.body;
     orders =[];
-    const findRecievedOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE take_indv_id = $1', [userid]);
+    const findRecievedOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN ONLY package WHERE take_indv_id = $1', [userid]);
     rowcount = findRecievedOrders.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
             //get the latest package status
-            const packagestatus =db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [findRecievedOrders.rows[i].p_id]);
+            const packagestatus =db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [findRecievedOrders.rows[i].p_id]);
             order ={ packagestatus: (await packagestatus).rows[0].name,pid: findRecievedOrders.rows[i].p_id,itemdescription: findRecievedOrders.rows[i].item_dscrptn};
             orders.push(order);
         }
@@ -645,14 +645,14 @@ app.post("/individualProfileRecipient", async (req, res) => {
 app.post("/individualProfileSender", async (req, res) => {
     const {userid} = req.body;
     orders =[];
-    const findSentOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE send_individual_id = $1', [userid]);
+    const findSentOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN ONLY package WHERE send_individual_id = $1', [userid]);
     rowcount = (findSentOrders).rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
             //get the latest package status
             console.log("hereee");
-            const packagestatus = await db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(findSentOrders).rows[i].p_id]);
+            const packagestatus = await db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(findSentOrders).rows[i].p_id]);
             order ={ packagestatus: packagestatus.rows[0].name,pid: findSentOrders.rows[i].p_id,itemdescription: findSentOrders.rows[i].item_dscrptn};
             orders.push(order);
             console.log(order);
@@ -709,7 +709,7 @@ app.post("/courierProfilePage", async (req, res) => {
 app.post("/SeeDetails", async (req, res) => {
     const {userid,packageid} = req.body;
     console.log("in see details");
-    const packageInfo = await db.query('SELECT * FROM package NATURAL JOIN "Order" NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
+    const packageInfo = await db.query('SELECT * FROM ONLY package NATURAL JOIN "Order" NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
     if(packageInfo.rowCount != 0){
         //direct to individual home page
         const senderBranch =  await db.query('SELECT * FROM branch WHERE b_id =$1', [packageInfo.rows[0].send_b_id]);

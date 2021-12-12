@@ -13,7 +13,7 @@ function SeeDetailsPopup(props) {
         packageInfo();
         }
         else{
-
+            setUserData([]);
         }
     },[props.trigger]);
     async function packageInfo() {
@@ -31,7 +31,9 @@ function SeeDetailsPopup(props) {
 
 
     function insidePopup() {
+
         return (
+            
             <div className="popup">
                 <div className="popup-inner">
                     <br></br>
