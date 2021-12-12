@@ -558,7 +558,6 @@ app.post("/companyProfilePage", async (req, res) => {
     if(corporate.rowCount != 0){
         //direct to individual home page
         //create address
-        console.log("serverda");
         let addrs = corporate.rows[0].street + ' ' + corporate.rows[0].apt_number + ' ' +
          corporate.rows[0].city +'/' + corporate.rows[0].state + ' ' + corporate.rows[0].zip;
         res.json({username: corporate.rows[0].name,email: corporate.rows[0].email,phone:corporate.rows[0].phone,address:addrs,budget: corporate.rows[0].budget});
@@ -575,7 +574,6 @@ app.post("/companyLoadMoney", async (req, res) => {
     if(findOldBudget.rowCount != 0){
         //direct to individual home page
         //create address
-        console.log("serverda");
         oldBudget = parseInt(findOldBudget.rows[0].budget);
         amount2 = parseInt(amount);
         newbudget = oldBudget + amount2;
@@ -589,14 +587,12 @@ app.post("/companyLoadMoney", async (req, res) => {
 });
 
 app.post("/CustomerProfile", async (req, res) => {
-    console.log("aaaaaaaaaaaaa");
     const {userid} = req.body;
     console.log(userid);
     const userInfo = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
     if(userInfo.rowCount != 0){
         //direct to individual home page
         //create address
-        console.log("serverda");
         let addrs = userInfo.rows[0].street + ' ' + userInfo.rows[0].apt_number + ' ' +
          userInfo.rows[0].city +'/' + userInfo.rows[0].state + ' ' + userInfo.rows[0].zip;
         res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,address: addrs,balance: userInfo.rows[0].money,points: userInfo.rows[0].point});
@@ -608,13 +604,11 @@ app.post("/CustomerProfile", async (req, res) => {
 });
 
 app.post("/customerLoadMoney", async (req, res) => {
-    console.log("bbbbbbbbbbb");
     const {userid, amount} = req.body;
     const findOldBudget = await db.query('SELECT * FROM customer NATURAL JOIN customercard WHERE u_id = $1', [userid]);
     if(findOldBudget.rowCount != 0){
         //direct to individual home page
         //create address
-        console.log("serverda");
         oldBudget = parseInt(findOldBudget.rows[0].money);
         amount2 = parseInt(amount);
         newbudget = oldBudget + amount2;
@@ -624,6 +618,51 @@ app.post("/customerLoadMoney", async (req, res) => {
     }
     else{
         console.log("There is an error");
+    }
+});
+
+app.post("/individualProfileRecipient", async (req, res) => {
+    const {userid} = req.body;
+    orders =[];
+    const findRecievedOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE take_indv_id = $1', [userid]);
+    rowcount = findRecievedOrders.rowCount;
+    if(rowcount != 0){
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            //get the latest package status
+            const packagestatus =db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [findRecievedOrders.rows[i].p_id]);
+            order ={ packagestatus: (await packagestatus).rows[0].name,pid: findRecievedOrders.rows[i].p_id,itemdescription: findRecievedOrders.rows[i].item_dscrptn};
+            orders.push(order);
+        }
+        res.json({size:rowcount, orders: orders});
+    }
+    else{
+        console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+    }
+});
+
+app.post("/individualProfileSender", async (req, res) => {
+    const {userid} = req.body;
+    orders =[];
+    const findSentOrders = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE send_individual_id = $1', [userid]);
+    rowcount = (findSentOrders).rowCount;
+    if(rowcount != 0){
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            //get the latest package status
+            console.log("hereee");
+            const packagestatus = await db.query('SELECT * FROM package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(findSentOrders).rows[i].p_id]);
+            order ={ packagestatus: packagestatus.rows[0].name,pid: findSentOrders.rows[i].p_id,itemdescription: findSentOrders.rows[i].item_dscrptn};
+            orders.push(order);
+            console.log(order);
+        }
+        console.log(orders);
+        res.json({size:rowcount, orders: orders});
+    }
+    else{
+        console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
     }
 });
 
