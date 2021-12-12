@@ -1,9 +1,10 @@
 import React,{useState,useEffect} from "react";
 import NavBar from "./NavBar";
-import CourierLogo from '../img/courier.png';
-import InPersonLogo from '../img/inPerson.png';
 import { Cookies } from "react-cookie";
-function OpenForm() {
+import { useLocation } from 'react-router-dom'
+
+function OpenForm(props) {
+    debugger;
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
     const body = {userid};
@@ -17,6 +18,8 @@ function OpenForm() {
     const [clickedDestinationBranch, setClickedDestinationBranch] = React.useState("");
     const [price,setPrice] = React.useState("");
     const [success,setSuccess] = React.useState("");
+    const [header,setHeader] = React.useState(props.location.state);
+
     //send inpouts to back 
     async function calculatePrice(){
         const body2 ={weight,volume};
@@ -94,7 +97,7 @@ function OpenForm() {
     return ( 
     <div>
         <NavBar></NavBar>
-        <h2 className="mt-5">Please fill out the form below to submit your package to the courier.</h2>
+        <center><h2 className="mt-5">{header}</h2></center>
         <center>
         <div className="option-form">
         <table>
@@ -194,13 +197,12 @@ function OpenForm() {
             </tr>
         </table>
         <hr/>
-        <button className="mt-3 btn btn-success" type="button" onClick={calculatePrice}>Calculate</button>
+        <button className="mt-3 btn btn-success" type="button" onClick={calculatePrice}>Calculate The Price</button>
         <br></br>
         <strong>{price == [] ? <a></a> : <a>Calculated Price:{price}</a>}</strong><br></br>
         <hr/>
         <button className="mt-3 btn btn-success" type="button" onClick={submitPackage}>Submit</button>
-        <hr/>
-        </div>
+            </div>
         </center>
     </div>
     )

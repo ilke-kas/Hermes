@@ -2,8 +2,7 @@ import React,{useState,useEffect} from "react";
 import NavBar from "./NavBar";
 import CourierLogo from '../img/courier.png';
 import InPersonLogo from '../img/inPerson.png';
-import { Cookies } from "react-cookie";
-import openForm from './OpenForm';
+import {Link} from "react-router-dom"
 
 function CustomerHome(){
     const [trigger, setTrigger] = React.useState(true); 
@@ -12,14 +11,13 @@ function CustomerHome(){
         <div>
             <NavBar></NavBar>
             <center>
-            {trigger && trigger2 ?
             <table className="option-table">
                 <tr>
                     <td>
-                        <img onClick={e => { setTrigger(false);}} src={CourierLogo} className="customer-page-logo" alt="logo"/>
+                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package to the courier."}}><img onClick={e => { setTrigger(false);}} src={CourierLogo} className="customer-page-logo" alt="logo"/></Link>
                     </td>
                     <td>
-                        <img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo2" alt="logo"/>
+                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package in person"}}><img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo2" alt="logo"/></Link>
                     </td>
                 </tr>
                 <tr>
@@ -33,11 +31,9 @@ function CustomerHome(){
                     </td>
                 </tr>
             </table>
-            : !trigger ? window.location='/Openform' : window.location= '/OpenForm'}
             </center>
         </div>
     );
-
 }
 
 export default CustomerHome;
