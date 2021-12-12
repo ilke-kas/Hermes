@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "./NavBar";
-import CourierInformation from "./CourierInformation";
+import ShipperInformation from "./ShipperInformation";
 
 function ShipperCourier() {
     const [popup, setPopup] = React.useState(false);
@@ -11,7 +11,7 @@ function ShipperCourier() {
             
             <table>
                 <tr>
-                    <td className="company-info"><CourierInformation/></td>
+                    <td className="company-info"><ShipperInformation/></td>
                 </tr>
             </table>
         </div>

@@ -666,4 +666,45 @@ app.post("/individualProfileSender", async (req, res) => {
     }
 });
 
+app.post("/shipperProfilePage", async (req, res) => {
+    const {userid} = req.body;
+    console.log(userid);
+    const userInfo = await db.query('SELECT * FROM shipper WHERE u_id = $1', [userid]);
+    if(userInfo.rowCount != 0){
+        //direct to individual home page
+        //create address
+        res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,vehicleid: userInfo.rows[0].v_id});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
+app.post("/packageManagerProfilePage", async (req, res) => {
+    const {userid} = req.body;
+    console.log(userid);
+    const userInfo = await db.query('SELECT * FROM packagemanager WHERE u_id = $1', [userid]);
+    if(userInfo.rowCount != 0){
+        //direct to individual home page
+        //create address
+        res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,branchid: userInfo.rows[0].b_id});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+app.post("/courierProfilePage", async (req, res) => {
+    const {userid} = req.body;
+    console.log(userid);
+    const userInfo = await db.query('SELECT * FROM courier WHERE u_id = $1', [userid]);
+    if(userInfo.rowCount != 0){
+        //direct to individual home page
+        //create address
+        res.json({username: userInfo.rows[0].name, email: userInfo.rows[0].email, phone: userInfo.rows[0].phone,vehicleid: userInfo.rows[0].v_id});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
 

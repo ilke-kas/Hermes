@@ -1,7 +1,7 @@
 import React from "react";
 import {Cookies, useCookies} from "react-cookie";
 
-function CourierInformation() {
+function ShipperInformation() {
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
     const body = {userid};
@@ -10,7 +10,7 @@ function CourierInformation() {
         profilePage();
     }, []);
     async function profilePage(){
-        const response = await fetch('http://localhost:3001/courierProfilePage', {
+        const response = await fetch('http://localhost:3001/shipperProfilePage', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -51,4 +51,4 @@ function CourierInformation() {
     );
 }
 
-export default CourierInformation;
+export default ShipperInformation;
