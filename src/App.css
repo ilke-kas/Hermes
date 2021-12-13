@@ -339,13 +339,11 @@ ul {
   background-color: white;
   width: 25%;
   top: 29%;
-  left: 20%;
-  margin-top: -100px;    
-  margin-left: -150px; 
-  position: absolute;
+  float: center;
   border: 1px salmon;
   border-radius: 15px;
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.05), 0 5px 20px rgba(0, 0, 0, 0.1);
+  display:inline-block;
 }
 
 .package-acceptance2 {
@@ -426,8 +424,7 @@ ul {
 }
 
 .header-branch-customer {
-  position: absolute;
-  top: 55%;
+  top: 65%;
   left: 44.5%;
 }
 
@@ -498,4 +495,11 @@ ul {
   left: 58%;
   margin-top: -100px;    
   margin-left: -150px;  
+}
+.inlineUl{
+  list-style: none;
+  display: inline;
+}
+span + span {
+  margin-left: 30px;
 }

@@ -4,8 +4,6 @@ import PackageAcceptance from "./PackageAcceptance";
 import {Cookies, useCookies} from "react-cookie";
 
 function CourierHomePage() {
-    const cookies = new Cookies();
-    const x = cookies.get(["userId"]);
     return (
         <div>
             <NavBar></NavBar>

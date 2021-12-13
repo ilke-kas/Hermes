@@ -1,83 +1,97 @@
-import React from "react";
+import React ,{useState, useEffect} from "react";
+import {Cookies, useCookies} from "react-cookie";
+
 
 function PackageAcceptance() {
+    const cookies = new Cookies();
+    const userid = cookies.get(["userId"]);
+    const [ctobpackage, setCToBPackage] =useState([]);
+    React.useEffect(() => {
+        getCustomerToBranch();
+    },[]);
+
+    async function getCustomerToBranch(){
+        const body ={userid};
+        const response = await fetch('http://localhost:3001/getCustomerToBranchPackagesCourier', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            setCToBPackage(data.orders);
+            console.log(ctobpackage);
+            console.log('here');
+            });
+    }
     return (
         <div>
             <center>
             <h5 className="mt-4">Customer to Branch</h5>
-                <div className="package-acceptance">
-                    <table className="mt-3">
-                        <tr>
-                            <td>Package ID:</td>
-                            <td>218</td>
-                        </tr>
-                        <tr>
-                            <td>User ID:</td>
-                            <td>melek.bastaci</td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td>Bilkent/ANKARA</td>
-                        </tr>
-                        <tr>
-                            <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>cem.alkan</td>
-                        </tr>
-                        
-                    </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
-                </div>
-                
-                <div className="package-acceptance2">
-                
-                    <table className="mt-3">
-                        <tr>
-                            <td>Package ID:</td>
-                            <td>209</td>
-                        </tr>
-                        <tr>
-                            <td>User ID:</td>
-                            <td>mehmet.efkan</td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td>Kızılay/ANKARA</td>
-                        </tr>
-                        <tr>
-                            <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>cem.yuncu</td>
-                        </tr>
-                        
-                    </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
-                </div>
-                <div className="package-acceptance1">
-               
-                    <table className="mt-3">
-                        <tr>
-                            <td>Package ID:</td>
-                            <td>236</td>
-                        </tr>
-                        <tr>
-                            <td>User ID:</td>
-                            <td>ahmet.yildiz</td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td>Bilkent/ANKARA</td>
-                        </tr>
-                        <tr>
-                            <td>Recipient ID:&emsp;&emsp;</td>
-                            <td>bliz.deniz</td>
-                        </tr>
-                        
-                    </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
-                </div>
+                    <hr/>
+                    <ul className="inlineUl">
+                        {
+                            ctobpackage.map((data,id) =>{
+                                if(data.sendercorporateid == null){
+                                    console.log(id);
+                                return   <span><li className="package-acceptance">
+                                            <table className="mt-3">
+                                             <tr>
+                                                <td>Package ID:</td>
+                                                <td>{data.pid}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>User ID:</td>
+                                                <td>{data.senderindividualid}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Address:</td>
+                                                <td>{data.address}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Recipient ID:&emsp;&emsp;</td>
+                                                <td>{data.takerid}</td>
+                                            </tr>
+                                            </table>
+                                        <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
+                                        <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                                    </li><span></span><span></span> </span>
+
+                                }
+                                else if(data.senderindividualid == null){
+                                    return <div className="package-acceptance">
+                                        <p>
+                                                 <table className="mt-3">
+                                                    <tr>
+                                                    <td>Package ID:</td>
+                                                    <td>{data.pid}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>User ID:</td>
+                                                    <td>{data.sendercorporateid}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Address:</td>
+                                                    <td>{data.address}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Recipient ID:&emsp;&emsp;</td>
+                                                    <td>{data.takerid}</td>
+                                                </tr>
+                                                </table>
+                                        <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
+                                        <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                                        </p>
+                                    </div>
+                                         
+                                }
+
+                            })
+                        }
+                        </ul>
+                <br></br><br></br> <br></br>
                 <h5 className="header-branch-customer">Branch to Customer </h5>
-                <div className="package-acceptance21">
+                <hr/>
+                <div className="package-acceptance">
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -100,7 +114,7 @@ function PackageAcceptance() {
                     <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
             
                 </div>
-                <div className="package-acceptance3">
+                <div className="package-acceptance">
                     <table className="mt-3">
                         <tr>
                             <td>Package ID:</td>
@@ -121,29 +135,6 @@ function PackageAcceptance() {
                         
                     </table>
                     <button type="button" className="btn btn-success mt-3">Accept</button><br></br><br></br>
-                </div>
-                <div className="package-acceptance23">
-                    <table className="mt-3">
-                        <tr>
-                            <td>Package ID:</td>
-                            <td>299</td>
-                        </tr>
-                        <tr>
-                            <td>User ID:</td>
-                            <td>mehmet.olaycı</td>
-                        </tr>
-                        <tr>
-                            <td>Address:</td>
-                            <td>Kızılay/ANKARA</td>
-                        </tr>
-                        <tr>
-                            <td>Recipient ID:&emsp;&emsp;</td>
-                            <td> fatma.aliye</td>
-                        </tr>
-                       
-                    </table>
-                    <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                    <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                 </div>
             </center>
         </div>
