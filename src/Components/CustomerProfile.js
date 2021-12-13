@@ -125,7 +125,7 @@ function CustomerProfile() {
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
                                                 </li>
-                                                <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp; 
+                                                <BiCurrentLocation size="2em" className="mt-5"/>
                                                     <AiOutlineDash className="mt-5"/>
                                                     <AiOutlineDash className="mt-5"/>
                                                     <AiOutlineDash className="mt-5"/>                      

@@ -43,7 +43,22 @@ function PackageAcceptance(){
             });
 
     }
-    async function clickAccept(){
+    async function clickAccept(value){
+        const body ={userid,value};
+        const response = await fetch('http://localhost:3001/acceptPackageCourier', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            if(data.success){
+                alert("You accepted the package");
+                window.location="/CourierHome";
+            }
+            else{
+                alert("You cannot accept the package");
+            }
+            });
 
     }
     return (
