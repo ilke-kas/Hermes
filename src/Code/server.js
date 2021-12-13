@@ -1125,6 +1125,83 @@ app.post("/acceptPackageCourier", async (req, res) => {
      res.json({success:true});
 
 });
+app.post("/getShipperPartPackageManager", async (req, res) => {
+    const {userid} = req.body;
+    //find the branch id of the package manager
+    const branchid = await db.query('SELECT * FROM packagemanager WHERE u_id =$1',[userid]);
+    bid = branchid.rows[0].b_id;
+    //get packages in that branch
+    const getPackages = await db.query('SELECT * '+
+                                    'FROM ((pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) AS tbl1 '+
+                                    'LEFT OUTER JOIN packagestate ON  tbl1.ps_id = packagestate.ps_id ) AS tbl2 '+
+                                    'LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE send_b_id = $1 AND name = \'Courier to Branch\';',[bid]);
+    orders =[];
+    rowcount = getPackages.rowCount;
+    if(rowcount != 0){
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            //if sender is corporate
+            if(getPackages.rowCount != 0){
+                if(getPackages.rows[i].send_corporate_id != undefined ){
+                    //dind address
+                    const getAddress  = await db.query("SELECT * FROM corporate WHERE u_id = $1",[getPackages.rows[i].take_indv_id]);
+                    let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                    getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                    order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:getPackages.rows[0].send_corporate_id
+                        ,senderindividualid: null,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id};
+                    orders.push(order);
+                }
+                else if(getPackages.rows[i].send_individual_id != undefined )
+                { //if it is individual sender
+                    const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[getPackages.rows[i].take_indv_id]);
+                    let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                    getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                    order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:null
+                        ,senderindividualid: getPackages.rows[0].send_individual_id,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id };
+                    orders.push(order);
+                }  
+            }else{
+                console.log("There is no package to show");
+         }
+        }
+        res.json({size:rowcount, orders: orders});
+}
+else{
+    console.log("There is no package to show");
+    res.json({size:0, orders:[]});
+}
+
+});
+app.post("/getAllShippers", async (req, res) => {
+    const {userid,value} = req.body;
+    shippers =[];
+    //find the sender branch id from the userid of the packagemanager
+    const senderbranchid = await db.query('SELECT * FROM packagemanager WHERE u_id = $1',[userid]);
+    sbid = senderbranchid.rows[0].b_id;
+    //find the all shipper on the given route
+    const allShipperOnRoute = await db.query('SELECT * FROM route NATURAL JOIN vehicle NATURAL JOIN shipper WHERE destination_b_id = $1 AND departure_b_id= $2 ',[value,sbid]);
+    rowcount = allShipperOnRoute.rowCount;
+    if(rowcount != 0){
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            shipper ={shipperid: allShipperOnRoute.rows[i].u_id};
+            shippers.push(shipper);
+        }
+        res.json({size:rowcount, shippers:shippers});
+    }
+    else{
+        console.log('There is no shipper on this Route!');
+        res.json({size:0, shippers:[]});
+    }
+
+});
+app.post("/AssignShipper", async (req, res) => {
+    const {userid,value,clickedShipper} = req.body;
+    console.log(userid + " "+value + " "+clickedShipper + " ");
+    //find the sender branch id from the userid of the packagemanager
+
+});
+
 
 
 

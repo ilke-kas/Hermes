@@ -1,10 +1,13 @@
-import React from "react";
+import React ,{useState, useEffect} from "react";
+import {Cookies, useCookies} from "react-cookie";
 import NavBar from "./NavBar";
 import ManagerPackageAcceptance from "./ManagerPackageAcceptance";
 import SeeReportPopupPackageManager from "./SeeReportPopupPackageManager";
 
 function PackageManagerHomePage() {
     const [popup, setPopup] = React.useState(false);
+    const cookies = new Cookies();
+    const userid = cookies.get(["userId"]);
 
     return (
         <div>

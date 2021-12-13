@@ -345,6 +345,14 @@ ul {
   box-shadow: 0 5px 0 rgba(0, 0, 0, 0.05), 0 5px 20px rgba(0, 0, 0, 0.1);
   display:inline-block;
 }
+.package-acceptance-bottom-order{
+  background-color: white;
+  width: 25%;
+  top: 29%;
+  border: 1px salmon;
+  border-radius: 15px;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, 0.05), 0 5px 20px rgba(0, 0, 0, 0.1);
+}
 
 .package-acceptance2 {
   background-color: white;
