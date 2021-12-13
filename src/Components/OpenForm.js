@@ -18,6 +18,7 @@ function OpenForm(props) {
     const [clickedDestinationBranch, setClickedDestinationBranch] = React.useState("");
     const [price,setPrice] = React.useState("");
     const [header,setHeader] = React.useState(props.location.state);
+    const [type,setType] = React.useState(props.location.type);
 
     //send inpouts to back 
     async function calculatePrice(){
@@ -37,7 +38,8 @@ function OpenForm(props) {
         var success;
         var reason;
         const body2 ={userid, description,weight,volume,clickedUser,clickedSenderBranch,clickedDestinationBranch};
-        const response = await fetch('http://localhost:3001/submitPackage', {
+        if(type == "courier"){
+            const response = await fetch('http://localhost:3001/submitPackageCourier', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body2)
@@ -62,7 +64,37 @@ function OpenForm(props) {
                 }
             }
          });
+
         }
+        else if(type == "branch"){
+            const response = await fetch('http://localhost:3001/submitPackageBranch', {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body2)
+            }).then(x => x.json())
+            .then(data => {
+                success = data.success;
+                reason = data.reason;
+                console.log(success);
+                if(success){
+                    alert("You successfully submitted your package");
+                    window.location="/OpenForm";
+                }
+                else{
+                    if(reason == "money"){
+                        alert("You do not have enough money");
+                    }
+                    else if(reason == "error"){
+                        alert("You could not submit your package");
+                    }
+                    else if(reason== "courier"){
+                        alert("There is no availiable courier for this sender branch");
+                    }
+                }
+             });
+            
+        }
+    }
 
     async function allUsers(){
             //list undelievere ones

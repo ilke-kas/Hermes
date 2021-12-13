@@ -14,10 +14,10 @@ function CustomerHome(){
             <table className="option-table">
                 <tr>
                     <td>
-                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package to the courier."}}><img onClick={e => { setTrigger(false);}} src={CourierLogo} className="customer-page-logo" alt="logo"/></Link>
+                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package to the courier.",type: "courier"}}><img onClick={e => { setTrigger(false);}} src={CourierLogo} className="customer-page-logo" alt="logo"/></Link>
                     </td>
                     <td>
-                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package in person"}}><img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo2" alt="logo"/></Link>
+                        <Link to={{pathname: "/OpenForm", state: "Please fill out the form below to submit your package in person", type: "branch"}}><img onClick={e => { setTrigger2(false);}} src={InPersonLogo} className="customer-page-logo2" alt="logo"/></Link>
                     </td>
                 </tr>
                 <tr>

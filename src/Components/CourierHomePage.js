@@ -8,7 +8,6 @@ function CourierHomePage() {
     const x = cookies.get(["userId"]);
     return (
         <div>
-            <h1>{x}</h1>
             <NavBar></NavBar>
             <PackageAcceptance>
             </PackageAcceptance>

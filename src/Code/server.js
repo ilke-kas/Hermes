@@ -788,7 +788,7 @@ app.post("/calculatePrice", async (req, res) => {
     console.log(price);
     res.json({price:price});
 });
-app.post("/submitPackage", async (req, res) => {
+app.post("/submitPackageCourier", async (req, res) => {
     const {userid, description,weight,volume,clickedUser,clickedSenderBranch,clickedDestinationBranch} = req.body;
     //first calculate the price 
     console.log("calculatePrice");
@@ -923,6 +923,99 @@ else{
                 console.log("There is no courier in database");
                 res.json({success:false, reason:"courier"});
             }
+        }
+        else{
+            res.json({success:false,reason:"money"});
+        }
+    }
+    else{
+        console.log("There is an error");
+        res.json({success:false,reason:"error"});
+    }
+}
+});
+app.post("/submitPackageBranch", async (req, res) => {
+    const {userid, description,weight,volume,clickedUser,clickedSenderBranch,clickedDestinationBranch} = req.body;
+    //first calculate the price 
+    console.log("calculatePrice");
+    calculatedVolumePrice = (volume / 1000) * 3;
+    var calculatedWeightPrice = 0;
+    var usertype;
+    if(weight>= 1 && weight <= 10){
+        calculatedWeightPrice = 30;
+    }
+    else if(weight > 10 && weight <= 50){
+        calculatedWeightPrice = 30 + (weight -10 ) * 3;
+    }
+    else if(weight > 50){
+        calculatedWeightPrice = 30 + (weight -10 ) * 2;
+
+    }
+    price = calculatedWeightPrice + calculatedVolumePrice;
+    console.log(price);
+    //then submit it
+    //first look at the user type corporate or individual
+       //find id of senderbranch
+       const senderBranch = await db.query('SELECT * FROM branch WHERE name = $1', [clickedSenderBranch]);
+       senderBranchId = senderBranch.rows[0].b_id;
+       const destinationBranch = await db.query('SELECT * FROM branch WHERE name = $1', [clickedDestinationBranch]);
+       destinationBranchId = destinationBranch.rows[0].b_id;
+       //calculate currentDate
+       let date_ob = new Date();
+
+        // current date
+        // adjust 0 before single digit date
+        let date = ("0" + date_ob.getDate()).slice(-2);
+
+        // current month
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+        // current year
+        let year = date_ob.getFullYear();
+
+        // prints date in YYYY-MM-DD format
+        currentdate = year + "-" + month + "-" + date;
+
+const inCorporate = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
+if(inCorporate.rowCount != 0){
+    //direct to corporate home page
+    usertype='corporate';
+    console.log(usertype);
+    const currentbalance = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
+    if(currentbalance.rows[0].money >= price){ 
+                //add order
+                const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
+                const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
+                //change the budget of the corporate
+                newbalance = currentbalance.rows[0].budget - price;
+                //update balance
+                const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[userid,newbalance]);
+                res.json({success:true, reason:""});
+    }else{
+        res.json({success:false,reason:"money"});
+    }
+}
+else{
+    const inIndividual = await db.query('SELECT * FROM individual WHERE u_id = $1', [userid]);
+    if(inIndividual.rowCount != 0){
+        //direct to individual home page
+        usertype='individual';
+        console.log(usertype);
+        const currentbalance = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
+        if(currentbalance.rows[0].money >= price){
+                  //add order
+                const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
+                const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
+
+                 //get current balance
+                newbalance = currentbalance.rows[0].money - price;
+                //update balance
+                const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[userid,newbalance]);
+                res.json({success:true, reason:""});
         }
         else{
             res.json({success:false,reason:"money"});
