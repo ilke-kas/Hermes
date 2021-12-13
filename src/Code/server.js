@@ -1075,7 +1075,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
                     let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (packagestatus).rows[0].name,pid: getPackages.rows[i].p_id,takerid: packagestatus.rows[0].take_indv_id,sendercorporateid:packagestatus.rows[0].send_corporate_id
-                        ,senderindividualid: null,address: addrs };
+                        ,senderindividualid: null,address: addrs,senderbranchid:packagestatus.rows[0].send_b_id, packagestateid:packagestatus.rows[0].ps_id };
                     orders.push(order);
                 }
                 else if(packagestatus.rows[0].send_individual_id != undefined && packagestatus.rows[0].name == "Submitted" && packagestatus.rows[0].v_id== vehicleid  )
@@ -1084,7 +1084,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
                     let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (packagestatus).rows[0].name,pid: getPackages.rows[i].p_id,takerid: packagestatus.rows[0].take_indv_id,sendercorporateid:null
-                        ,senderindividualid:packagestatus.rows[0].send_individual_id ,address: addrs };
+                        ,senderindividualid:packagestatus.rows[0].send_individual_id ,address: addrs,senderbranchid:packagestatus.rows[0].send_b_id,packagestateid:packagestatus.rows[0].ps_id };
                     orders.push(order);
                 }  
             }else{
@@ -1098,6 +1098,47 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
         res.json({size:0, orders:[]});
     }
 });
+app.post("/findAnotherCourier", async (req, res) => {
+    const {userid,value} = req.body;
+    //find the vehicle id of the courier
+    const getVehicleId = await db.query('SELECT * FROM courier WHERE u_id =$1', [userid]);
+    vehicleid = getVehicleId.rows[0].v_id;
+    console.log("/findAnotherCourier");
+    //find sender branch id
+    const senderbid = await db.query('SELECT * FROM package NATURAL JOIN "Order" WHERE p_id=$1',[value]);
+    //get all couriers in the sender branch id 
+    allCouriers =[];
+    const getAllCouriers = await db.query("SELECT * FROM courier WHERE b_id =$1",[senderbid.rows[0].send_b_id]);
+    rowcount = getAllCouriers.rowCount;
+    if(rowcount != 0){
+        for(let i = 0; i <rowcount; i++){
+            courier ={courierid: getAllCouriers.rows[i].u_id, vehicleid: getAllCouriers.rows[i].v_id};
+            if(getAllCouriers.rows[i].u_id != userid){
+            allCouriers.push(courier);
+            }
+        }
+        //now randomly choose one of the couriers
+        console.log(allCouriers);
+        inc = 0;
+        randomindex = 0;
+        while(inc <20){
+        randomindex = Math.floor(Math.random() * (rowcount-1));
+        console.log(randomindex);
+        console.log("vehicle id:" + allCouriers[randomindex].vehicleid);
+        inc++;
+        }
+        //add order
+        //find the latest packagestate of that package
+        const latestPackageState = await db.query('SELECT * FROM ONLY package NATURAL JOIN packagestate NATURAL JOIN pac_state  WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)',[value]);
+        const updtaePackageState = await db.query('UPDATE pac_state SET v_id = $1 WHERE p_id =$2 AND ps_id=$3', [allCouriers[randomindex].vehicleid,value,latestPackageState.rows[0].ps_id]);
+        res.json({success:true});
+    }else{
+        console.log("There is no other courier in that branch");
+        res.json({success:false});
+    }
+
+});
+
 
 
 

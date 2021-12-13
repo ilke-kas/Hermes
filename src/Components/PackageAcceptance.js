@@ -2,10 +2,12 @@ import React ,{useState, useEffect} from "react";
 import {Cookies, useCookies} from "react-cookie";
 
 
-function PackageAcceptance() {
+function PackageAcceptance(){
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
     const [ctobpackage, setCToBPackage] =useState([]);
+    const [clickedButton, setClickedButton] = React.useState([]);
+    const [infos, setInfos] = React.useState([]);
     React.useEffect(() => {
         getCustomerToBranch();
     },[]);
@@ -22,6 +24,27 @@ function PackageAcceptance() {
             console.log(ctobpackage);
             console.log('here');
             });
+    }
+    async function clickDeny(value){
+        const body ={userid,value};
+        const response = await fetch('http://localhost:3001/findAnotherCourier', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            if(data.success){
+                alert("You denied the package");
+                window.location="/CourierHome";
+            }
+            else{
+                alert("You cannot deny the package");
+            }
+            });
+
+    }
+    async function clickAccept(){
+
     }
     return (
         <div>
@@ -52,8 +75,8 @@ function PackageAcceptance() {
                                                 <td>{data.takerid}</td>
                                             </tr>
                                             </table>
-                                        <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                                        <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                                        <button type="button"  value={data.pid} onClick={e =>{clickAccept(e.target.value);}} className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
+                                        <button type="button" value={data.pid} onClick={e =>{clickDeny(e.target.value);}} className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                                     </li><span></span><span></span> </span>
 
                                 }
@@ -78,8 +101,8 @@ function PackageAcceptance() {
                                                     <td>{data.takerid}</td>
                                                 </tr>
                                                 </table>
-                                        <button type="button" className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
-                                        <button type="button" className="btn btn-danger mt-3">Deny</button><br></br><br></br>
+                                        <button type="button"  value={data.pid} onClick={e =>{clickAccept(e.target.value);}} className="btn btn-success mt-3">Accept</button>&emsp;&emsp;&emsp;
+                                        <button type="button"  value={data.pid} onClick={e =>{clickDeny(e.target.value);}} className="btn btn-danger mt-3">Deny</button><br></br><br></br>
                                         </p>
                                     </div>
                                          
