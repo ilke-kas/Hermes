@@ -837,19 +837,44 @@ if(inCorporate.rowCount != 0){
     console.log(usertype);
     const currentbalance = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
     if(currentbalance.rows[0].money >= price){
-    //add order
-    const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
-    const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
-    const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
-    const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
-    //change the budget of the corporate
-    newbalance = currentbalance.rows[0].budget - price;
-    //update balance
-    const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[userid,newbalance]);
-    res.json({success:true, reason:""});
-    }
-    else{
-        res.json({success:false, reason:"money"});
+             //when submitted automatically assign courier to that package
+            //first fetch all of the courier from the database and but them to an array
+            allCouriers =[];
+            const getAllCouriers = await db.query("SELECT * FROM Courier WHERE b_id =$1",[senderBranchId]);
+            rowcount = getAllCouriers.rowCount;
+            if(rowcount != 0){
+                for(let i = 0; i <rowcount; i++){
+                    courier ={courierid: getAllCouriers.rows[i].u_id, vehicleid: getAllCouriers.rows[i].v_id};
+                    allCouriers.push(courier);
+                }
+                //now randomly choose one of the couriers
+                console.log(allCouriers);
+                inc = 0;
+                randomindex = 0;
+                while(inc <20){
+                randomindex = Math.floor(Math.random() * rowcount);
+                console.log(randomindex);
+                console.log("vehicle id:" + allCouriers[randomindex].vehicleid);
+                inc++;
+                }
+                //add order
+                const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
+                const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,allCouriers[randomindex].vehicleid]);
+                //change the budget of the corporate
+                newbalance = currentbalance.rows[0].budget - price;
+                //update balance
+                const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[userid,newbalance]);
+                res.json({success:true, reason:""});
+                }
+                else{
+                    console.log("There is no courier in database");
+                    res.json({success:false, reason:"courier"}); 
+
+                }
+    }else{
+        res.json({success:false,reason:"money"});
     }
 }
 else{
@@ -860,17 +885,44 @@ else{
         console.log(usertype);
         const currentbalance = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
         if(currentbalance.rows[0].money >= price){
-        //add order
-        const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
-        const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
-        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
-        const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
-        //change the balance of the user
-        //get current balance
-        newbalance = currentbalance.rows[0].money - price;
-        //update balance
-        const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[userid,newbalance]);
-        res.json({success:true, reason:""});
+            
+            //when submitted automatically assign courier to that package
+            //first fetch all of the courier from the database and but them to an array
+            allCouriers =[];
+            const getAllCouriers = await db.query("SELECT * FROM Courier WHERE b_id =$1",[senderBranchId]);
+            rowcount = getAllCouriers.rowCount;
+            if(rowcount != 0){
+                for(let i = 0; i <rowcount; i++){
+                    courier ={courierid: getAllCouriers.rows[i].u_id, vehicleid: getAllCouriers.rows[i].v_id};
+                    allCouriers.push(courier);
+                }
+                //now randomly choose one of the couriers
+                console.log(allCouriers);
+                inc = 0;
+                randomindex = 0;
+                while(inc <20){
+                randomindex = Math.floor(Math.random() * rowcount);
+                console.log(randomindex);
+                console.log("courier id:" + allCouriers[randomindex].courierid);
+                console.log("vehicle id:" + allCouriers[randomindex].vehicleid);
+                inc++;
+                }
+                  //add order
+                const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
+                const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,allCouriers[randomindex].vehicleid]);
+
+                 //get current balance
+                newbalance = currentbalance.rows[0].money - price;
+                //update balance
+                const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[userid,newbalance]);
+                res.json({success:true, reason:""});
+            }
+            else{
+                console.log("There is no courier in database");
+                res.json({success:false, reason:"courier"});
+            }
         }
         else{
             res.json({success:false,reason:"money"});

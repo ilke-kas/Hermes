@@ -57,6 +57,9 @@ function OpenForm(props) {
                 else if(reason == "error"){
                     alert("You could not submit your package");
                 }
+                else if(reason== "courier"){
+                    alert("There is no availiable courier for this sender branch");
+                }
             }
          });
         }
