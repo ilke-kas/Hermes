@@ -817,35 +817,40 @@ app.post("/submitPackage", async (req, res) => {
        //calculate currentDate
        let date_ob = new Date();
 
-// current date
-// adjust 0 before single digit date
-let date = ("0" + date_ob.getDate()).slice(-2);
+        // current date
+        // adjust 0 before single digit date
+        let date = ("0" + date_ob.getDate()).slice(-2);
 
-// current month
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+        // current month
+        let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
 
-// current year
-let year = date_ob.getFullYear();
+        // current year
+        let year = date_ob.getFullYear();
 
-// prints date in YYYY-MM-DD format
-currentdate = year + "-" + month + "-" + date;
+        // prints date in YYYY-MM-DD format
+        currentdate = year + "-" + month + "-" + date;
 
 const inCorporate = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
 if(inCorporate.rowCount != 0){
     //direct to corporate home page
     usertype='corporate';
     console.log(usertype);
+    const currentbalance = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
+    if(currentbalance.rows[0].money >= price){
     //add order
     const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
     const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
     const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
     const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
     //change the budget of the corporate
-    const currentbalance = await db.query('SELECT * FROM corporate WHERE u_id = $1', [userid]);
     newbalance = currentbalance.rows[0].budget - price;
     //update balance
     const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[userid,newbalance]);
-    res.json({success:true});
+    res.json({success:true, reason:""});
+    }
+    else{
+        res.json({success:false, reason:"money"});
+    }
 }
 else{
     const inIndividual = await db.query('SELECT * FROM individual WHERE u_id = $1', [userid]);
@@ -853,6 +858,8 @@ else{
         //direct to individual home page
         usertype='individual';
         console.log(usertype);
+        const currentbalance = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
+        if(currentbalance.rows[0].money >= price){
         //add order
         const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
         const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
@@ -860,15 +867,18 @@ else{
         const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
         //change the balance of the user
         //get current balance
-        const currentbalance = await db.query('SELECT * FROM individual NATURAL JOIN customercard WHERE u_id = $1', [userid]);
         newbalance = currentbalance.rows[0].money - price;
         //update balance
         const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[userid,newbalance]);
-        res.json({success:true});
+        res.json({success:true, reason:""});
+        }
+        else{
+            res.json({success:false,reason:"money"});
+        }
     }
     else{
         console.log("There is an error");
-        res.json({success:false});
+        res.json({success:false,reason:"error"});
     }
 }
 });
@@ -890,6 +900,9 @@ let year = date_ob.getFullYear();
 currentdate = year + "-" + month + "-" + date;
     const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
     const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id, pid, 0]);
+    //put package tu securely delivered packages
+    const packageInfo = await db.query('SELECT * FROM package WHERE p_id =$1',[pid]);
+    const addSecurelyDeliveredPackages = await db.query('INSERT INTO securelydeliveredpackages (p_id,o_id,weight,item_dscrptn,volume) VALUES ( $1,$2,$3,$4,$5)',[pid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume]);
     res.json();
 });
 

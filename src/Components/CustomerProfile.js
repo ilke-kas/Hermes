@@ -82,6 +82,7 @@ function CustomerProfile() {
                                          return  <li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true); setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup2(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
+                                                <br></br><br></br>
                                                 </li>
                                         }
                                     }) 

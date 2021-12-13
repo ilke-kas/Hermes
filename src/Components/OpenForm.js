@@ -17,7 +17,6 @@ function OpenForm(props) {
     const [clickedSenderBranch, setClickedSenderBranch] = React.useState("");
     const [clickedDestinationBranch, setClickedDestinationBranch] = React.useState("");
     const [price,setPrice] = React.useState("");
-    const [success, setSuccess] = React.useState([]);
     const [header,setHeader] = React.useState(props.location.state);
 
     //send inpouts to back 
@@ -35,6 +34,8 @@ function OpenForm(props) {
 
     }
     async function submitPackage(){
+        var success;
+        var reason;
         const body2 ={userid, description,weight,volume,clickedUser,clickedSenderBranch,clickedDestinationBranch};
         const response = await fetch('http://localhost:3001/submitPackage', {
             method: "POST",
@@ -42,13 +43,20 @@ function OpenForm(props) {
             body: JSON.stringify(body2)
         }).then(x => x.json())
         .then(data => {
-            setSuccess(data.success);
-            console.log("success" + success);
+            success = data.success;
+            reason = data.reason;
+            console.log(success);
             if(success){
                 alert("You successfully submitted your package");
+                window.location="/OpenForm";
             }
             else{
-                alert("You could not submit your package");
+                if(reason == "money"){
+                    alert("You do not have enough money");
+                }
+                else if(reason == "error"){
+                    alert("You could not submit your package");
+                }
             }
          });
         }
