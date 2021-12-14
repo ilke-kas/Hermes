@@ -1053,7 +1053,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
                 console.log(packagestatus.rows[0].send_individual_id);
                 if(packagestatus.rows[0].send_corporate_id != undefined && packagestatus.rows[0].name == "Submitted" && packagestatus.rows[0].v_id== vehicleid){
                     //dind address
-                    const getAddress  = await db.query("SELECT * FROM corporate WHERE u_id = $1",[packagestatus.rows[0].send_corporate_id]);
+                    const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[packagestatus.rows[0].send_corporate_id]);
                     let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (packagestatus).rows[0].name,pid: getPackages.rows[i].p_id,takerid: packagestatus.rows[0].take_indv_id,sendercorporateid:packagestatus.rows[0].send_corporate_id
@@ -1273,6 +1273,49 @@ app.post("/findAnotherCourier", async (req, res) => {
 
     }
 
+});
+app.post("/getBranchToBranchShipper", async (req, res) => {
+    const {userid} = req.body;
+    //find the vehicle id of the user
+    const findVehicle = await db.query('SELECT * FROM shipper WHERE u_id =$1',[userid]);
+    vehicleid = findVehicle.rows[0].v_id;
+    const query = await db.query(' WITH tbl1 AS ' +
+    ' (SELECT ps_id, pac_state.p_id AS p_id, v_id,o_id,weight,item_dscrptn,volume  FROM pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) '+
+' , tbl2 AS ' +
+    ' (SELECT tbl1.ps_id AS ps_id,p_id,v_id,o_id,weight,item_dscrptn,volume,name,state_date  FROM tbl1 LEFT OUTER JOIN packagestate ON  tbl1.ps_id = packagestate.ps_id ORDER BY ps_id) ' +
+' ,tbl3 AS ' +
+    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
+           ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE v_id= $1) ' +
+' SELECT * FROM tbl3 AS t WHERE name = \'Sender Branch\' AND ps_id >= ALL(SELECT ps_id ' +
+                                           ' FROM tbl3 AS q ' +
+                                           '  WHERE q.p_id = t.p_id) ',[vehicleid]);
+
+    allPackages =[];
+    rowcount = query.rowCount;
+    if(rowcount != 0){
+        for(let i = 0; i <rowcount; i++){
+            if(query.rows[i].send_individual_id == undefined) //corporate
+            {
+                const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[query.rows[i].take_indv_id]);
+                let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                pckg = {pid: query.rows[i].p_id,senderindividualid: null,sendercorporateid: query.rows[i].send_corporate_id,address:addrs, takerid: query.rows[i].take_indv_id}
+                allPackages.push(pckg);
+            }
+            else{
+                const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[query.rows[i].take_indv_id]);
+                let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                pckg = {pid: query.rows[i].p_id,senderindividualid: query.rows[i].send_individual_id,sendercorporateid: null ,address:addrs, takerid: query.rows[i].take_indv_id}
+                allPackages.push(pckg);
+            }
+        }
+        res.json({size:rowcount, packages: allPackages});
+    }
+    else{
+        console.log("There is no package to show");
+        res.json({size:0, packages: []});
+    }
 });
 
 
