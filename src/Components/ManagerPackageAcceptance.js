@@ -8,10 +8,13 @@ function ManagerPackageAcceptance() {
     const [shipperData, setShipperData] =useState([]);
     const [clickedShipper, setClickedShipper] = React.useState("");
     const [trigger, setTrigger] = React.useState("");
+    
+   // const [value, setValue] = React.useState("");
+    
 
     React.useEffect(() => {
         getShipperPartPackageManager();
-    },[trigger]);
+    },[]);
 
     async function clickAccept(value){
         const body ={userid,value,clickedShipper};
@@ -57,7 +60,6 @@ function ManagerPackageAcceptance() {
 
     async function allShippers(value){ //there is something wring in here but cannot resolve
         //list all shippers in the route of the package
-        setTrigger(true);
         const body ={userid,value};
         console.log(body);
         const response = await fetch('http://localhost:3001/getAllShippers', {
@@ -106,7 +108,7 @@ function ManagerPackageAcceptance() {
                                                 <td>Select Shipper:&emsp;</td>
                                                 <td>
                                                     <div>
-                                                        <button type="button" id ={id} value={data.destinationbranchid} onClick={e =>{allShippers(e.target.value);}} class="btn btn-secondary"  data-toggle="dropdown">
+                                                        <button type="button" id ={id} onClick={e =>{allShippers(data.destinationbranchid);console.log(data.destinationbranchid);}} className="btn btn-success mt-3"  data-toggle="dropdown">
                                                         {
                                                             clickedShipper == [] ? <a>Shipper ID</a> : <a>{clickedShipper}</a>
                                                         }
@@ -154,17 +156,12 @@ function ManagerPackageAcceptance() {
                                             <td>Select Shipper:&emsp;</td>
                                             <td>
                                                 <div class="dropdown">
-                                                    <button value={data.destinationbranchid} onClick={e =>{allShippers(e.target.value);}} class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">
+                                                    <button id ={id} value={data.destinationbranchid} onClick={e =>{allShippers(e.target.value);}} class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown">
                                                         {
                                                             clickedShipper == [] ? <a>Shipper ID</a> : <a>{clickedShipper}</a>
                                                         }
                                                         <span class="caret"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="#">Mesut Yılmaz</a></li>
-                                                        <li><a href="#">Hüseyin Akalmaz</a></li>
-                                                        <li><a href="#">Erman Rok</a></li>
-                                                    </ul>
                                                 </div>
                                             </td>
                                         </tr>
