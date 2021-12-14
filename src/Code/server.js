@@ -1557,6 +1557,45 @@ app.post("/acceptPackageCourier2", async (req, res) => {
      res.json({success:true});
 
 });
+//this function will work once in a day and it is not completed yet. Please contiue from here @Onat
+app.post("/makeitholdout", async (req, res) => {
+    //in system if there is any packages who does not assigned as i recieved the package, will be holdout
+    //get all packages
+    const query = await db.query(' WITH tbl1 AS ' +
+   ' (SELECT ps_id, pac_state.p_id AS p_id, v_id,o_id,weight,item_dscrptn,volume  FROM pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) ' +
+' , tbl2 AS ' +
+   ' (SELECT tbl1.ps_id AS ps_id,p_id,v_id,o_id,weight,item_dscrptn,volume,name,state_date  FROM tbl1 LEFT OUTER JOIN packagestate ON  tbl1.ps_id = packagestate.ps_id ORDER BY ps_id) ' +
+' ,tbl3 AS ' +
+    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
+            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id) ' +
+' SELECT DISTINCT * FROM tbl3 AS t WHERE name = \'Courier to Recipient\' AND ps_id >= ALL(SELECT ps_id ' +
+                                           ' FROM tbl3 AS q ' +
+                                            ' WHERE q.p_id = t.p_id)');
+       //calculate currentDate
+       let date_ob = new Date();
+
+       // current date
+       // adjust 0 before single digit date
+       let date = ("0" + date_ob.getDate()).slice(-2);
+
+       // current month
+       let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+       // current year
+       let year = date_ob.getFullYear();
+
+       // prints date in YYYY-MM-DD format
+       currentdate = year + "-" + month + "-" + date;
+    //get these packages
+    allPackages =[];
+    rowcount = query.rowCount;
+    if(rowcount != 0){
+        for(let i = 0; i <rowcount; i++){
+                pckg = {pid: query.rows[i].p_id,ps_id: query.rows[i].ps_id,status: query.rows[i].name, lastdate: query.rows[i].state_date}
+                allPackages.push(pckg);
+        }
+
+});
 
 
 
