@@ -1080,6 +1080,54 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
         res.json({size:0, orders:[]});
     }
 });
+app.post("/getBranchToCustomerPackagesCourier", async (req, res) => {
+    const {userid} = req.body;
+    //find the vehicle id of the courier
+    const getVehicleId = await db.query('SELECT * FROM courier WHERE u_id =$1', [userid]);
+    vehicleid = getVehicleId.rows[0].v_id;
+    console.log("getBranchToCustomerPackagesCourier");
+    orders =[];
+    const getPackages = await db.query('SELECT * FROM package NATURAL JOIN "Order" NATURAL JOIN packagestate NATURAL JOIN pac_state WHERE v_id = $1',[vehicleid]);
+    rowcount = getPackages.rowCount;
+    if(rowcount != 0){
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            //get the latest package status
+            const indvorcorp= await db.query('SELECT * FROM ONLY package NATURAL JOIN packagestate NATURAL JOIN pac_state WHERE p_id =$1 and v_id =$2 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$3)', [getPackages.rows[i].p_id,vehicleid, getPackages.rows[i].p_id]);
+            //if sender is corporate
+            if(indvorcorp.rowCount != 0){
+                const packagestatus = await db.query('SELECT * FROM "Order" NATURAL JOIN package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 AND ps_id =$2',[indvorcorp.rows[0].p_id,indvorcorp.rows[0].ps_id]);
+                value =packagestatus.rows[0].send_corporate_id;
+                console.log(packagestatus.rows[0].send_individual_id);
+                if(packagestatus.rows[0].send_corporate_id != undefined && packagestatus.rows[0].name == "Destination Branch" && packagestatus.rows[0].v_id== vehicleid){
+                    //dind address
+                    const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[packagestatus.rows[0].send_corporate_id]);
+                    let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                    getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                    order ={ packagestatus: (packagestatus).rows[0].name,pid: getPackages.rows[i].p_id,takerid: packagestatus.rows[0].take_indv_id,sendercorporateid:packagestatus.rows[0].send_corporate_id
+                        ,senderindividualid: null,address: addrs,senderbranchid:packagestatus.rows[0].send_b_id, packagestateid:packagestatus.rows[0].ps_id };
+                    orders.push(order);
+                }
+                else if(packagestatus.rows[0].send_individual_id != undefined && packagestatus.rows[0].name == "Destination Branch" && packagestatus.rows[0].v_id== vehicleid  )
+                { //if it is individual sender
+                    const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[packagestatus.rows[0].send_individual_id]);
+                    let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
+                    getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
+                    order ={ packagestatus: (packagestatus).rows[0].name,pid: getPackages.rows[i].p_id,takerid: packagestatus.rows[0].take_indv_id,sendercorporateid:null
+                        ,senderindividualid:packagestatus.rows[0].send_individual_id ,address: addrs,senderbranchid:packagestatus.rows[0].send_b_id,packagestateid:packagestatus.rows[0].ps_id };
+                    orders.push(order);
+                }  
+            }else{
+                console.log("There is no package to show");
+         }
+        }
+        res.json({size:rowcount, orders: orders});
+
+    }else{
+        console.log("There is no package to show");
+        res.json({size:0, orders:[]});
+    }
+});
 app.post("/acceptPackageCourier", async (req, res) => {
     const {userid,value} = req.body;
     //find the vehicle id of the courier
@@ -1257,12 +1305,14 @@ app.post("/findAnotherCourier", async (req, res) => {
         console.log(allCouriers);
         inc = 0;
         randomindex = 0;
-        while(inc <20){
+        while(inc <10){
         randomindex = Math.floor(Math.random() * rowcount);
         console.log(randomindex);
         console.log("courier id:" + allCouriers[randomindex].courierid);
         console.log("vehicle id:" + allCouriers[randomindex].vehicleid);
-        inc++;
+        if(allCouriers[randomindex].courierid != userid){
+            inc++;
+            }   
         }
         const updateLatestState = await db.query('UPDATE pac_state SET v_id = $1 WHERE ps_id = $2 AND p_id = $3 AND v_id =$4',[allCouriers[randomindex].vehicleid,findLatestState.rows[0].ps_id, value, findVehicle.rows[0].v_id]);
         res.json({success:true});
@@ -1472,13 +1522,40 @@ app.post("/assignCourier", async (req, res) => {
      vehicleid = vehicleidquery.rows[0].v_id;
     //find the sender branch id from the userid of the packagemanager
     //assign the package to the shipper
-    const insertToPackageState = await db.query("INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *",["Courier to Recipient",currentdate]);
+    const insertToPackageState = await db.query("INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *",["Destination Branch",currentdate]);
     const inserToPacState = await db.query("INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)",[insertToPackageState.rows[0].ps_id,value,vehicleid]);
     //change the money of the user
     //find the price of the package
     const package = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE p_id =$1',[value]);
     price = package.rows[0].price;
     res.json({success:true});
+});
+app.post("/acceptPackageCourier2", async (req, res) => {
+    const {userid,value} = req.body;
+    //find the vehicle id of the courier
+    const getVehicleId = await db.query('SELECT * FROM courier WHERE u_id =$1', [userid]);
+    vehicleid = getVehicleId.rows[0].v_id;
+    console.log("/acceptPackageCourier2");
+     //calculate currentDate
+     let date_ob = new Date();
+
+     // current date
+     // adjust 0 before single digit date
+     let date = ("0" + date_ob.getDate()).slice(-2);
+
+     // current month
+     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+     // current year
+     let year = date_ob.getFullYear();
+
+     // prints date in YYYY-MM-DD format
+     currentdate = year + "-" + month + "-" + date;
+     //create packagestate
+     const insertPackageState = await db.query('INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *',["Courier to Recipient",currentdate]);
+     const insertPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)',[insertPackageState.rows[0].ps_id,value,vehicleid]);
+     res.json({success:true});
+
 });
 
 
