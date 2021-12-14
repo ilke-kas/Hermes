@@ -1317,7 +1317,61 @@ app.post("/getBranchToBranchShipper", async (req, res) => {
         res.json({size:0, packages: []});
     }
 });
+app.post("/acceptShipper", async (req, res) => {
+    const {userid,value} = req.body;
+    //find the vehicle id of the courier
+    const getVehicleId = await db.query('SELECT * FROM shipper WHERE u_id =$1', [userid]);
+    vehicleid = getVehicleId.rows[0].v_id;
+    console.log("/acceptShipper");
+     //calculate currentDate
+     let date_ob = new Date();
 
+     // current date
+     // adjust 0 before single digit date
+     let date = ("0" + date_ob.getDate()).slice(-2);
+
+     // current month
+     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+     // current year
+     let year = date_ob.getFullYear();
+
+     // prints date in YYYY-MM-DD format
+     currentdate = year + "-" + month + "-" + date;
+     //create packagestate
+     const insertPackageState = await db.query('INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *',["Shipper",currentdate]);
+     const insertPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)',[insertPackageState.rows[0].ps_id,value,vehicleid]);
+     res.json({success:true});
+
+});
+app.post("/denyShipper", async (req, res) => {
+    const {userid,value} = req.body;
+     //calculate currentDate
+     let date_ob = new Date();
+
+     // current date
+     // adjust 0 before single digit date
+     let date = ("0" + date_ob.getDate()).slice(-2);
+
+     // current month
+     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+     // current year
+     let year = date_ob.getFullYear();
+
+     // prints date in YYYY-MM-DD format
+     currentdate = year + "-" + month + "-" + date;
+    //find the vehicle id of the user
+    const findVehicle = await db.query('SELECT * FROM shipper Where u_id = $1',[userid]);
+    //find the package
+    const findPackage = await db.query('SELECT * FROM package WHERE p_id = $1',[value]);
+    const findLatestState = await db.query('SELECT * FROM ONLY package NATURAL JOIN packagestate NATURAL JOIN pac_state WHERE p_id =$1 and v_id =$2 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$3)', [value,findVehicle.rows[0].v_id,value]);
+    //fetch all the couriers
+    const deleteState = await db.query('DELETE FROM packagestate WHERE ps_id =$1',[findLatestState.rows[0].ps_id]);
+    const findLatestState2 = await db.query('SELECT * FROM ONLY package NATURAL JOIN packagestate NATURAL JOIN pac_state WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [value]);
+    const update = await db.query('UPDATE packagestate SET state_date = $1 WHERE ps_id =$2',[currentdate,findLatestState2.rows[0].ps_id]);
+    res.json({success:true});
+});
 
 
 
