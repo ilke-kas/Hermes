@@ -120,7 +120,30 @@ function CustomerProfile() {
                                             </table>
                                         </div>
                                         }
-                                            else if(data.packagestatus == "Courier to Branch"){
+                                        else if(data.packagestatus == "Submitted to Branch"){
+                                            return  <div><li>{data.itemdescription}&emsp;
+                                                    <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                                                    <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                            </li>                       
+                                            <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
+                                            <table>
+                                            <tr>
+                                                <td><p className="location">Submitted&emsp;</p></td>
+                                                <td><p className="location">Branch&emsp;&ensp;&nbsp;</p></td>
+                                                <td><p className="location">Shipper&emsp;</p></td>
+                                                <td><p className="location">Destination&emsp;</p></td>
+                                                <td><p className="location">Courier&emsp;</p></td>
+                                                <td><p className="location">Holdout&emsp;</p></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    }
+                                     else if(data.packagestatus == "Courier to Branch"){
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
