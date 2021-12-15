@@ -1168,7 +1168,7 @@ app.post("/getShipperPartPackageManager", async (req, res) => {
 ' ,tbl3 AS ' +
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE send_b_id = $1) ' +
-' SELECT * FROM tbl3 AS t WHERE name = \'Courier to Branch\' AND ps_id >= ALL(SELECT ps_id ' +
+' SELECT  DISTINCT * FROM tbl3 AS t WHERE name = \'Courier to Branch\' AND ps_id >= ALL(SELECT ps_id ' +
                                             ' FROM tbl3 AS q ' +
                                             ' WHERE q.p_id = t.p_id) ',[bid]);
     orders =[];
@@ -1336,7 +1336,7 @@ app.post("/getBranchToBranchShipper", async (req, res) => {
 ' ,tbl3 AS ' +
     ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE v_id= $1) ' +
-' SELECT * FROM tbl3 AS t WHERE name = \'Sender Branch\' AND ps_id >= ALL(SELECT ps_id ' +
+' SELECT DISTINCT * FROM tbl3 AS t WHERE name = \'Sender Branch\' AND ps_id >= ALL(SELECT ps_id ' +
                                            ' FROM tbl3 AS q ' +
                                            '  WHERE q.p_id = t.p_id) ',[vehicleid]);
 
@@ -1435,7 +1435,7 @@ app.post("/getCourierPartPackageManager", async (req, res) => {
 ' ,tbl3 AS ' +
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE destination_b_id = $1) ' +
-' SELECT * FROM tbl3 AS t WHERE name = \'Shipper\' AND ps_id >= ALL(SELECT ps_id ' +
+' SELECT DISTINCT * FROM tbl3 AS t WHERE name = \'Shipper\' AND ps_id >= ALL(SELECT ps_id ' +
                                             ' FROM tbl3 AS q ' +
                                             ' WHERE q.p_id = t.p_id) ',[bid]);
     orders =[];
