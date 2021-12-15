@@ -1594,7 +1594,7 @@ app.post("/makeitholdout", async (req, res) => {
                 pckg = {pid: query.rows[i].p_id,ps_id: query.rows[i].ps_id,status: query.rows[i].name, lastdate: query.rows[i].state_date}
                 allPackages.push(pckg);
         }
-
+    }
 });
 
 

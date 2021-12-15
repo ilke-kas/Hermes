@@ -26,13 +26,17 @@ function ConfirmationPopup(props) {
         props.setTrigger(false);
     }
 
+    function refreshPage() {
+        window.location = "/CustomerProfile";
+    }
+
     function insidePopup() {
         return (
             <div className="popup">
                 <div className="popup-inner">
                     <center>
                         <p>Do you confirm that you recieved the package?</p>
-                        <button type="button" onClick={makeitDelivered} className="btn btn-danger mt-3">Yes</button>&emsp;
+                        <button type="button" onClick={e => {makeitDelivered(); refreshPage();}} className="btn btn-danger mt-3">Yes</button>&emsp;
                         <button type="button" onClick={makeitUndelivered} className="btn btn-danger mt-3">No</button>
                     </center>
                 </div>

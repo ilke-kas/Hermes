@@ -59,6 +59,7 @@ function CustomerProfile() {
         }
         setLoading(true);
     }
+
   
     return (
         <div>
@@ -255,7 +256,7 @@ function CustomerProfile() {
                                 return  <div><li>{data.itemdescription}&emsp;
                                 <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
-                                        <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid);}} className="btn btn-info">I Received The Package</button>
+                                        <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid); }} className="btn btn-info">I Received The Package</button>
                                 </li>                       
                                 <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
