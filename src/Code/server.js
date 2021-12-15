@@ -977,7 +977,7 @@ if(inCorporate.rowCount != 0){
                 //add order
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
-                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted to Branch",currentdate]);
                 const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
                 res.json({success:true, reason:""});
     }else{
@@ -995,7 +995,7 @@ else{
                   //add order
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
-                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted to Branch",currentdate]);
                 const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,0]);
                 res.json({success:true, reason:""});
         }
@@ -1168,38 +1168,33 @@ app.post("/getShipperPartPackageManager", async (req, res) => {
 ' ,tbl3 AS ' +
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE send_b_id = $1) ' +
-' SELECT  DISTINCT * FROM tbl3 AS t WHERE name = \'Courier to Branch\' AND ps_id >= ALL(SELECT ps_id ' +
-                                            ' FROM tbl3 AS q ' +
-                                            ' WHERE q.p_id = t.p_id) ',[bid]);
+' SELECT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3 ',[bid]);
     orders =[];
-    rowcount = getPackages.rowCount;
+    const rowcount = getPackages.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
             //if sender is corporate
-            if(getPackages.rowCount != 0){
-                if(getPackages.rows[i].send_corporate_id != undefined && getPackages.rows[i].name == "Courier to Branch" ){
+                if(getPackages.rows[i].send_corporate_id != undefined && (getPackages.rows[i].name == "Courier to Branch" || getPackages.rows[i].name == "Submitted to Branch")){
                     //dind address
                     const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[getPackages.rows[i].take_indv_id]);
                     let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
-                    order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:getPackages.rows[i].send_corporate_id
+                    order ={ packagestatus: getPackages.rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:getPackages.rows[i].send_corporate_id
                         ,senderindividualid: null,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id};
                     orders.push(order);
                 }
-                else if(getPackages.rows[i].send_individual_id != undefined  && getPackages.rows[i].name == "Courier to Branch")
+                else if(getPackages.rows[i].send_individual_id != undefined  && (getPackages.rows[i].name == "Courier to Branch" || getPackages.rows[i].name == "Submitted to Branch"))
                 { //if it is individual sender
                     const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[getPackages.rows[i].take_indv_id]);
                     let addrs = getAddress.rows[0].street + ' ' + getAddress.rows[0].apt_number + ' ' +
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
-                    order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:null
+                    order ={ packagestatus: getPackages.rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:null
                         ,senderindividualid: getPackages.rows[i].send_individual_id,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id };
                     orders.push(order);
                 }  
-            }else{
-                console.log("There is no package to show");
-         }
         }
+        console.log(orders);
         res.json({size:rowcount, orders: orders});
 }
 else{

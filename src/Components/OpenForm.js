@@ -38,6 +38,10 @@ function OpenForm(props) {
         var success;
         var reason;
         const body2 ={userid, description,weight,volume,clickedUser,clickedSenderBranch,clickedDestinationBranch};
+        if (clickedSenderBranch === clickedDestinationBranch) {
+            alert("Sender and destination branches can't be the same. Please select another branch");
+        }
+        else {
         if(type == "courier"){
             const response = await fetch('http://localhost:3001/submitPackageCourier', {
             method: "POST",
@@ -94,6 +98,7 @@ function OpenForm(props) {
              });
             
         }
+    }
     }
 
     async function allUsers(){
