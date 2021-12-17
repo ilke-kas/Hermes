@@ -117,7 +117,7 @@ function ManagerPackageAcceptance() {
         }
         
     async function allCouriers(value){ 
-        const body ={userid,value};
+        const body = {userid,value};
         console.log(body);
         const response = await fetch('http://localhost:3001/getAllCourier', {
             method: "POST",
@@ -127,11 +127,17 @@ function ManagerPackageAcceptance() {
         .then(data => {
             setCourierData(data.couriers);
             console.log(data.couriers);
-            });
-        }
-        async function clickDeny(){
+        });
+    }
 
-        }
+    async function clickDeny(value){
+        const body = {userid,value};
+        const response = await fetch('http://localhost:3001/denyAssigningShipper', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        });
+    }
 
     return (
                     <div>

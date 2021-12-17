@@ -16,12 +16,12 @@ function PackageManager() {
                     <label class="form-check-label" for="flexRadioDefault1">Malformed Packages</label>&emsp;&emsp;
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
                     <label class="form-check-label" for="flexRadioDefault2">Holdout Packages</label>&emsp;&emsp;
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                    <label class="form-check-label" for="flexRadioDefault2">Lost Packages</label>&emsp;&emsp;
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                    <label class="form-check-label" for="flexRadioDefault2">Securely Delivered Packages</label>&emsp;&emsp;
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                    <label class="form-check-label" for="flexRadioDefault2">All Packages</label>&emsp;&emsp;
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked/>
+                    <label class="form-check-label" for="flexRadioDefault3">Lost Packages</label>&emsp;&emsp;
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault4" checked/>
+                    <label class="form-check-label" for="flexRadioDefault4">Securely Delivered Packages</label>&emsp;&emsp;
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault5" checked/>
+                    <label class="form-check-label" for="flexRadioDefault5">All Packages</label>&emsp;&emsp;
                 </div>
             </center>
             <nav className="navbar navbar-light mt-3">

@@ -10,11 +10,11 @@ function SignUp() {
     const [password, setPassword] = React.useState("");
 
     //customer things
-    const [street, setStreet] = React.useState("");
-    const [aptnumber, setAptNumber] = React.useState("");
-    const [city, setCity] = React.useState("");
-    const [state, setState] = React.useState("");
-    const [zip, setZip] = React.useState("");
+    const [street, setStreet] = React.useState("a");
+    const [aptnumber, setAptNumber] = React.useState("1");
+    const [city, setCity] = React.useState("a");
+    const [state, setState] = React.useState("a");
+    const [zip, setZip] = React.useState("1");
     const [selectedCustomer, setSelectedCustomer] = useState('');
     const [selectedEmployee, setSelectedEmployee] = useState('');
     const [selected, setSelected] = useState('');
@@ -30,6 +30,58 @@ function SignUp() {
       console.log("selected :" + selected);
       console.log("customer :" + selectedCustomer);
       console.log("employee :" + selectedEmployee);
+      if (userid == "") {
+        alert("User ID can't be empty. Please enter a user ID and try again.");
+      }
+      else if (email == "") {
+        alert("Email can't be empty. Please enter an email and try again.");
+      }
+      else if (!email.includes('@')) {
+        alert("Please enter a valid email address.");
+      }
+      else if (name == "") {
+        alert("Name can't be empty. Please enter a name and try again.");
+      }
+      else if (!/^[A-Za-z\s]*$/.test(name)) {
+        alert("Name can contain only letters. Please enter a valid name and try again.");
+      }
+      else if (phone == "") {
+        alert("Phone number can't be empty. Please enter a phone number and try again.");
+      }
+      else if (phone.match(/^[0-9]+$/) == null) {
+        alert("Please enter a valid phone number.");
+      }
+      else if (password == "") {
+        alert("Password can't be empty. Please enter a password and try again.");
+      }
+      else if (street == "") {
+        alert("Street name can't be empty. Please enter a street name and try again.");
+      }
+      else if (aptnumber == "" ) {
+        alert("Apartment number can't be empty. Please enter an apartment number and try again.")
+      }
+      else if (aptnumber.match(/^[0-9]+$/) == null) {
+        alert("Apartment number must be a number.");
+      }
+      else if (city == "") {
+        alert("City name can't be empty. Please enter a city name and try again.");
+      }
+      else if (!/^[A-Za-z\s]*$/.test(city)) {
+        alert("Please enter a valid city name.");
+      }
+      else if (state == "") {
+        alert("State name can't be empty. Please enter a state name and try again.");
+      }
+      else if (!/^[A-Za-z\s]*$/.test(state)) {
+        alert("Please enter a valid state name.");
+      }
+      else if (zip == "") {
+        alert("Zip number can't be empty. Please enter a zip number and try again.");
+      }
+      else if (zip.match(/^[0-9]+$/) == null) {
+        alert("Please enter a valid zip number, it can contain only numbers.");
+      }
+      else {
       if ( userid != "" && name != "" && email != "" && password != "" ) {
             if(selected == ""){
               const body = {userid,email,name,phone,password,street,aptnumber,city,state,zip};
@@ -98,7 +150,7 @@ function SignUp() {
                   });
               }
               else{
-                setText("Please choose type of the customer!");
+                alert("Are you an individual or a company? Please select one of them.");
               }
             }
             else if(selected == "false"){
@@ -203,7 +255,7 @@ function SignUp() {
               }
               else{
                 //please chooose one error
-                setText("Please choose type of the employee!");
+                alert("Are you a shipper or package manager or courier? Select one of them.");
               }
 
             }
@@ -216,6 +268,7 @@ function SignUp() {
         setText("Please enter valid values for user name, email and password!");
         setTrigger(true);
     }
+  }
 }
    
     function employee() {
@@ -238,13 +291,13 @@ function SignUp() {
       return ( 
         <div>
           <div style={{width:"90%"}} className="input-group">
-            <TextField className="form-control mt-3" onChange={e => setStreet(e.target.value)} id="street" label="Street" variant="outlined"/>
-            <TextField className="form-control mt-3" onChange={e => setAptNumber(e.target.value)} id="aptnumber" label="Apt Number" variant="outlined"/>
+            <TextField className="form-control mt-3" onChange={e => setStreet(e.target.value)} placeholder="Sağlık" id="street" label="Street" variant="outlined"/>
+            <TextField className="form-control mt-3" onChange={e => setAptNumber(e.target.value)} placeholder="10" id="aptnumber" label="Apt Number" variant="outlined"/>
           </div>
           <div style={{width:"90%"}} className="input-group mt-3">
-            <TextField className="form-control mt-3" onChange={e => setCity(e.target.value)} id="city" label="City" variant="outlined"/>
-            <TextField className="form-control mt-3" onChange={e => setState(e.target.value)} id="state" label="State" variant="outlined"/>
-            <TextField className="form-control mt-3" onChange={e => setZip(e.target.value)} id="zip" label="Zip" variant="outlined"/>
+            <TextField className="form-control mt-3" onChange={e => setCity(e.target.value)} placeholder="Ankara" id="city" label="City" variant="outlined"/>
+            <TextField className="form-control mt-3" onChange={e => setState(e.target.value)} placeholder="Çankaya" id="state" label="State" variant="outlined"/>
+            <TextField className="form-control mt-3" onChange={e => setZip(e.target.value)} placeholder="06524" id="zip" label="Zip" variant="outlined"/>
           </div>
           <RadioGroup className="mt-4 d-flex justify-content-center" row aria-label="employeekind" defaultValue="customer" name="row-radio-buttons-group" value={selectedCustomer} onChange={event => setSelectedCustomer(event.target.value)}> 
             <FormControlLabel value="Corporate" control={<Radio />} label="Corporate" />
@@ -267,10 +320,10 @@ function SignUp() {
             <FormControlLabel value="false" control={<Radio />}  label="Employee" />
           </RadioGroup>
           
-          <TextField className="signuptextfield" onChange={e => setUserId(e.target.value)} id="userid" label="User ID" variant="outlined"/>
-          <TextField className="signuptextfield mt-3" onChange={e => setEmail(e.target.value)} id="email" label="Email" variant="outlined"/>
-          <TextField className="signuptextfield mt-3"  onChange={e => setName(e.target.value)} id="name" label="Name" variant="outlined"/>
-          <TextField className="signuptextfield mt-3"  onChange={e => setPhone(e.target.value)} id="phone" label="Phone Number" variant="outlined"/>
+          <TextField className="signuptextfield" onChange={e => setUserId(e.target.value)} placeholder="hasan-yeni" id="userid" label="User ID" variant="outlined"/>
+          <TextField className="signuptextfield mt-3" onChange={e => setEmail(e.target.value)} placeholder="hasan@gmail.com" id="email" label="Email" variant="outlined"/>
+          <TextField className="signuptextfield mt-3"  onChange={e => setName(e.target.value)} placeholder="Hasan Yeni" id="name" label="Name" variant="outlined"/>
+          <TextField className="signuptextfield mt-3" type="tel"  onChange={e => setPhone(e.target.value)} id="phone" label="Phone Number" placeholder="0531 457 85 98" variant="outlined"/>
           <TextField className="signuptextfield mt-3" onChange={e => setPassword(e.target.value)} type="password" id="password" label="Password" variant="outlined"/>
           {selected ?  employee() :customer() }
           <button type="button" onClick={register} className="btn btn-secondary btn-lg login-button">Sign Up</button><br/><br/>
