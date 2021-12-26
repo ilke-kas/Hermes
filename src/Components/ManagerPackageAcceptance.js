@@ -137,7 +137,17 @@ function ManagerPackageAcceptance() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
-        });
+        }).then(x => x.json())
+        .then(data => {
+            if(data.success){
+                alert("You denied the package");
+                window.location="/PackageManagerHomePage";
+            }
+            else{
+                alert("You cannot deny the package");
+            }
+            });
+
     }
 
     return (

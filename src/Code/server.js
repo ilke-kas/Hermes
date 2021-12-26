@@ -1292,6 +1292,33 @@ app.post("/assignShipper", async (req, res) => {
 });
 
 app.post("/denyAssigningShipper", async (req, res) => {
+    const {userid,value} = req.body;
+    console.log(userid + " "+value );
+    //get current date
+     //calculate currentDate
+     let date_ob = new Date();
+
+     // current date
+     // adjust 0 before single digit date
+     let date = ("0" + date_ob.getDate()).slice(-2);
+
+     // current month
+     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+     // current year
+     let year = date_ob.getFullYear();
+
+     // prints date in YYYY-MM-DD format
+     currentdate = year + "-" + month + "-" + date;
+    //find the sender branch id from the userid of the packagemanager
+    const branchid = await db.query('SELECT * FROM packagemanager WHERE u_id =$1',[userid]);
+    const oid = await db.query('SELECT * FROM package WHERE p_id =$1',[value]);
+    //assign the package to the shipper
+    const insertToPackageState = await db.query("INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *",["Shipper",currentdate]);
+    const inserToPacState = await db.query("INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)",[insertToPackageState.rows[0].ps_id,value,0]);
+    //change the DESTİNATİON bid of thye package to that branch
+    const updateSendBranch = await db.query('UPDATE "Order" SET destination_b_id = $1 WHERE o_id =$2',[branchid.rows[0].b_id,oid.rows[0].o_id]);
+    res.json({success:true});
 });
 
 app.post("/findAnotherCourier", async (req, res) => {
@@ -1437,16 +1464,14 @@ app.post("/getCourierPartPackageManager", async (req, res) => {
     const branchid = await db.query('SELECT * FROM packagemanager WHERE u_id =$1',[userid]);
     bid = branchid.rows[0].b_id;
     //get packages in that branch
-    const getPackages = await db.query('WITH tbl1 AS '+
+ const getPackages = await db.query('WITH tbl1 AS '+
     '(SELECT ps_id, pac_state.p_id AS p_id, v_id,o_id,weight,item_dscrptn,volume  FROM pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) ' +
 ' , tbl2 AS '+
     ' (SELECT tbl1.ps_id AS ps_id,p_id,v_id,o_id,weight,item_dscrptn,volume,name,state_date  FROM tbl1 LEFT OUTER JOIN packagestate ON  tbl1.ps_id = packagestate.ps_id ORDER BY ps_id) ' +
 ' ,tbl3 AS ' +
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE destination_b_id = $1) ' +
-' SELECT DISTINCT * FROM tbl3 AS t WHERE name = \'Shipper\' AND ps_id >= ALL(SELECT ps_id ' +
-                                            ' FROM tbl3 AS q ' +
-                                            ' WHERE q.p_id = t.p_id) ',[bid]);
+' SELECT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3 WHERE name = $2 ',[bid,"Shipper"]);
     orders =[];
     rowcount = getPackages.rowCount;
     if(rowcount != 0){
