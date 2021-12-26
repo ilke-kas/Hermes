@@ -34,8 +34,8 @@ function PackageAcceptance(){
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         }).then(x => x.json())
-        .then(data => {
-            setBToCPackage(data.orders);
+        .then(data2 => {
+            setBToCPackage(data2.orders);
             console.log(btocpackage);
             console.log('here');
             });

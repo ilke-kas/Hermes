@@ -54,7 +54,7 @@ function OpenForm(props) {
             console.log(success);
             if(success){
                 alert("You successfully submitted your package");
-                window.location="/OpenForm";
+                window.location="/Customer";
             }
             else{
                 if(reason == "money"){
@@ -82,7 +82,7 @@ function OpenForm(props) {
                 console.log(success);
                 if(success){
                     alert("You successfully submitted your package");
-                    window.location="/OpenForm";
+                    window.location="/Customer";
                 }
                 else{
                     if(reason == "money"){

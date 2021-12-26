@@ -1,6 +1,6 @@
 import React ,{useState, useEffect} from "react";
 import {Cookies, useCookies} from "react-cookie";
-// import * as ReactBootStrap from "react-bootstrap"
+import * as ReactBootStrap from "react-bootstrap"
 
 function ManagerPackageAcceptance() {
     const cookies = new Cookies();
@@ -12,7 +12,7 @@ function ManagerPackageAcceptance() {
     const [courierPart, setCourierPart] =useState([]);
     const [courierData, setCourierData] =useState([]);
     const [clickedCourier, setClickedCourier] = React.useState("");
-    // const [loading, setLoading] = React.useState(false);    
+    const [loading, setLoading] = React.useState(false);    
     // const [loading2, setLoading2] = React.useState(false);
    // const [value, setValue] = React.useState("");
     
@@ -74,7 +74,7 @@ function ManagerPackageAcceptance() {
             console.log(shipperPart);
             console.log('here');
             });
-            // setLoading(true);
+             setLoading(true);
     } 
     async function getCourierPartPackageManager(){
         const body ={userid};
@@ -144,7 +144,7 @@ function ManagerPackageAcceptance() {
                     <div>
                      
                         <ul>
-                            {
+                            {loading ?
                                 shipperPart.map((data,id) =>{console.log(data);
                                     if(data.sendcorporateid == null && (data.packagestatus == 'Submitted to Branch' || data.packagestatus == 'Courier to Branch')){
                                         console.log(id);
@@ -242,6 +242,7 @@ function ManagerPackageAcceptance() {
                                     }
 
                                 })
+                                :  <ReactBootStrap.Spinner style={{width: "75px", height:"75px"}} variant="primary" className="loading-position" animation="border" />
                             }
                         </ul>
                         <center>
