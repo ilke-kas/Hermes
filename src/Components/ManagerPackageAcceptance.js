@@ -9,6 +9,7 @@ function ManagerPackageAcceptance() {
     const [shipperData, setShipperData] =useState([]);
     const [clickedShipper, setClickedShipper] = React.useState("");
     const [buttonId, setButtonId] = React.useState("");
+    const [buttonId2, setButtonId2] = React.useState("");
     const [trigger, setTrigger] = React.useState("");
     const [courierPart, setCourierPart] =useState([]);
     const [courierData, setCourierData] =useState([]);
@@ -289,9 +290,9 @@ function ManagerPackageAcceptance() {
                                                 <td>Select Courier:&emsp;</td>
                                                 <td>
                                                     <div>
-                                                        <button type="button" id ={id} onClick={e =>{allCouriers(data2.destinationbranchid);console.log(data2.destinationbranchid);}} className="btn btn-success mt-3"  data-toggle="dropdown">
+                                                        <button type="button" id ={id} onClick={e =>{allCouriers(data2.destinationbranchid);console.log(data2.destinationbranchid);setButtonId2(data2.pid);}} className="btn btn-success mt-3"  data-toggle="dropdown">
                                                         {
-                                                            clickedCourier == [] ? <a>Courier ID</a> : <a>{clickedCourier}</a>
+                                                            clickedCourier == [] ? <a>Courier ID</a> :  ( buttonId2 == data2.pid ? <a>{clickedCourier}</a> : <a>Courier ID</a>  )
                                                         }
                                                             <span class="caret"></span>
                                                         </button>

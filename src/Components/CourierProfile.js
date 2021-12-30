@@ -1,9 +1,34 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import NavBar from "./NavBar";
 import CourierInformation from "./CourierInformation";
+import {Cookies, useCookies} from "react-cookie";
 
 function ShipperCourier() {
     const [popup, setPopup] = React.useState(false);
+    const cookies = new Cookies();
+    const userid = cookies.get(["userId"]);
+    const body = {userid};
+    var size, orders;
+    let orderList =[];
+    const [userData, setUserData] =useState([]);
+    React.useEffect(() => {
+        profilePage();
+    },[]);
+    async function profilePage(){
+        const response = await fetch('http://localhost:3001/courierProfilePageOrders', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            size = data.size;
+            orders = data.orders;
+            console.log('here');
+            console.log(size);
+            console.log(orders);
+            setUserData(orders);
+        });
+    }
 
     return (
         <div>
@@ -26,26 +51,22 @@ function ShipperCourier() {
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Recipient ID</strong></td>
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Weight</strong></td>
                         <td style={{textDecoration:"underline"}} className="table-td"><strong>Volume</strong></td>
-                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Branch Name</strong></td><br></br><br></br>
+                        <td style={{textDecoration:"underline"}} className="table-td"><strong>Destination Branch Name</strong></td><br></br><br></br>
                     </tr>
-                    <tr>
-                        <td className="table-td">2098</td>
-                        <td className="table-td">Refrigerator</td>
-                        <td className="table-td">cem.alkan</td>
-                        <td className="table-td">400 kg</td>
-                        <td className="table-td">2 m³</td>
-                        <td className="table-td">Bilkent</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">Customer Not Found</button></td>
-                    </tr>
-                    <tr>
-                        <td className="table-td">2156</td>
-                        <td className="table-td">Television</td>
-                        <td className="table-td">cem.alkan</td>
-                        <td className="table-td">20 kg</td>
-                        <td className="table-td">0.5 m³</td>
-                        <td className="table-td">Kızılay</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">Customer Not Found</button></td>
-                    </tr>
+                    {
+                         userData.map((data,id) => {
+                            //for all orders
+                            return  <tr key={id}> 
+                            <td  className="table-td">{data.pid}</td>
+                            <td  className="table-td">{data.itemdescription}</td>
+                            <td  className="table-td">{data.takeindvid}</td>
+                            <td  className="table-td">{data.weight}</td>
+                            <td  className="table-td">{data.volume}</td>
+                            <td  className="table-td">{data.destinationbid}</td>
+                            <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">Customer Not Found</button></td>
+                            </tr>
+                    })
+                }
                 </table>
             </center>
             <table>
