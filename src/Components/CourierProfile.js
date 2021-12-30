@@ -4,7 +4,6 @@ import CourierInformation from "./CourierInformation";
 import {Cookies, useCookies} from "react-cookie";
 
 function ShipperCourier() {
-    const [popup, setPopup] = React.useState(false);
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
     const body = {userid};
@@ -27,6 +26,23 @@ function ShipperCourier() {
             console.log(size);
             console.log(orders);
             setUserData(orders);
+        });
+    }
+    async function insertHoldout(pid){
+        const body = {pid};
+        const response = await fetch('http://localhost:3001/makeitholdout', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            if(data.success){
+                alert("Customer Not Found");
+                window.location="/CourierProfile";
+            }
+            else{
+                alert("Operation cannot be done");
+            }
         });
     }
 
@@ -63,7 +79,7 @@ function ShipperCourier() {
                             <td  className="table-td">{data.weight}</td>
                             <td  className="table-td">{data.volume}</td>
                             <td  className="table-td">{data.destinationbid}</td>
-                            <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">Customer Not Found</button></td>
+                            <td><button type="button" onClick={e => { insertHoldout(data.pid);}} className="btn btn-info">Customer Not Found</button></td>
                             </tr>
                     })
                 }
