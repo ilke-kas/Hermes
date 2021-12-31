@@ -81,7 +81,7 @@ function PackageManager() {
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Package Description</strong></td>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Sender ID</strong></td>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Recipient ID</strong></td>
-                 <td style={{textDecoration:"underline"}} className="table-td"><strong>Departure Branch Name</strong></td><br></br><br></br>
+                 <td style={{textDecoration:"underline"}} className="table-td"><strong>Departure Branch Name</strong></td>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Destination Branch Name</strong></td>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Package Status</strong></td>
                  </tr> 
