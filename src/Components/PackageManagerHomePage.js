@@ -13,7 +13,7 @@ function PackageManagerHomePage() {
         <div>
             <NavBar></NavBar>
             <ManagerPackageAcceptance/>
-            <div className="info-tablecomp23">
+            {/* <div className="info-tablecomp23">
                 <table>
                     <tr>
                         <td><h5>Reports</h5></td>
@@ -32,7 +32,7 @@ function PackageManagerHomePage() {
                     </tr>
                 </table>
             </div>
-            <SeeReportPopupPackageManager trigger={popup} setTrigger={setPopup}></SeeReportPopupPackageManager>
+            <SeeReportPopupPackageManager trigger={popup} setTrigger={setPopup}></SeeReportPopupPackageManager> */}
         </div>
 
     );

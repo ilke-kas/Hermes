@@ -1284,30 +1284,7 @@ app.post("/assignShipper", async (req, res) => {
     //change the money of the user
     //find the price of the package
     const package = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE p_id =$1',[value]);
-    price = package.rows[0].price;
-    //find the sender is corporate or individual
-    currentbalance = 0;
-    if(package.rows[0].send_corporate_id == null){
-        //it is individual
-        sender = package.rows[0].send_individual_id;
-        const findBalance = await db.query("SELECT * FROM customercard WHERE u_id =$1",[sender]);
-        currentbalance = findBalance.rows[0].money;
-        newbalance = currentbalance - price;
-        //update balance
-        const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[sender,newbalance]);
-        res.json({success:true});
-    }
-    else{   
-        sender = package.rows[0].send_corporate_id;
-        const findBalance = await db.query("SELECT * FROM corporate WHERE u_id =$1",[sender]);
-        currentbalance = findBalance.rows[0].budget;
-        newbalance = currentbalance - price;
-        //update balance
-        const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[sender,newbalance]);
-        res.json({success:true});
-    }
-  
-
+    res.json({success:true});
 });
 
 app.post("/denyAssigningShipper", async (req, res) => {
@@ -1428,25 +1405,48 @@ app.post("/acceptShipper", async (req, res) => {
     const getVehicleId = await db.query('SELECT * FROM shipper WHERE u_id =$1', [userid]);
     vehicleid = getVehicleId.rows[0].v_id;
     console.log("/acceptShipper");
-     //calculate currentDate
-     let date_ob = new Date();
+    //calculate currentDate
+    let date_ob = new Date();
 
-     // current date
-     // adjust 0 before single digit date
-     let date = ("0" + date_ob.getDate()).slice(-2);
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
 
-     // current month
-     let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
 
-     // current year
-     let year = date_ob.getFullYear();
+    // current year
+    let year = date_ob.getFullYear();
 
-     // prints date in YYYY-MM-DD format
-     currentdate = year + "-" + month + "-" + date;
-     //create packagestate
-     const insertPackageState = await db.query('INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *',["Shipper",currentdate]);
-     const insertPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)',[insertPackageState.rows[0].ps_id,value,vehicleid]);
-     res.json({success:true});
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    //create packagestate
+    const insertPackageState = await db.query('INSERT INTO packagestate (name,state_date) VALUES ($1,$2) RETURNING *',["Shipper",currentdate]);
+    const insertPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES ($1,$2,$3)',[insertPackageState.rows[0].ps_id,value,vehicleid]);
+    const package = await db.query('SELECT * FROM "Order" NATURAL JOIN package WHERE p_id =$1',[value]);
+    price = package.rows[0].price;
+    // find the sender is corporate or individual
+    currentbalance = 0;
+    if (package.rows[0].send_corporate_id == null) {
+        //it is individual
+        sender = package.rows[0].send_individual_id;
+        const findBalance = await db.query("SELECT * FROM customercard WHERE u_id =$1",[sender]);
+        currentbalance = findBalance.rows[0].money;
+        newbalance = currentbalance - price;
+        //update balance
+        const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[sender,newbalance]);
+        const updatePoint = await db.query('UPDATE individual SET point = point + $1 WHERE u_id = $2', [1 ,sender]);
+        res.json({success:true});
+    }
+    else {   
+        sender = package.rows[0].send_corporate_id;
+        const findBalance = await db.query("SELECT * FROM corporate WHERE u_id =$1",[sender]);
+        currentbalance = findBalance.rows[0].budget;
+        newbalance = currentbalance - price;
+        //update balance
+        const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[sender,newbalance]);
+        res.json({success:true});
+    }
 
 });
 app.post("/denyShipper", async (req, res) => {
@@ -1688,15 +1688,38 @@ app.post("/packageManagerProfilePageOrders", async (req, res) => {
     ' SELECT DISTINCT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3' ,[bid]);
   
        
-        rowcount = (await allOrders).rowCount;
+        const rowcount = (await allOrders).rowCount;
         if(rowcount != 0){
-            console.log(rowcount);
+            console.log("------ROW COUNT--------:"+rowcount);
+            console.log("------LOOP BEGINNING--------:");
             for (let i = 0; i <rowcount; i++) {
+                console.log("Iteration " + i + ": ");
+
+                let sendbid = (await allOrders).rows[i].send_b_id;
+                let destbid = (await allOrders).rows[i].destination_b_id;
+
+                const getSendBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [sendbid]);
+                const getDestBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [destbid]);
+
+                let sendbname = getSendBname.rows[0].name;
+                let destbname = getDestBname.rows[0].name;
+
                 //get the branch name
-                order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
-                    senderindvid: (await allOrders).rows[i].send_individual_id,takeindvid: (await allOrders).rows[i].take_indv_id, destinationbid : bid }
-                orders.push(order);
+                if((await allOrders).rows[i].send_individual_id != null){
+                    order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
+                        senderindvid: (await allOrders).rows[i].send_individual_id,takeindvid: (await allOrders).rows[i].take_indv_id, destinationbid : destbname,packagestatus: (await allOrders).rows[i].name }
+                    orders.push(order);
+                    console.log("Inside the loop (order): " + order); //kanka kontrol verdim
+                }
+                else{
+                    order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
+                        senderindvid: (await allOrders).rows[i].send_corporate_id, takeindvid: (await allOrders).rows[i].take_indv_id, destinationbid : destbname, packagestatus: (await allOrders).rows[i].name }
+                    orders.push(order);
+                    console.log("Inside the loop (order): " + order);
+                }
             }
+            console.log("------LOOP END--------:");
+            //console.log(orders)
             res.json({size: rowcount, orders:orders});
         }
         else{
@@ -1706,11 +1729,11 @@ app.post("/packageManagerProfilePageOrders", async (req, res) => {
 });
 app.post("/packageManagerProfilePageAllOrders", async (req, res) => {
     const {userid} = req.body;
-    console.log(userid);
+    //console.log(userid);
     //find the branch id of the user
     const getbid = await db.query('SELECT * FROM packagemanager WHERE u_id = $1',[userid]);
     bid = getbid.rows[0].b_id; 
-    orders =[];
+    orders2 =[];
     //by using this user id find orders and packages from order table
     const allOrders = db.query(' WITH tbl1 AS ' +
     '    (SELECT ps_id, pac_state.p_id AS p_id, v_id,o_id,weight,item_dscrptn,volume  FROM pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) ' +
@@ -1722,23 +1745,43 @@ app.post("/packageManagerProfilePageAllOrders", async (req, res) => {
     ' SELECT DISTINCT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3' ,[bid]);
   
        
-        rowcount = (await allOrders).rowCount;
+        const rowcount = (await allOrders).rowCount;
         if(rowcount != 0){
-            console.log(rowcount);
+            console.log("------ROW COUNT--------:"+rowcount);
+            console.log("------LOOP BEGINNING--------:");
             for (let i = 0; i <rowcount; i++) {
+                console.log("Iteration " + i + ": ");
+                let sendbid = (await allOrders).rows[i].send_b_id;
+                let destbid = (await allOrders).rows[i].destination_b_id;
+
+                const getSendBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [sendbid]);
+                const getDestBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [destbid]);
+
+                let sendbname = getSendBname.rows[0].name;
+                let destbname = getDestBname.rows[0].name;
                 //get the branch name
-                order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
-                    senderindvid: (await allOrders).rows[i].send_individual_id,takeindvid: (await allOrders).rows[i].take_indv_id, sendbid :(await allOrders).rows[i].send_b_id ,destinationbid : (await allOrders).rows[i].destination_b_id, packagestatus: (await allOrders).rows[i].name };
-                orders.push(order);
+                if((await allOrders).rows[i].send_individual_id != null){
+                    order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
+                        senderindvid: (await allOrders).rows[i].send_individual_id,takeindvid: (await allOrders).rows[i].take_indv_id, sendbid :sendbname ,destinationbid : destbname, packagestatus: (await allOrders).rows[i].name };
+                    orders2.push(order);
+                    console.log("Inside the loop (order): " + order);
+                }
+                else{
+                    order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
+                        senderindvid: (await allOrders).rows[i].send_corporate_id,takeindvid: (await allOrders).rows[i].take_indv_id, sendbid :sendbname ,destinationbid : destbname, packagestatus: (await allOrders).rows[i].name };
+                    orders2.push(order);
+                    console.log("Inside the loop (order): " + order);
+                }
             }
-            res.json({size: rowcount, orders:orders});
+            console.log("------LOOP END--------:");
+            //console.log(orders2)
+            res.json({size: rowcount, orders:orders2});
         }
         else{
             console.log("There is nothing to show");
             res.json({size: 0, orders: []});
         }
 });
-
 
 app.get("/adminInformation/:userId", async (req, res) => {
     const {userId} = req.params;
@@ -1814,6 +1857,7 @@ app.post("/fire", async (req, res) => {
         res.json({success:false});
     }
 })
+
 app.post("/CreateReport", async (req, res) => {
     const {userid,packageid} = req.body;
     console.log("in create report " + packageid );
@@ -2032,5 +2076,49 @@ app.post("/getAllReportsInBranch", async (req, res) => {
         console.log("There is an error");
         res.json({size:0,branches: []});
     }
+});
+
+
+app.post("/searchPackageManager", async (req, res) => {
+    console.log("search package manager içinde");
+    const {userid, search} = req.body;
+    console.log("SEARCH ->" + ' %' +search +'%');
+    //find the branch id of the package manager
+    const branchid = await db.query('SELECT * FROM packagemanager WHERE u_id =$1',[userid]);
+    bid = branchid.rows[0].b_id;
+    //get packages in that branch
+    searchstr = '%' + search + '%';
+ const allOrders = await db.query(" SELECT DISTINCT * FROM " +
+    " (SELECT MAX(ps_id) AS ps_id, p_id FROM search_package_manager AS q " +
+    " GROUP BY q.p_id) AS l NATURAL JOIN search_package_manager WHERE (destination_b_id = $1 OR send_b_id = $1) AND (item_dscrptn LIKE $2 " +
+                                                                " OR take_indv_id LIKE $2 " +
+                                                                " OR send_individual_id LIKE $2 " + 
+                                                                " OR send_corporate_id LIKE $2 );" ,[bid,searchstr]);
+    orders3 =[];
+    const rowcount = (await allOrders).rowCount;
+        if(rowcount != 0){
+            console.log(rowcount);
+            for (let i = 0; i <rowcount; i++) {
+                let sendbid = (await allOrders).rows[i].send_b_id;
+                let destbid = (await allOrders).rows[i].destination_b_id;
+
+                const getSendBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [sendbid]);
+                const getDestBname = await db.query("SELECT * FROM branch WHERE b_id = $1", [destbid]);
+
+                let sendbname = getSendBname.rows[0].name;
+                let destbname = getDestBname.rows[0].name;
+                //get the branch name
+                order ={pid:(await allOrders).rows[i].p_id, itemdescription:(await allOrders).rows[i].item_dscrptn,
+                    senderindvid: (await allOrders).rows[i].send_individual_id,takeindvid: (await allOrders).rows[i].take_indv_id, sendbid :sendbname ,destinationbid : destbname, packagestatus: (await allOrders).rows[i].name };
+                orders3.push(order);
+            }
+            console.log(orders3);
+            res.json({orders:orders3});
+        }
+        else{
+            console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+        }
+
 });
 
