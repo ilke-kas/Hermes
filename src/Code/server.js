@@ -2156,3 +2156,62 @@ app.post("/searchCorporate", async (req, res) => {
             res.json({size: 0, orders: []});
         }
 });
+app.post("/companyFilter", async (req, res) => {
+    const {userid,clickedRange} = req.body;
+    console.log("clicked range is" + clickedRange);
+    var min, max;
+    if(clickedRange == "0-50"){
+        min = 0;
+        max = 50;
+    }
+    else if(clickedRange == "50-100"){
+        min = 50;
+        max = 100;
+    }
+    else if(clickedRange == "100-150"){
+        min = 100;
+        max = 150;
+    }
+    else if(clickedRange == "150-200"){
+        min = 150;
+        max = 200;
+    }
+    else if(clickedRange == "200-250"){
+        min = 200;
+        max = 250;
+    }
+    else if(clickedRange == "250-300"){
+        min = 250;
+        max = 300;
+    }
+    else if(clickedRange == "300-higher"){
+        min = 300;
+        max = 5000;
+    }
+    orders4 =[];
+    //by using this user id find orders and packages from order table
+        console.log("min and max" + min + " "+max);
+        const allOrders = db.query('SELECT DISTINCT * FROM ' +
+      '  (SELECT MAX(ps_id) AS ps_id, p_id FROM search_package_manager AS q ' +
+       ' GROUP BY q.p_id) AS l NATURAL JOIN search_package_manager WHERE (send_corporate_id = $1) ' +
+                                                                 ' AND (price BETWEEN $2 AND $3) ', [userid,min,max]);
+        const rowcount = (await allOrders).rowCount;
+        if(rowcount != 0){
+            console.log(rowcount);
+            for (let i = 0; i <rowcount; i++) {
+                //get the branch names
+                const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
+                const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
+                //find package status
+                order ={packagestatus:(await allOrders).rows[i].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
+                    price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
+                orders4.push(order);
+            }
+            console.log(orders4);
+            res.json({size: rowcount, orders:orders4});
+        }
+        else{
+            console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+        }
+});
