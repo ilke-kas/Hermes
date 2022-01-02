@@ -1057,7 +1057,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
     const getVehicleId = await db.query('SELECT * FROM courier WHERE u_id =$1', [userid]);
     vehicleid = getVehicleId.rows[0].v_id;
     console.log("getCustomerToBranchPackagesCourier");
-    orders =[];
+    orders2 =[];
     const getPackages = await db.query('WITH tbl1 AS '+
     '(SELECT ps_id, pac_state.p_id AS p_id, v_id,o_id,weight,item_dscrptn,volume  FROM pac_state LEFT OUTER JOIN package ON package.p_id = pac_state.p_id) ' +
 ' , tbl2 AS '+
@@ -1066,7 +1066,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE v_id = $1) ' +
 ' SELECT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3 WHERE name = $2',[vehicleid,"Submitted"]);
-    rowcount = getPackages.rowCount;
+    const rowcount = getPackages.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
@@ -1082,7 +1082,7 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (packagestatus),pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:getPackages.rows[i].send_corporate_id
                         ,senderindividualid: null,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id };
-                    orders.push(order);
+                    orders2.push(order);
                 }
                 else if(getPackages.rows[i].send_individual_id != undefined && getPackages.rows[i].name == "Submitted" && getPackages.rows[i].v_id== vehicleid  )
                 { //if it is individual sender
@@ -1091,13 +1091,16 @@ app.post("/getCustomerToBranchPackagesCourier", async (req, res) => {
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (packagestatus),pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:null
                         ,senderindividualid:getPackages.rows[i].send_individual_id ,address: addrs,senderbranchid:getPackages.rows[i].send_b_id,packagestateid:getPackages.rows[i].ps_id };
-                    orders.push(order);
+                    orders2.push(order);
                 }  
             }else{
                 console.log("There is no package to show");
          }
         }
-        res.json({size:rowcount, orders: orders});
+        console.log('---------------------------------------');
+                console.log(orders2);
+         console.log('---------------------------------------');
+        res.json({size:rowcount, orders: orders2});
 
     }else{
         console.log("There is no package to show");
@@ -1119,7 +1122,7 @@ app.post("/getBranchToCustomerPackagesCourier", async (req, res) => {
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE v_id = $1) ' +
 ' SELECT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3 WHERE name = $2',[vehicleid,"Destination Branch"]);
-    rowcount = getPackages.rowCount;
+    const rowcount = getPackages.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
@@ -1146,6 +1149,9 @@ app.post("/getBranchToCustomerPackagesCourier", async (req, res) => {
                         ,senderindividualid:getPackages.rows[i].send_individual_id ,address: addrs,senderbranchid:getPackages.rows[i].send_b_id,packagestateid:getPackages.rows[i].ps_id };
                     orders.push(order);
                 }  
+                console.log('---------------------------------------');
+                console.log(orders);
+                console.log('---------------------------------------');
             }else{
                 console.log("There is no package to show");
          }
@@ -2081,7 +2087,6 @@ app.post("/getAllReportsInBranch", async (req, res) => {
     }
 });
 
-
 app.post("/searchPackageManager", async (req, res) => {
     console.log("search package manager içinde");
     const {userid, search} = req.body;
@@ -2124,4 +2129,92 @@ app.post("/searchPackageManager", async (req, res) => {
         }
 
 });
-
+app.post("/searchCorporate", async (req, res) => {
+    const {userid,search} = req.body;
+    searchstr = '%' + search + '%';
+    orders3 =[];
+    //by using this user id find orders and packages from order table
+        const allOrders = db.query('SELECT DISTINCT * FROM ' +
+      '  (SELECT MAX(ps_id) AS ps_id, p_id FROM search_package_manager AS q ' +
+       ' GROUP BY q.p_id) AS l NATURAL JOIN search_package_manager WHERE (send_corporate_id = $1) ' +
+                                                                 '    AND (item_dscrptn LIKE $2 ' +
+                                                                 '    OR take_indv_id LIKE $2 );', [userid,searchstr]);
+        rowcount = (await allOrders).rowCount;
+        if(rowcount != 0){
+            console.log(rowcount);
+            for (let i = 0; i <rowcount; i++) {
+                //get the branch names
+                const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
+                const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
+                //find package status
+                order ={packagestatus:(await allOrders).rows[i].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
+                    price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
+                orders3.push(order);
+            }
+            console.log(orders3);
+            res.json({size: rowcount, orders:orders3});
+        }
+        else{
+            console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+        }
+});
+app.post("/companyFilter", async (req, res) => {
+    const {userid,clickedRange} = req.body;
+    console.log("clicked range is" + clickedRange);
+    var min, max;
+    if(clickedRange == "0-50"){
+        min = 0;
+        max = 50;
+    }
+    else if(clickedRange == "50-100"){
+        min = 50;
+        max = 100;
+    }
+    else if(clickedRange == "100-150"){
+        min = 100;
+        max = 150;
+    }
+    else if(clickedRange == "150-200"){
+        min = 150;
+        max = 200;
+    }
+    else if(clickedRange == "200-250"){
+        min = 200;
+        max = 250;
+    }
+    else if(clickedRange == "250-300"){
+        min = 250;
+        max = 300;
+    }
+    else if(clickedRange == "300-higher"){
+        min = 300;
+        max = 5000;
+    }
+    orders4 =[];
+    //by using this user id find orders and packages from order table
+        console.log("min and max" + min + " "+max);
+        const allOrders = db.query('SELECT DISTINCT * FROM ' +
+      '  (SELECT MAX(ps_id) AS ps_id, p_id FROM search_package_manager AS q ' +
+       ' GROUP BY q.p_id) AS l NATURAL JOIN search_package_manager WHERE (send_corporate_id = $1) ' +
+                                                                 ' AND (price BETWEEN $2 AND $3) ', [userid,min,max]);
+        const rowcount = (await allOrders).rowCount;
+        if(rowcount != 0){
+            console.log(rowcount);
+            for (let i = 0; i <rowcount; i++) {
+                //get the branch names
+                const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
+                const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
+                //find package status
+                order ={packagestatus:(await allOrders).rows[i].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
+                    price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
+                orders4.push(order);
+            }
+            console.log(orders4);
+            res.json({size: rowcount, orders:orders4});
+        }
+        else{
+            console.log("There is nothing to show");
+            res.json({size: 0, orders: []});
+        }
+});
