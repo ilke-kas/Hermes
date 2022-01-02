@@ -727,7 +727,7 @@ app.post("/courierProfilePage", async (req, res) => {
 });
 app.post("/SeeDetails", async (req, res) => {
     const {userid,packageid} = req.body;
-    console.log("in see details");
+    console.log("in see details " );
     const packageInfo = await db.query('SELECT * FROM ONLY package NATURAL JOIN "Order" NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
     if(packageInfo.rowCount != 0){
         //direct to individual home page
@@ -876,6 +876,7 @@ if(inCorporate.rowCount != 0){
                 inc++;
                 }
                 //add order
+                
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
                 const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
@@ -1813,3 +1814,223 @@ app.post("/fire", async (req, res) => {
         res.json({success:false});
     }
 })
+app.post("/CreateReport", async (req, res) => {
+    const {userid,packageid} = req.body;
+    console.log("in create report " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+    if(packageInfo.rowCount != 0){
+        
+        console.log({description: packageInfo.rows[0].item_dscrptn,packageid: packageid});
+        res.json({description: packageInfo.rows[0].item_dscrptn,packageid: packageid});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
+app.post("/submitReportMalformed", async (req, res) => {
+    const {packageid, userid, reportDescription} = req.body;
+
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+ 
+
+    let eval = "Not";
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    console.log("in malformed report " + packageid + userid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+    if(packageInfo.rowCount != 0){
+        
+        const newreport = await db.query('INSERT INTO report (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed Report",currentdate]);
+        
+        res.json({success:true, reason:""});
+        
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
+app.post("/submitReportLost", async (req, res) => {
+    const {packageid, userid, reportDescription} = req.body;
+
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+ 
+
+    let eval = "LostRepo.";
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    console.log("in lost report  " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+  
+    if(packageInfo.rowCount != 0){
+        
+        const newreport = await db.query('INSERT INTO "report" (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost Report",currentdate]);
+        res.json({success:true, reason:""});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
+
+app.post("/SeeReport", async (req, res) => {
+    const {userid,packageid}= req.body;
+    console.log("in create report " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY report NATURAL JOIN package WHERE p_id =$1', [packageid]);
+    const packageStatus =  await db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
+    const packagebranch = await db.query('SELECT b_id,name,take_indv_id FROM ONLY package NATURAL JOIN Order NATURAL JOIN branch WHERE p_id =$1', [packageid]);
+    const receptient = await db.query('SELECT name FROM ONLY User WHERE u_id =$1', [packagebranch.rows[0].take_indv_id]);
+    const branch = await db.query('SELECT Y.name AS yname FROM ONLY packagemanager NATURAL JOIN branch WHERE b_id =$1', [packagebranch.rows[0].b_id]);
+    if(packageInfo.rowCount != 0){
+        
+        console.log({description: packageInfo.rows[0].item_dscrptn,packageid: packageid});
+        res.json({reportid: packageInfo.rows[0].r_id,packageStatus: packageStatus, description: packageInfo.rows[0].explanation ,packageid: packageid,weight:packageInfo.rows[0].weight,
+            volume:packageInfo.rows[0].volume,receptient:receptient,branchname:packagebranch.rows[0].name,branchmanager:branch.rows[0].yname});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+app.post("/acceptLostReport", async (req, res) => {
+    const {packageid, userid} = req.body;
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+ 
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    console.log("in lost report  " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package NATURAL JOIN report  WHERE p_id =$1', [packageid]);
+    if(packageInfo.rowCount != 0){
+        
+        const newreport = await db.query('INSERT INTO "lostpackages" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume,packageInfo.rows[0].r_id]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost",currentdate]);
+        const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["LAccepted",packageInfo.rows[0].r_id]);
+
+        res.json({success:true, reason:""});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+app.post("/acceptMalformedReport", async (req, res) => {
+    const {packageid, userid} = req.body;
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+ 
+
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    console.log("in lost report  " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package NATURAL JOIN report  WHERE p_id =$1', [packageid]);
+    if(packageInfo.rowCount != 0){
+        
+        const newreport = await db.query('INSERT INTO "malformeddeliveredpackage" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].r_id]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed",currentdate]);
+        const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["MAccepted",packageInfo.rows[0].r_id]);
+
+        res.json({success:true, reason:""});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+app.post("/denyReport", async (req, res) => {
+    const {packageid, userid, reportDescription} = req.body;
+
+    let date_ob = new Date();
+
+    // current date
+    // adjust 0 before single digit date
+    let date = ("0" + date_ob.getDate()).slice(-2);
+
+    // current month
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+    // current year
+    let year = date_ob.getFullYear();
+ 
+
+   
+    // prints date in YYYY-MM-DD format
+    currentdate = year + "-" + month + "-" + date;
+    console.log("in lost report  " + packageid );
+    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+  
+    if(packageInfo.rowCount != 0){
+        
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
+        const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["Denied",packageInfo.rows[0].r_id]);
+        const addSecurelyDeliveredPackages = await db.query('INSERT INTO securelydeliveredpackages (p_id,o_id,weight,item_dscrptn,volume) VALUES ( $1,$2,$3,$4,$5)',[packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume]);
+
+        res.json({success:true, reason:""});
+    }
+    else {
+        console.log("There is an error");
+    }
+});
+
+app.post("/getAllReportsInBranch", async (req, res) => {
+    const {userid} = req.body;
+    console.log("getAllBranch");
+    branches =[];
+    const allBranches = await db.query('SELECT b_id FROM branch NATURAL JOIN packagemanager');
+    const  repo  = await db.query('SELECT * FROM Order NATURAL JOIN package NATURAL JOIN reports WHERE send_b_id=$1 OR  destination_b_id =$1',[allBranches.rows[0].b_id]);
+    rowcount = (repo).rowCount;
+    console.log(rowcount);
+    if(rowcount != 0){
+        //create address
+        console.log(rowcount);
+        for(let i = 0; i <rowcount; i++){
+            x ={ reportis: repo.rows[i].r_id, userreport: allBranches.rows[i].u_id};
+            repos.push(x);
+        }
+        console.log({size:rowcount,reports: repos});
+        res.json({size:rowcount,reports: repos});
+    }
+    else {
+        console.log("There is an error");
+        res.json({size:0,branches: []});
+    }
+});
+

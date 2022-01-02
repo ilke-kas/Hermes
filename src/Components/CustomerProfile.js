@@ -99,7 +99,7 @@ function CustomerProfile() {
                                             if(data.packagestatus == "Submitted to Branch"){
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                        <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                                 </li>                       
                                                 <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
@@ -122,7 +122,7 @@ function CustomerProfile() {
                                             else if(data.packagestatus == "Submitted"){
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                        <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                                 </li>                       
                                                 <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                                 <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
@@ -147,7 +147,7 @@ function CustomerProfile() {
                                         else if(data.packagestatus == "Submitted to Branch"){
                                             return  <div><li>{data.itemdescription}&emsp;
                                                     <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                                    <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                    <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                             </li>                       
                                             <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;
                                             <BiCurrentLocation size="2em" className="mt-5"/>&emsp;&emsp;&emsp;
@@ -170,7 +170,7 @@ function CustomerProfile() {
                                      else if(data.packagestatus == "Courier to Branch"){
                                                 return  <div><li>{data.itemdescription}&emsp;
                                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                                        <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                                 </li>
                                                 <BiCurrentLocation size="2em" className="mt-5"/>
                                                     <AiOutlineDash className="mt-5"/>
@@ -198,7 +198,7 @@ function CustomerProfile() {
                                         else if(data.packagestatus == "Sender Branch"){
                                             return  <div><li>{data.itemdescription}&emsp;
                                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                            <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                            <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                          </li>                       
                                          <BiCurrentLocation size="2em" className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
@@ -229,7 +229,7 @@ function CustomerProfile() {
                                     else if(data.packagestatus == "Shipper"){
                                         return  <div><li>{data.itemdescription}&emsp;
                                         <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                        <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                         </li>                       
                                         <BiCurrentLocation size="2em" className="mt-5"/>
                                             <AiOutlineDash className="mt-5"/>
@@ -263,7 +263,7 @@ function CustomerProfile() {
                                 else if(data.packagestatus == "Destination Branch"){
                                     return  <div><li>{data.itemdescription}&emsp;
                                     <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                    <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                    <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
 
                                     </li>                       
                                     <BiCurrentLocation size="2em" className="mt-5"/>
@@ -301,7 +301,7 @@ function CustomerProfile() {
                             else if(data.packagestatus == "Courier to Recipient"){
                                 return  <div><li>{data.itemdescription}&emsp;
                                 <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                                        <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                                        <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                                         <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid); }} className="btn btn-info">I Received The Package</button>
                                 </li>                       
                                 <BiCurrentLocation size="2em" className="mt-5"/>
@@ -342,7 +342,7 @@ function CustomerProfile() {
                         else if(data.packagestatus == "Holdout"){
                             return  <div><li>{data.itemdescription}&emsp;
                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
-                            <button onClick={e => { setPopup3(true);}} className="btn btn-warning" type="button">Create Report</button>
+                            <button onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>
                             <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid);}} className="btn btn-info">I Received The Package</button>
                             </li>                       
                             <BiCurrentLocation size="2em" className="mt-5"/>
@@ -395,8 +395,8 @@ function CustomerProfile() {
             <center><ReactBootStrap.Spinner style={{width: "75px", height:"75px"}} variant="primary" className="loading-position" animation="border" /></center>
             }
             <SeeDetailsPopup trigger={popup} setTrigger={setPopup} id={clickedButton}></SeeDetailsPopup>
-            <CreateReportPopup trigger={popup2} setTrigger={setPopup2}></CreateReportPopup>
-            <CreateReportPopup2 trigger={popup3} setTrigger={setPopup3}></CreateReportPopup2>
+            <CreateReportPopup trigger={popup2} setTrigger={setPopup2} id={clickedButton}></CreateReportPopup>
+            <CreateReportPopup trigger={popup3} setTrigger={setPopup3} id={clickedButton}></CreateReportPopup>
             <ConfirmationPopup trigger={popup4} setTrigger={setPopup4} setId={deliveredStatus}></ConfirmationPopup>
         </div>
     );
