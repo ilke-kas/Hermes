@@ -4,7 +4,7 @@ import Login from './Components/Login.js';
 import SignUp from './Components/SignUp.js';
 import Customer from './Components/Customer';
 import CustomerProfile from './Components/CustomerProfile';
-
+import AdminHomePage from './Components/AdminHomePage';
 import PackageManager from './Components/PackageManager'
 import ShipperHomePage from './Components/ShipperHomePage';
 import CourierHomePage from './Components/CourierHomePage';
@@ -14,6 +14,7 @@ import CourierProfile from './Components/CourierProfile';
 import PackageManagerHomePage from './Components/PackageManagerHomePage';
 import CompanyHomePage from './Components/CompanyHomePage';
 import OpenForm from './Components/OpenForm';
+import AdminProfilePage from './Components/AdminProfilePage';
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
       <Route exact path="/PackageManagerHomePage" component={PackageManagerHomePage} />
       <Route exact path="/CompanyHomePage" component={CompanyHomePage} />
       <Route exact path="/OpenForm" component={OpenForm} />
-      
+      <Route exact path="/AdminProfile" component={AdminProfilePage} />
+      <Route exact path="/AdminHomePage" component={AdminHomePage} />
     </div>
   );
 }

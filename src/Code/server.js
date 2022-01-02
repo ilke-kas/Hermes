@@ -57,9 +57,17 @@ app.post("/login", async (req, res, next) => {
                             console.log(usertype);
                             res.json({isValid: true, userId: newLogin.rows[0].u_id ,userType: usertype});
                         }
-                        else{
-                            console.log("There is an error");
-                        }
+                        else {
+                            const inAdmin = await db.query('SELECT * FROM administrator WHERE u_id = $1 AND password = $2', [email, password]);
+                            if (inAdmin.rowCount != 0) {
+                                usertype = 'admin';
+                                console.log(usertype);
+                                res.json({isValid: true, userId: newLogin.rows[0].u_id ,userType: usertype});
+                            }
+                            else{
+                                console.log("There is an error");
+                            }
+                        }  
                     }
                 }
             }
@@ -544,9 +552,19 @@ app.post("/getUserType", async (req, res) => {
                         console.log(usertype);
                         res.json({userType: usertype});
                     }
-                    else{
-                        console.log("There is an error");
+                    else {
+                        const inAdmin = await db.query('SELECT * FROM administrator WHERE u_id = $1', [userId]);
+                        if(inAdmin.rowCount != 0){
+                            //direct to individual home page
+                            usertype='admin';
+                            console.log(usertype);
+                            res.json({userType: usertype});
+                        }
+                        else{
+                            console.log("There is an error");
+                        }
                     }
+                    
                 }
             }
         }
@@ -1720,3 +1738,78 @@ app.post("/packageManagerProfilePageAllOrders", async (req, res) => {
         }
 });
 
+
+app.get("/adminInformation/:userId", async (req, res) => {
+    const {userId} = req.params;
+    const adminInfo = await db.query('SELECT * FROM administrator where u_id = $1', [userId]);
+    res.json({name: adminInfo.rows[0].name, email: adminInfo.rows[0].email, phone: adminInfo.rows[0].phone, budget: adminInfo.rows[0].budget});
+})
+
+app.get("/AdminGetBranches", async (req, res) => {
+    const branches = await db.query('SELECT b_id, address, name FROM branch ORDER BY b_id');
+    res.json(branches.rows);
+})
+
+app.get("/AdminGetEmployees", async (req, res) => {
+    const employees = await db.query('CREATE OR REPLACE VIEW couriertemp AS SELECT u_id, name, phone, salary, \'COURIER\' AS type FROM courier; ' +
+                                    'CREATE OR REPLACE VIEW shippertemp AS SELECT u_id, name, phone, salary, \'SHIPPER\' AS type FROM shipper; ' +
+                                    'CREATE OR REPLACE VIEW packageManagertemp AS SELECT u_id, name, phone, salary, \'PACKAGE_MANAGER\' AS type FROM packagemanager; ' +
+                                    'SELECT EMP.u_id, EMP.name, EMP.phone, EMP.salary, EMP.type FROM (' + 
+                                    'SELECT u_id, name, phone, salary, type FROM couriertemp UNION ' + 
+                                    'SELECT u_id, name, phone, salary, type FROM shippertemp UNION ' + 
+                                    'SELECT u_id, name, phone, salary, type FROM packageManagertemp) AS EMP ORDER BY EMP.type');
+                                    debugger;
+                                    console.log(employees[3].rows);
+    res.json(employees[3].rows);
+});
+
+app.post("/addNewBranch", async (req, res) => {
+    const {address, name} = req.body;
+    var addBranch;
+    try {
+        addBranch = await db.query('INSERT INTO branch (address, name) VALUES($1, $2)', [address, name]);
+    }
+    catch (e) {
+        res.json({success:false});
+    }
+    if (addBranch.rowCount > 0) {
+        res.json({success:true});
+    }
+    else {
+        res.json({success:false});
+    }
+});
+
+app.post("/removeBranch", async (req, res) => {
+    const {branchId} = req.body;
+    var remove;
+    try {
+        remove = await db.query("DELETE FROM branch WHERE b_id = $1", [branchId]);
+    }
+    catch (e) {
+        res.json({success:false});
+    }
+    if (remove.rowCount > 0) {
+        res.json({success:true});
+    }
+    else {
+        res.json({success:false});
+    }
+})
+
+app.post("/fire", async (req, res) => {
+    const {userId} = req.body;
+    var fire;
+    try {
+        fire = await db.query("DELETE FROM employee WHERE u_id = $1", [userId]);
+    }
+    catch (e) {
+        res.json({success:false});
+    }
+    if (fire.rowCount > 0) {
+        res.json({success:true});
+    }
+    else {
+        res.json({success:false});
+    }
+})

@@ -46,6 +46,9 @@ function Login() {
           else if( temp3 == 'individual'){
             window.location = "/Customer";
           }
+          else if (temp3 == 'admin') {
+            window.location = "/AdminProfile";
+          }
       }
       else {
           alert("Login Failed, Please Try Again");

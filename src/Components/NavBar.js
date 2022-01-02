@@ -38,6 +38,9 @@ function NavBar() {
               else if( temp == 'individual'){
                 window.location = "/CustomerProfile";
               }
+              else if( temp == 'admin'){
+                window.location = "/AdminProfile";
+              }
         });
     }
     async function home(){
@@ -67,6 +70,9 @@ function NavBar() {
               }
               else if( temp == 'individual'){
                 window.location = "/Customer";
+              }
+              else if( temp == 'admin'){
+                window.location = "/AdminHomePage";
               }
         });
 
