@@ -4,11 +4,15 @@ import SeeReportPopup from "./SeeReportPopup";
 import PackageManagerInfo from "./PackageManagerInfo";
 import {Cookies, useCookies} from "react-cookie";
 import {TextField, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
+import * as ReactBootStrap from "react-bootstrap";
 
 function PackageManager() {
     const [popup, setPopup] = React.useState(false);
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
+    const [loading, setLoading] = React.useState(false);  
+    const [loading2, setLoading2] = React.useState(false);
+
     const body = {userid};
     var size, orders;
     let orderList =[];
@@ -17,10 +21,16 @@ function PackageManager() {
     const [selected, setSelected] = useState('');
     React.useEffect(() => {
         console.log(selected);
-        profilePage1();
-        profilePage2();
+        if (selected == ''){
+            profilePage1();
+        }
+        else{
+            setLoading2(false);
+            profilePage2();
+        }
     },[selected]);
     async function profilePage1(){
+        setLoading2(false);
         const response = await fetch('http://localhost:3001/packageManagerProfilePageAllOrders', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -34,8 +44,10 @@ function PackageManager() {
             console.log(orders);
             setUserData2(orders);
         });
+        setLoading(true);
     }
     async function profilePage2(){
+        setLoading(false);
         const response = await fetch('http://localhost:3001/packageManagerProfilePageOrders', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -49,13 +61,16 @@ function PackageManager() {
             console.log(orders);
             setUserData(orders);
         });
+        setLoading2(true);
     }
     
     return (
+
         <div>
             <NavBar></NavBar>
             <br></br>
-            <center>
+             {loading || loading2 ? 
+            <div><center>
             <RadioGroup className="mt-4 d-flex justify-content-center" row aria-label="employeekind" name="row-radio-buttons-group" value={selected} onChange={event => {setSelected(event.target.value)} }> 
                     <FormControlLabel value="malformed" control={<Radio />} label="Malformed Packages" />
                     <FormControlLabel value="holdout" control={<Radio />} label="Holdout Packages" />
@@ -96,6 +111,7 @@ function PackageManager() {
                 }
                 {selected == "" ?
                   userData2.map((data,id) => {
+                      console.log("All");
                     //for all orders
                     return  <tr key={id}> 
                     <td  className="table-td">{data.pid}</td>
@@ -110,9 +126,12 @@ function PackageManager() {
                 })
                 :(selected== "delivered" ? 
                 //for delivered orders
-                userData.map((data,id) => {
+                userData.map((data,id) => 
+                {
+                    console.log("Delivered");
+                    console.log("Data Package Status: " + data.packagestatus);
                     if(data.packagestatus == "Delivered"){
-
+                        console.log("Girdi");
                     return  <tr key={id}> 
                     <td  className="table-td">{data.pid}</td>
                     <td  className="table-td">{data.itemdescription}</td>
@@ -124,6 +143,7 @@ function PackageManager() {
             }) : (selected== "lost" ? 
             //for delivered orders
             userData.map((data,id) => {
+                console.log("Lost");
                 if(data.packagestatus == "Lost"){
 
                 return  <tr key={id}> 
@@ -138,6 +158,7 @@ function PackageManager() {
         }) : (selected== "holdout" ? 
         //for delivered orders
         userData.map((data,id) => {
+            console.log("Holdout");
             if(data.packagestatus == "Holdout"){
 
             return  <tr key={id}> 
@@ -151,6 +172,7 @@ function PackageManager() {
     }) :  (selected== "malformed" ? 
     //for delivered orders
     userData.map((data,id) => {
+        console.log("Malformed");
         if(data.packagestatus == "Malformed"){
 
         return  <tr key={id}> 
@@ -173,9 +195,10 @@ function PackageManager() {
                     <td className="package-manager-info"><PackageManagerInfo/></td>
                 </tr>
             </table>
-            </center>
+            </center></div> : <center><ReactBootStrap.Spinner style={{width: "75px", height:"75px"}} variant="primary" className="loading-position" animation="border" /></center> }
             <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
         </div>
+
     );  
 }
 
