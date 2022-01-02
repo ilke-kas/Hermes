@@ -7,31 +7,58 @@ import {TextField, RadioGroup, FormControlLabel, Radio} from '@material-ui/core'
 import * as ReactBootStrap from "react-bootstrap";
 
 function PackageManager() {
-    const [popup, setPopup] = React.useState(false);
+    const [popup, setPopup] = useState(false);
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
-    const [loading, setLoading] = React.useState(false);  
-    const [loading2, setLoading2] = React.useState(false);
-
+    const [loading, setLoading] = useState(false);  
+    const [loading2, setLoading2] = useState(false);
+    const [search, setSearch] = useState("");
+    const [searchButton, setSearchButton] = useState(false);
+    const [searchResult, setSearchResult] = useState([]);
     const body = {userid};
     var size, orders;
     let orderList =[];
     const [userData, setUserData] =useState([]);
     const [userData2, setUserData2] =useState([]);
-    const [selected, setSelected] = useState('');
-    React.useEffect(() => {
+    const [selected, setSelected] = useState('all');
+    useEffect(() => {
         console.log(selected);
-        if (selected == ''){
+       if (selected == 'all'){
+            console.log('in all');
             profilePage1();
         }
-        else{
+        else if (selected == 'lost' || selected == 'malformed' || selected == 'holdout' || selected == 'delivered'){
+            console.log('in others');
             setLoading2(false);
             profilePage2();
         }
     },[selected]);
+    async function sendSearch(e) {
+        e.preventDefault();
+        const body = {userid,search};
+        //setLoading2(true);
+        //setLoading(true);
+        console.log(search);
+        console.log(selected);
+        console.log(loading);
+        console.log(loading2);
+       const response = await fetch('http://localhost:3001/searchPackageManager', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+            }).then(x => x.json())
+            .then(data => {
+                var orders3 = data.orders;
+                console.log('here');
+                console.log(orders3);
+                setSearchResult(orders3);
+                setSearchButton(true);
+            });
+    }
     async function profilePage1(){
+        setSearchButton(false);
         setLoading2(false);
-        const response = await fetch('http://localhost:3001/packageManagerProfilePageAllOrders', {
+        const response =  fetch('http://localhost:3001/packageManagerProfilePageAllOrders', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
@@ -48,6 +75,7 @@ function PackageManager() {
     }
     async function profilePage2(){
         setLoading(false);
+        setSearchButton(false);
         const response = await fetch('http://localhost:3001/packageManagerProfilePageOrders', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -76,21 +104,21 @@ function PackageManager() {
                     <FormControlLabel value="holdout" control={<Radio />} label="Holdout Packages" />
                     <FormControlLabel value="lost" control={<Radio />} label="Lost Packages" />
                     <FormControlLabel value="delivered" control={<Radio />} label="Securely Delivered Packages" />
-                    <FormControlLabel value="" control={<Radio />} label="All" />
+                    <FormControlLabel value="all" control={<Radio />} label="All" />
                 </RadioGroup>
             </center>
             <nav className="navbar navbar-light mt-3">
                 <div className="mx-auto" style={{width:"500px"}}> 
                     <form className="d-flex">
-                    <input className="form-control me-2"type="search" placeholder="Search" aria-label="Search"/>
-                        <button className="btn btn-outline-success ml-1" type="submit">Search</button>
+                        <input className="form-control me-2"type="search" onChange={e => {setSearch(e.target.value)} } placeholder="Search" aria-label="Search"/>
+                        <button className="btn btn-outline-success ml-1" onClick={sendSearch} type="button">Search</button>
                     </form>
                 </div>
             </nav>
             <br></br>
             <center>
                 <table>
-                {selected == "" ?
+                {selected == "all" || searchButton ?
                 <tr>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Package ID</strong></td>
                  <td style={{textDecoration:"underline"}} className="table-td"><strong>Package Description</strong></td>
@@ -109,7 +137,20 @@ function PackageManager() {
                 <td style={{textDecoration:"underline"}} className="table-td"><strong>Branch Name</strong></td><br></br><br></br>
                 </tr>      
                 }
-                {selected == "" ?
+                {searchButton ?  
+                     searchResult.map((data,id) => {
+                        console.log("search result");
+                      //for all orders
+                      return  <tr key={id}> 
+                      <td  className="table-td">{data.pid}</td>
+                      <td  className="table-td">{data.itemdescription}</td>
+                      <td  className="table-td">{data.senderindvid}</td>
+                      <td  className="table-td">{data.takeindvid}</td>
+                      <td  className="table-td">{data.sendbid}</td>
+                      <td  className="table-td">{data.destinationbid}</td>
+                      <td  className="table-td">{data.packagestatus}</td>
+                      </tr>}) || []
+                :(selected == "all" ?
                   userData2.map((data,id) => {
                       console.log("All");
                     //for all orders
@@ -185,7 +226,7 @@ function PackageManager() {
         </tr>
         }
     }) : <a></a> ) ) ) )
-}                
+                )}                
                 </table>
             </center>
             <br></br><br></br>
