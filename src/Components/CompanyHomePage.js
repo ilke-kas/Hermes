@@ -15,11 +15,34 @@ function CompanyHomePage() {
     let orderList =[];
     const [userData, setUserData] =useState([]);
     const [selected, setSelected] = useState('');
+    const [search, setSearch] = useState("");
+    const [searchButton, setSearchButton] = useState(false);
+    const [searchResult, setSearchResult] = useState([]);
     React.useEffect(() => {
         console.log(selected);
         homePage();
     },[selected]);
+    async function sendSearch(e) {
+        e.preventDefault();
+        const body = {userid,search};
+        //setLoading2(true);
+        //setLoading(true);
+        console.log(search);
+       const response = await fetch('http://localhost:3001/searchCorporate', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+            }).then(x => x.json())
+            .then(data => {
+                var orders3 = data.orders;
+                console.log('here');
+                console.log(orders3);
+                setSearchResult(orders3);
+                setSearchButton(true);
+            });
+    }
     async function homePage(){
+        setSearchButton(false);
         const response = await fetch('http://localhost:3001/companyHomePage', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -65,8 +88,8 @@ function CompanyHomePage() {
             <nav className="navbar navbar-light mt-3">
                 <div className="mx-auto" style={{width:"500px"}}> 
                     <form className="d-flex">
-                    <input className="form-control me-2"type="search" placeholder="Search" aria-label="Search"/>
-                        <button className="btn btn-outline-success ml-1" type="submit">Search</button>
+                    <input className="form-control me-2"type="search"  onChange={e => {setSearch(e.target.value)} } placeholder="Search" aria-label="Search"/>
+                        <button className="btn btn-outline-success ml-1" onClick={sendSearch} type="submit">Search</button>
                     </form>
                 </div>
             </nav>
@@ -85,7 +108,22 @@ function CompanyHomePage() {
                         <br></br><br></br>
                     </tr>
                     <>
-                    {selected == "" ?
+                    {searchButton? 
+                     searchResult.map((data,id) => {
+                        console.log("search result");
+                      //for all orders
+                      return  <tr key={id}> 
+                      <td  className="table-td">{data.pid}</td>
+                      <td  className="table-td">{data.itemdescription}</td>
+                      <td  className="table-td">{data.takeindvid}</td>
+                      <td  className="table-td">{data.weight}</td>
+                      <td  className="table-td">{data.volume}</td>
+                      <td  className="table-td">{data.destinationbid}</td>
+                      <td  className="table-td">{data.sendbid}</td>
+                      <td  className="table-td">{data.packagestatus}</td>
+                      </tr>})
+                    :
+                    (selected == "" ?
                     userData.map((data,id) => {
                         //for all orders
                         return  <tr key={id}> 
@@ -138,7 +176,7 @@ function CompanyHomePage() {
                     }
                     })
                     )
-                }
+                    )}
                     </>
                 </table>
                 <div>
