@@ -2,9 +2,7 @@ import React, {Component, useEffect, useState} from "react";
 import Navbar from "./NavBar";
 import SeeReportPopup from "./SeeReportPopup";
 import {Cookies, useCookies} from "react-cookie";
-import { render } from "react-dom";
-import {BrowserRouter} from "react-router-dom";
-import {TextField, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
+import {RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
 
 function CompanyHomePage() {
     const [popup, setPopup] = React.useState(false);
@@ -61,7 +59,6 @@ function CompanyHomePage() {
                     <FormControlLabel value="" control={<Radio />} label="All" />
                 </RadioGroup>
             </center>
-
             <nav className="navbar navbar-light mt-3">
                 <div className="mx-auto" style={{width:"500px"}}> 
                     <form className="d-flex">
@@ -116,8 +113,6 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.packagestatus}</td>
                         <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
                         </tr>
-
-                    
                     }
                     }) :
                     //for undelivered orders

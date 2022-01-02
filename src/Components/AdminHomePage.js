@@ -1,7 +1,10 @@
 import React from "react";
 import NavBar from "./NavBar";
+import { Cookies } from "react-cookie";
 
 function AdminHomePage() {
+    const cookies = new Cookies();
+    const user = cookies.get("userId");
     const [branches, setBranches] = React.useState([]);
     const [employees, setEmployees] = React.useState([]);
     const [address, setAddress] = React.useState("");
@@ -11,7 +14,7 @@ function AdminHomePage() {
     var success;
 
     async function addBranch() {
-        const body = {address, name};
+        const body = {address, name, user};
         const response = await fetch('http://localhost:3001/addNewBranch', {
             method: "POST",
             headers: { "Content-Type": "application/json" },

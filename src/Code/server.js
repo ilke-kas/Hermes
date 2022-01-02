@@ -1402,7 +1402,7 @@ app.post("/getBranchToBranchShipper", async (req, res) => {
 app.post("/acceptShipper", async (req, res) => {
     const {userid,value} = req.body;
     //find the vehicle id of the courier
-    const getVehicleId = await db.query('SELECT * FROM shipper WHERE u_id =$1', [userid]);
+    const getVehicleId = await db.query('SELECT * FROM shipper WHERE u_id = $1', [userid]);
     vehicleid = getVehicleId.rows[0].v_id;
     console.log("/acceptShipper");
     //calculate currentDate
@@ -1436,6 +1436,7 @@ app.post("/acceptShipper", async (req, res) => {
         //update balance
         const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[sender,newbalance]);
         const updatePoint = await db.query('UPDATE individual SET point = point + $1 WHERE u_id = $2', [1 ,sender]);
+        const updateAdminBudget = await db.query('UPDATE administrator SET budget = budget + $1', [price]);
         res.json({success:true});
     }
     else {   
@@ -1445,6 +1446,7 @@ app.post("/acceptShipper", async (req, res) => {
         newbalance = currentbalance - price;
         //update balance
         const updateBalance = await db.query('UPDATE corporate SET budget = $2 WHERE u_id =$1',[sender,newbalance]);
+        const updateAdminBudget = await db.query('UPDATE administrator SET budget = budget + $1', [price]);
         res.json({success:true});
     }
 
@@ -1808,12 +1810,13 @@ app.get("/AdminGetEmployees", async (req, res) => {
 });
 
 app.post("/addNewBranch", async (req, res) => {
-    const {address, name} = req.body;
-    var addBranch;
+    const {address, name, user} = req.body;
+    var addBranch, updateBudget, branchMoney;
     try {
         addBranch = await db.query('INSERT INTO branch (address, name) VALUES($1, $2)', [address, name]);
+        updateBudget = await db.query('UPDATE administrator SET budget = budget - $1 WHERE u_id = $2 AND budget >= 3000', [3000, user]);
     }
-    catch (e) {
+    catch (e) { 
         res.json({success:false});
     }
     if (addBranch.rowCount > 0) {
