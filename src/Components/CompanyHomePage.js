@@ -14,6 +14,7 @@ function CompanyHomePage() {
     const [userData, setUserData] =useState([]);
     const [selected, setSelected] = useState('');
     const [search, setSearch] = useState("");
+    const [popid,setPopid] = useState("");
     const [searchButton, setSearchButton] = useState(false);
     const [filterButton, setFilterButton] = useState(false);
     const [filterResult, setFilterResult] = useState([]);
@@ -195,7 +196,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
+                        <td><button type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
                     }) : (selected== "delivered" ? 
@@ -213,7 +214,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
+                        <td><button type="button" onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     }
                     }) :
@@ -230,7 +231,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
+                        <td><button type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
                     }
@@ -244,7 +245,7 @@ function CompanyHomePage() {
                 <button onClick={directSendPackage} className="btn btn-outline-success ml-1" type="submit">Send Package</button>
                 </div>
             </center>
-            <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
+            <SeeReportPopup trigger={popup} id={popid} setTrigger={setPopup}></SeeReportPopup>
         </div>
     );
 }

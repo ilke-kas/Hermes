@@ -12,7 +12,6 @@ function CreateReportPopup(props) {
     const packageid = props.id;
     const [userData, setUserData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);    
-    const [selected, setSelected] = useState('');
     const [reportDescription, setReportDescription] =useState('');;
 
     React.useEffect(() => {
@@ -43,28 +42,15 @@ function CreateReportPopup(props) {
         const body ={packageid, userid, reportDescription};
         console.log(userid +"here3");
 
-        if(selected=="false"){
-         const response = await fetch('http://localhost:3001/submitReportLost', {
+            const response2 = await fetch('http://localhost:3001/submitReportMalformed', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body)
         }).then(x => x.json())
         .then(data => {
             console.log(data.success);
-        });}
-        else{
-            const response = await fetch('http://localhost:3001/submitReportMalformed', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body)
-        }).then(x => x.json())
-        .then(data => {
-            console.log(data.success);
+            alert("You have succesfully submmited your report.");
         });
-
-
-
-        }
 
     }
 
@@ -77,12 +63,9 @@ function CreateReportPopup(props) {
             <div className="popup">
                 <div className="popup-inner2">
                     <br></br>
-                    <center><h4>Create Report</h4>
-                    <h5>Choose your complaint from the below and add description.</h5>
-                    <RadioGroup className="mt-3 d-flex justify-content-center" row aria-label="userkind" defaultValue="true" name="row-radio-buttons-group" value={selected} onChange={event => setSelected(event.target.value)}>          
-                     <FormControlLabel value="" control={<Radio />} label="Malformed" />
-                     <FormControlLabel value="false" control={<Radio />}  label="Lost" />
-                  </RadioGroup>
+                    <center><h4>Malformed Package Report</h4>
+                    <h5>Give descirption about the malform of your package.</h5>
+                    
                     <table className="report-table mt-3">
                     <tr>
                         <td>Description:</td>
