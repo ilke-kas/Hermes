@@ -487,19 +487,25 @@ app.post("/companyHomePage", async (req, res) => {
     console.log(userid);
     orders =[];
     //by using this user id find orders and packages from order table
-        const allOrders = db.query('SELECT * FROM ONLY package NATURAL JOIN "Order" WHERE send_corporate_id =$1', [userid]);
-        rowcount = (await allOrders).rowCount;
+        const allOrders = await db.query('SELECT * FROM ONLY package NATURAL JOIN "Order" WHERE send_corporate_id =$1', [userid]);
+        rowcount = allOrders.rowCount;
         if(rowcount != 0){
             console.log(rowcount);
             for (let i = 0; i <rowcount; i++) {
+                //control element
+                x = false;
                 //get the branch names
-                const destinationBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].destination_b_id]);
-                const sendBranch = db.query('SELECT * FROM branch WHERE b_id =$1', [(await allOrders).rows[i].send_b_id]);
+                const destinationBranch = await db.query('SELECT * FROM branch WHERE b_id =$1', [allOrders.rows[i].destination_b_id]);
+                const sendBranch = await db.query('SELECT * FROM branch WHERE b_id =$1', [allOrders.rows[i].send_b_id]);
                 //find package status
-                const packageStatus = db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(await allOrders).rows[i].p_id]);
-
-                order ={packagestatus:(await packageStatus).rows[0].name,destinationbid:(await destinationBranch).rows[0].name,sendbid:(await sendBranch).rows[0].name,pid:(await allOrders).rows[i].p_id,weight: (await allOrders).rows[i].weight, itemdescription:(await allOrders).rows[i].item_dscrptn,volume: (await allOrders).rows[i].volume,
-                    price: (await allOrders).rows[i].price,takeindvid: (await allOrders).rows[i].take_indv_id }
+                const packageStatus = await db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [ allOrders.rows[i].p_id]);
+                const newQuery = await db.query('SELECT * FROM package NATURAL JOIN report WHERE p_id = $1',[ allOrders.rows[i].p_id]);
+                console.log(newQuery.rowCount);
+                if(newQuery.rowCount == 0){
+                    x = true;
+                }
+                order ={packagestatus: packageStatus.rows[0].name,destinationbid: destinationBranch.rows[0].name,sendbid: sendBranch.rows[0].name,pid: allOrders.rows[i].p_id,weight:  allOrders.rows[i].weight, itemdescription: allOrders.rows[i].item_dscrptn,volume:  allOrders.rows[i].volume,
+                    price:  allOrders.rows[i].price,takeindvid:  allOrders.rows[i].take_indv_id, buttonControl:x }
                 orders.push(order);
             }
             res.json({size: rowcount, orders:orders});
@@ -2116,7 +2122,13 @@ app.post("/denyReport", async (req, res) => {
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
         const reportsq = await db.query('SELECT * FROM package NATURAL JOIN report WHERE p_id =$1', [packageid]);
         const update = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["Denied",reportsq.rows[0].r_id]);
-        const addSecurelyDeliveredPackages = await db.query('INSERT INTO securelydeliveredpackages (p_id,o_id,weight,item_dscrptn,volume) VALUES ( $1,$2,$3,$4,$5)',[packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume]);
+        const inSecurelyDelivered = await db.query('SELECT * FROM securelydeliveredpackages WHERE p_id = $1', [packageid]);
+        if(inSecurelyDelivered.rowCount == 0){
+            const addSecurelyDeliveredPackages = await db.query('INSERT INTO securelydeliveredpackages (p_id,o_id,weight,item_dscrptn,volume) VALUES ( $1,$2,$3,$4,$5)',[packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume]);
+        }
+        else{
+
+        }
 
         res.json({success:true, reason:""});
     }
