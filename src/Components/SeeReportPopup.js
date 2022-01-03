@@ -38,34 +38,30 @@ function SeeReportPopup(props) {
         return (
 
             <div>
-                <table>
+            <table>
             <tr>
                 <td><strong>Type:</strong></td>
-                <td>{userData?.packageStatus}</td>   
+                <td>{userData[0]?.packageStatus}</td>   
             </tr>
             <tr>
                 <td><strong>Weight:</strong></td>
-                <td>{userData.weight}kg</td>
+                <td>{userData[0]?.weight}kg</td>
             </tr>
             <tr>
                 <td><strong>Volume:</strong></td>
-                <td>{userData.volume}m³</td>
+                <td>{userData[0]?.volume}m³</td>
             </tr>
             <tr>
                 <td><strong>Recipient ID:</strong></td>
-                <td>{userData.receptient}</td>
+                <td>{userData[0]?.receptient}</td>
             </tr>
             <tr>
                 <td><strong>Branch Name:</strong></td>
-                <td>{userData.branchname}</td>
-            </tr>
-            <tr>
-                <td><strong>Employee Name:</strong></td>
-                <td>{userData.branchmanager}</td>
+                <td>{userData[0]?.branchname}</td>
             </tr>
             <tr>
                 <td><strong>Description:</strong></td>
-                <td>{userData.description}</td>
+                <td>{userData[0]?.description}</td>
             </tr>
         </table>
                 <button type="button" onClick={e => {props.setTrigger(false); setLoading(false)}} className="btn btn-danger mt-3">Close</button>

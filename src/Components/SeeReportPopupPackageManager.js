@@ -48,6 +48,8 @@ function SeeReportPopupPackageManager(props) {
         }).then(x => x.json())
         .then(data => {
             console.log(data.success);
+            alert("You have accepted the lost report.")
+
         });
     }
         else{
@@ -58,6 +60,8 @@ function SeeReportPopupPackageManager(props) {
         }).then(x => x.json())
         .then(data => {
             console.log(data.success);
+            alert("You have accepted the malformed report.")
+
         });
 
         }
@@ -75,6 +79,7 @@ function SeeReportPopupPackageManager(props) {
         .then(data => {
             console.log(data.success);
             setReportStatusState(userData.packageStatus);
+            alert("You have denied the report.")
         });
     }
 

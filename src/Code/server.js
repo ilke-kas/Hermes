@@ -670,9 +670,13 @@ app.post("/individualProfileSender", async (req, res) => {
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
             //get the latest package status
+            x=false;
             console.log("hereee");
             const packagestatus = await db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [(findSentOrders).rows[i].p_id]);
-            order ={ packagestatus: packagestatus.rows[0].name,pid: findSentOrders.rows[i].p_id,itemdescription: findSentOrders.rows[i].item_dscrptn};
+            const reportstatus = await db.query('SELECT DISTINCT r_id FROM ONLY report NATURAL JOIN package  WHERE p_id =$1  ', [(findSentOrders).rows[i].p_id]);
+           //////RID YOK DİYO
+            if(reportstatus.rowCount==1){x=true;}
+            order ={ packagestatus: packagestatus.rows[0].name,pid: findSentOrders.rows[i].p_id,itemdescription: findSentOrders.rows[i].item_dscrptn,reportstatus:x};
             orders.push(order);
             console.log(order);
         }
@@ -1901,12 +1905,16 @@ app.post("/submitReportMalformed", async (req, res) => {
     // prints date in YYYY-MM-DD format
     currentdate = year + "-" + month + "-" + date;
     console.log("in malformed report " + packageid + userid );
-    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+    const packageInfo = await db.query('SELECT * FROM  package  WHERE p_id =$1', [packageid]);
+    console.log("in lalalala" + packageInfo.rows[0].o_id );
+
     if(packageInfo.rowCount != 0){
         
         const newreport = await db.query('INSERT INTO report (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed Report",currentdate]);
-        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
+
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
+
         
         res.json({success:true, reason:""});
         
@@ -1937,12 +1945,14 @@ app.post("/submitReportLost", async (req, res) => {
     currentdate = year + "-" + month + "-" + date;
     console.log("in lost report  " + packageid );
     const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
-  
+    console.log(packageInfo +"llllll");
     if(packageInfo.rowCount != 0){
         
         const newreport = await db.query('INSERT INTO "report" (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost Report",currentdate]);
-        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
+
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
+
         res.json({success:true, reason:""});
     }
     else {
@@ -2067,9 +2077,10 @@ app.post("/denyReport", async (req, res) => {
     const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
   
     if(packageInfo.rowCount != 0){
-        
+        console.log(packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
-        const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["Denied",packageInfo.rows[0].r_id]);
+        const reportsq = await db.query('SELECT * FROM package NATURAL JOIN report WHERE p_id =$1', [packageid]);
+        const update = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["Denied",reportsq.rows[0].r_id]);
         const addSecurelyDeliveredPackages = await db.query('INSERT INTO securelydeliveredpackages (p_id,o_id,weight,item_dscrptn,volume) VALUES ( $1,$2,$3,$4,$5)',[packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume]);
 
         res.json({success:true, reason:""});
@@ -2081,24 +2092,26 @@ app.post("/denyReport", async (req, res) => {
 
 app.post("/getAllReportsInBranch", async (req, res) => {
     const {userid} = req.body;
-    console.log("getAllBranch");
+    console.log("getAllBranch repos in branch");
     repos =[];
     const allBranches = await db.query('SELECT b_id FROM packagemanager WHERE u_id =$1',[userid]);
-    const  repo  = await db.query('SELECT DISTINCT r_id, u_id,p_id, explanation,date FROM "Order" NATURAL JOIN package NATURAL JOIN report WHERE send_b_id =$1',[allBranches.rows[0].b_id]);
+    const  repo  = await db.query('SELECT DISTINCT r_id, u_id,p_id,result,explanation,date FROM "Order" NATURAL JOIN package NATURAL JOIN report WHERE send_b_id =$1  ',[allBranches.rows[0].b_id]);
     rowcount = (repo).rowCount;
-    console.log(rowcount);
+    
     if(rowcount != 0){
         //create address
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
-            x ={ reportid: repo.rows[i].r_id, userreport: repo.rows[i].u_id,pid:repo.rows[i].p_id, descprition:repo.rows[i].explanation,date:repo.rows[i].date };
-            repos.push(x);
+            
+            x ={ reportid: repo.rows[i].r_id, result: repo.rows[i].result,userreport: repo.rows[i].u_id,pid:repo.rows[i].p_id, descprition:repo.rows[i].explanation,date:repo.rows[i].date };
+            if(x.result==null)
+            {repos.push(x);}
         }
         console.log({size:rowcount,reports: repos});
         res.json({size:rowcount,reports: repos});
     }
     else {
-        console.log("There is an error");
+        console.log("There is an error in get all repos");
         
     }
 });
