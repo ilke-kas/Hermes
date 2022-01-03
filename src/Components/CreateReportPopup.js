@@ -49,7 +49,7 @@ function CreateReportPopup(props) {
         }).then(x => x.json())
         .then(data => {
             console.log(data.success);
-            alert("You have succesfully submmited your report.");
+            alert("You have succesfully submitted your report.");
         });
 
     }

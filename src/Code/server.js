@@ -1985,14 +1985,14 @@ app.post("/submitReportLost", async (req, res) => {
     // prints date in YYYY-MM-DD format
     currentdate = year + "-" + month + "-" + date;
     console.log("in lost report  " + packageid );
-    const packageInfo = await db.query('SELECT * FROM ONLY package  WHERE p_id =$1', [packageid]);
+    const packageInfo = await db.query('SELECT * FROM ONLY package WHERE p_id =$1', [packageid]);
     console.log(packageInfo +"llllll");
     if(packageInfo.rowCount != 0){
         
         const newreport = await db.query('INSERT INTO "report" (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
-        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost Report",currentdate]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2) RETURNING *', ["Lost Report",currentdate]);
 
-        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3) RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
 
         res.json({success:true, reason:""});
     }
@@ -2014,6 +2014,7 @@ app.post("/SeeReport", async (req, res) => {
     if(packageInfo.rowCount != 0){
         y={reportid: packageInfo.rows[0].r_id,packageStatus: packageStatus.rows[0].name, description: packageInfo.rows[0].explanation ,packageid: packageid,weight:packageInfo.rows[0].weight,volume:packageInfo.rows[0].volume,receptient:receptient.rows[0].name,branchname:packagebranch.rows[0].name,branchmanager:branch.rows[0].name};
         ya.push(y);
+        console.log("burdaaaaa" + ya[0].packageStatus);
         res.json({ya:ya});
     }
     else {
@@ -2041,9 +2042,11 @@ app.post("/acceptLostReport", async (req, res) => {
     if(packageInfo.rowCount != 0){
         
         const newreport = await db.query('INSERT INTO "lostpackages" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume,packageInfo.rows[0].r_id]);
-        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost",currentdate]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2) RETURNING *', ["Lost",currentdate]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["LAccepted",packageInfo.rows[0].r_id]);
-        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
+        // const reportsq = await db.query('SELECT * FROM package NATURAL JOIN report WHERE p_id =$1', [packageid]);
+        // const update = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["LAccepted",reportsq.rows[0].r_id]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3) RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
         res.json({success:true, reason:""});
     }
     else {
@@ -2072,8 +2075,8 @@ app.post("/acceptMalformedReport", async (req, res) => {
     if(packageInfo.rowCount != 0){
         
         const newreport = await db.query('INSERT INTO "malformeddeliveredpackage" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume,packageInfo.rows[0].r_id]);
-        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed",currentdate]);
-        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2) RETURNING *', ["Malformed",currentdate]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3) RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["MAccepted",packageInfo.rows[0].r_id]);
 
         const sender = await db.query('SELECT * FROM "Order" WHERE o_id =$1',[packageInfo.rows[0].o_id]);
@@ -2145,7 +2148,7 @@ app.post("/getAllReportsInBranch", async (req, res) => {
     const  repo  = await db.query('SELECT DISTINCT r_id, u_id,p_id,result,explanation,date FROM "Order" NATURAL JOIN package NATURAL JOIN report WHERE send_b_id =$1  ',[allBranches.rows[0].b_id]);
     rowcount = (repo).rowCount;
     
-    if(rowcount != 0){
+    if(rowcount != 0) {
         //create address
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){

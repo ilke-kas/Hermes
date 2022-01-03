@@ -194,7 +194,6 @@ function PackageManager() {
                 <td  className="table-td">{data.senderindvid}</td>
                 <td  className="table-td">{data.takeindvid}</td>
                 <td  className="table-td">{data.destinationbid}</td>
-                <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
                 </tr>
             }
         }) : (selected== "holdout" ? 
@@ -223,7 +222,6 @@ function PackageManager() {
         <td  className="table-td">{data.senderindvid}</td>
         <td  className="table-td">{data.takeindvid}</td>
         <td  className="table-td">{data.destinationbid}</td>
-        <td><button type="button" onClick={e => { setPopup(true);}} className="btn btn-info">See Report</button></td>
         </tr>
         }
     }) : <a></a> ) ) ) )

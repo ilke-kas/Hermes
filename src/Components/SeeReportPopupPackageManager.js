@@ -19,6 +19,7 @@ function SeeReportPopupPackageManager(props) {
         }
        
     },[props.trigger]);
+
     async function packageInfo() {
         const body = {userid,packageid}
 
@@ -30,17 +31,18 @@ function SeeReportPopupPackageManager(props) {
         .then(data => {
             setUserData(data.ya);
             console.log(userData);
+            setReportStatusState(data.ya[0].packageStatus);
         });
         setLoading(true);
     }
 
 
     async function acceptit(){
-
         var success;
         const body ={packageid, userid};
         console.log(userid +"here4");
-        if( reportStatusState== "Lost report in evaluation."){
+        console.log("aaaaaaa" +reportStatusState);
+        if( reportStatusState == "Lost Report"){
          const response = await fetch('http://localhost:3001/acceptLostReport', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -50,7 +52,7 @@ function SeeReportPopupPackageManager(props) {
             console.log(data.success);
             window.location = "/PackageManagerHomePage"
             alert("You have accepted the lost report.")
-            
+
         });
     }
         else{
@@ -87,52 +89,44 @@ function SeeReportPopupPackageManager(props) {
         });
     }
 
-    function loadedData() {
-        return (
-            <div>
-                <table>
-            <tr>
-                <td><strong>Type:</strong></td>
-                <td>{userData[0]?.packageStatus}</td>   
-            </tr>
-            <tr>
-                <td><strong>Weight:</strong></td>
-                <td>{userData[0]?.weight}kg</td>
-            </tr>
-            <tr>
-                <td><strong>Volume:</strong></td>
-                <td>{userData[0]?.volume}m³</td>
-            </tr>
-            <tr>
-                <td><strong>Recipient ID:</strong></td>
-                <td>{userData[0]?.receptient}</td>
-            </tr>
-            <tr>
-                <td><strong>Branch Name:</strong></td>
-                <td>{userData[0]?.branchname}</td>
-            </tr>
-            <tr>
-                <td><strong>Description:</strong></td>
-                <td>{userData[0]?.description}</td>
-            </tr>
-        </table>
-        <button type="button" onClick={e => {props.setTrigger(false);acceptit();}} className="btn btn-success mt-3">Accept Complaint</button>&emsp;
-        <button type="button" onClick={e => {props.setTrigger(false);denyit();}} className="btn btn-danger mt-3">Deny Complaint</button>
-        <button type="button" onClick={e => {props.setTrigger(false);}} className="btn btn-danger mt-3">Close</button>
-
-            </div>
-        );
-    }
-
-
     function insidePopup() {
         return (
             <div className="popup">
                 <div className="popup-inner">
                     <br></br>
                     <center>
-                    {loading ? loadedData() :
-                    <ReactBootStrap.Spinner animation="border" />
+                    {loading ? 
+                        <div>
+                            <table>
+                                <tr>
+                                    <td><strong>Type:</strong></td>
+                                    <td>{userData[0]?.packageStatus}</td>   
+                                </tr>
+                                <tr>
+                                    <td><strong>Weight:</strong></td>
+                                    <td>{userData[0]?.weight}kg</td>
+                                </tr>
+                                <tr>    
+                                    <td><strong>Volume:</strong></td>
+                                    <td>{userData[0]?.volume}m³</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Recipient ID:</strong></td>
+                                    <td>{userData[0]?.receptient}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Branch Name:</strong></td>
+                                    <td>{userData[0]?.branchname}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Description:</strong></td>
+                                    <td>{userData[0]?.description}</td>
+                                </tr>
+                            </table>
+                            <button type="button" onClick={e => {props.setTrigger(false); acceptit();}} className="btn btn-success mt-3">Accept Complaint</button>&emsp;
+                            <button type="button" onClick={e => {props.setTrigger(false); denyit();}} className="btn btn-danger mt-3">Deny Complaint</button>
+                            <button type="button" onClick={e => {props.setTrigger(false); setLoading(false);}} className="btn btn-danger mt-3">Close</button>
+                        </div> : <ReactBootStrap.Spinner animation="border" />
                     }
                     </center>
                 </div>
@@ -142,7 +136,6 @@ function SeeReportPopupPackageManager(props) {
 
     return (
         <div>
-            
             {props.trigger === true ? insidePopup() : null}
         </div>
     );
