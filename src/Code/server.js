@@ -876,7 +876,6 @@ if(inCorporate.rowCount != 0){
                 inc++;
                 }
                 //add order
-                
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, userid, price, null,null,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
                 const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
@@ -923,6 +922,24 @@ else{
                 inc++;
                 }
                   //add order
+                  const trigger = await db.query('CREATE OR REPLACE FUNCTION indv_point_function() ' + 
+                                                     ' RETURNS TRIGGER ' + 
+                                                     ' AS ' + 
+                                                     ' $$ ' +
+                                                     ' DECLARE ' +
+                                                    ' arg TEXT; ' +
+                                                    ' BEGIN ' +
+                                                    ' arg = TG_ARGV[0]; ' +
+                                                    ' UPDATE individual SET point = point + 1 WHERE u_id = arg; ' +
+                                                    ' RETURN NEW; '+
+                                                    ' END; ' +
+                                                    ' $$ ' +
+                                                    ' LANGUAGE plpgsql; ');
+                  const trg = await db.query(' DROP TRIGGER IF EXISTS indv_point ON package; CREATE TRIGGER indv_point ' + 
+                                                                                                ' AFTER INSERT ' + 
+                                                                                                ' ON package ' + 
+                                                                                                ' FOR EACH ROW ' + 
+                                                                                                ' EXECUTE PROCEDURE indv_point_function("' + userid + '")');
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
                 const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
@@ -1441,7 +1458,7 @@ app.post("/acceptShipper", async (req, res) => {
         newbalance = currentbalance - price;
         //update balance
         const updateBalance = await db.query('UPDATE customercard SET money = $2 WHERE u_id =$1',[sender,newbalance]);
-        const updatePoint = await db.query('UPDATE individual SET point = point + $1 WHERE u_id = $2', [1 ,sender]);
+       // const updatePoint = await db.query('UPDATE individual SET point = point + $1 WHERE u_id = $2', [1 ,sender]);
         const updateAdminBudget = await db.query('UPDATE administrator SET budget = budget + $1', [price]);
         res.json({success:true});
     }
