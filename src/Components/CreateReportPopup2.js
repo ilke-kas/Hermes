@@ -50,6 +50,7 @@ function CreateReportPopup(props) {
         .then(data => {
             console.log(data.success);
             alert("You have succesfully submitted your report.");
+            window.location = "/CustomerProfile"
 
         });
         

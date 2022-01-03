@@ -88,6 +88,51 @@ function CustomerProfile() {
                                                 <br></br><br></br>
                                                 </li>
                                         }
+                                        else if(data.packagestatus == "Malformed Report"){
+                                            return  <div>
+                                                 <li>{data.itemdescription}&emsp;
+                                                        <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                                                        <br></br>
+                                                    </li>                       
+                              <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                             <BiCurrentLocation size="2em" className="mt-5"/>
+                            &emsp;&emsp;&emsp;
+                            <table>
+                            <tr>
+                                <td><p className="location">Malformed Report&emsp;&emsp;&emsp;&emsp;&emsp;</p></td>
+                                <td><p className="location">Malformed&emsp;</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
+                    else if(data.packagestatus == "Malformed"){
+                            return  <div><li>{data.itemdescription}&emsp;
+                            <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                            <br></br>
+                              </li>                       
+                              <BiCurrentLocation size="2em" className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                            <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>
+                             
+                            &emsp;&emsp;&emsp;
+                            <table>
+                            <tr>
+                                <td><p className="location">Malformed Report&emsp;&emsp;&emsp;&emsp;&emsp;</p></td>
+                                <td><p className="location">Malformed&emsp;</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
                                     }) 
                                     
                                     }
@@ -304,8 +349,8 @@ function CustomerProfile() {
                                 return  <div><li>{data.itemdescription}&emsp;
                                 <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                                         <button disabled={data.reportstatus} onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button">Create Report</button>&emsp;
-                                        
-                                        <button  type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid); }} className="btn btn-info">I Received The Package</button>
+                                        {selected == 'Recipent' ?  <button  type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid); }} className="btn btn-info">I Received The Package</button> : <a></a> }
+                                       
                                 </li>                       
                                 <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -347,7 +392,7 @@ function CustomerProfile() {
                             <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
                             <button disabled={data.reportstatus} onClick={e => { setPopup3(true);setClickedButton(data.pid);}} className="btn btn-warning" type="button" >Create Report</button>&emsp;
                             <br></br>
-                            <button type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid);}} className="btn btn-info">I Received The Package</button>
+                            {selected == 'Recipent' ?  <button  type="button" onClick={e => {setPopup4(true); setDeliveredStatus(data.pid); }} className="btn btn-info">I Received The Package</button> : <a></a> }
                             </li>                       
                             <BiCurrentLocation size="2em" className="mt-5"/>
                                     <AiOutlineDash className="mt-5"/>
@@ -387,6 +432,48 @@ function CustomerProfile() {
                         </table>
                     </div>
                     }
+                    else if(data.packagestatus == "Lost Report"){
+                            return  <div><li>{data.itemdescription}&emsp;
+                            <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                            <br></br>
+                              </li>                       
+                              <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                             <BiCurrentLocation size="2em" className="mt-5"/>
+                            &emsp;&emsp;&emsp;
+                            <table>
+                            <tr>
+                                <td><p className="location">Lost Report&emsp;&emsp;&emsp;&emsp;&emsp;</p></td>
+                                <td><p className="location">Lost&emsp;</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
+                    else if(data.packagestatus == "Lost"){
+                            return  <div><li>{data.itemdescription}&emsp;
+                            <button type="button" onClick={e => { setPopup(true);setClickedButton(data.pid);}} className="btn btn-success">See Details</button>&emsp;
+                            <br></br>
+                              </li>                       
+                              <BiCurrentLocation size="2em" className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <AiOutlineDash className="mt-5"/>
+                                <BiCurrentLocation size="2em" style={{color:"red"}} className="mt-5"/>
+                             
+                            &emsp;&emsp;&emsp;
+                            <table>
+                            <tr>
+                                <td><p className="location">Lost Report&emsp;&emsp;</p></td>
+                                <td><p className="location">Lost&emsp;</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    }
+                    
                 }
             })                     
         }

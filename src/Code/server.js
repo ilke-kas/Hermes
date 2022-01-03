@@ -1253,8 +1253,10 @@ app.post("/getShipperPartPackageManager", async (req, res) => {
     const rowcount = getPackages.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
+        console.log("****************************************");
         for(let i = 0; i <rowcount; i++){
             //if sender is corporate
+            console.log("Iteration i :" + i);
                 if(getPackages.rows[i].send_corporate_id != undefined){
                     //dind address
                     const getAddress  = await db.query("SELECT * FROM individual WHERE u_id = $1",[getPackages.rows[i].take_indv_id]);
@@ -1274,7 +1276,7 @@ app.post("/getShipperPartPackageManager", async (req, res) => {
                     orders2.push(order);
                 }  
         }
-        console.log(orders2);
+        console.log("Loop end: "+orders2);
         res.json({size:rowcount, orders: orders2});
 }
 else{
@@ -1544,8 +1546,8 @@ app.post("/getCourierPartPackageManager", async (req, res) => {
    ' (SELECT ps_id,p_id,v_id,tbl2.o_id AS o_id,weight,item_dscrptn,volume,name,state_date,take_indv_id,send_corporate_id,price, ' +
            ' rate,send_individual_id,destination_b_id,send_b_id FROM tbl2  LEFT OUTER JOIN "Order" ON  "Order".o_id = tbl2.o_id WHERE destination_b_id = $1) ' +
 ' SELECT * FROM (SELECT max(ps_id) AS ps_id, p_id FROM tbl3 AS q GROUP BY q.p_id) AS l NATURAL JOIN tbl3 WHERE name = $2 ',[bid,"Shipper"]);
-    orders =[];
-    rowcount = getPackages.rowCount;
+    orders4 =[];
+    const rowcount = getPackages.rowCount;
     if(rowcount != 0){
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
@@ -1558,7 +1560,7 @@ app.post("/getCourierPartPackageManager", async (req, res) => {
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:getPackages.rows[0].send_corporate_id
                         ,senderindividualid: null,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id};
-                    orders.push(order);
+                    orders4.push(order);
                 }
                 else if(getPackages.rows[i].send_individual_id != undefined  && getPackages.rows[i].name == "Shipper")
                 { //if it is individual sender
@@ -1567,13 +1569,13 @@ app.post("/getCourierPartPackageManager", async (req, res) => {
                     getAddress.rows[0].city +'/' + getAddress.rows[0].state + ' ' + getAddress.rows[0].zip;
                     order ={ packagestatus: (getPackages).rows[i].name,pid: getPackages.rows[i].p_id,takerid: getPackages.rows[i].take_indv_id,sendercorporateid:null
                         ,senderindividualid: getPackages.rows[0].send_individual_id,address: addrs,senderbranchid:getPackages.rows[i].send_b_id, packagestateid:getPackages.rows[i].ps_id,destinationbranchid : getPackages.rows[i].destination_b_id };
-                    orders.push(order);
+                    orders4.push(order);
                 }  
             }else{
                 console.log("There is no package to show");
          }
         }
-        res.json({size:rowcount, orders: orders});
+        res.json({size:rowcount, orders: orders4});
 }
 else{
     console.log("There is no package to show");
@@ -2122,7 +2124,8 @@ app.post("/denyReport", async (req, res) => {
   
     if(packageInfo.rowCount != 0){
         console.log(packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume);
-        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Delivered",currentdate]);
+        const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2) RETURNING *', ["Delivered",currentdate]);
+        const pckg = await db.query('INSERT INTO pac_state (ps_id, p_id, v_id) VALUES($1, $2, $3)', [newPackageStatus.rows[0].ps_id, packageid, 0]);
         const reportsq = await db.query('SELECT * FROM package NATURAL JOIN report WHERE p_id =$1', [packageid]);
         const update = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["Denied",reportsq.rows[0].r_id]);
         const inSecurelyDelivered = await db.query('SELECT * FROM securelydeliveredpackages WHERE p_id = $1', [packageid]);
