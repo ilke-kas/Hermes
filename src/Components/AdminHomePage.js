@@ -11,6 +11,11 @@ function AdminHomePage() {
     const [name, setName] = React.useState("");
     const [branchId, setBranchId] = React.useState("");
     const [userId, setUserId] = React.useState("");
+    const [capacity, setCapacity] = React.useState("");
+    const [destinationID, setDestinationId] = React.useState("");
+    const [departureID, setDepartureId] = React.useState("");
+    const [vehicleID2, setVehicleId2] = React.useState("");
+    const [distance, setDistance] = React.useState("");
     var success;
 
     async function addBranch() {
@@ -25,6 +30,28 @@ function AdminHomePage() {
             console.log(success);
             if(success){
                 alert("You successfully added the branch!");
+                window.location = '/AdminHomePage';
+            }
+            else {
+                alert("Try again!")
+                window.location = '/AdminHomePage';
+            }
+        })
+    };
+
+
+    async function addRoute() {
+        const body = {destinationID, departureID, distance, capacity};
+        const response = await fetch('http://localhost:3001/addRoute', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            success = data.success;
+            console.log(success);
+            if(success){
+                alert("You successfully added the route!");
                 window.location = '/AdminHomePage';
             }
             else {
@@ -152,6 +179,17 @@ function AdminHomePage() {
                     <td className="table-td"><input onChange={e => {setBranchId(e.target.value)}} className="form-control" type="text" placeholder="Branch ID"></input></td>
                     <td className="table-td" style={{width:"100px"}}><button onClick={removeBranch} className="btn btn-danger">REMOVE</button></td>
                 </tr> 
+            </table><br></br>
+            <table>
+                <tr>
+                    <td className="table-td" style={{width:"300px"}}><p>Enter the route you want to add:</p></td>
+                    <td className="table-td"><input className="form-control" onChange={e => {setDestinationId(e.target.value)}} type="text" placeholder="Destination Branch ID"></input></td>
+                    <td className="table-td"><input onChange={e => {setDepartureId(e.target.value)}} className="form-control" type="text" placeholder="Departure Branch ID"></input></td>
+                    <td className="table-td"><input onChange={e => {setDistance(e.target.value)}} className="form-control" type="text" placeholder="Distance"></input></td>
+                    <td className="table-td"><input onChange={e => {setCapacity(e.target.value)}} className="form-control" type="text" placeholder="Capacity"></input></td>
+                    <td className="table-td" style={{width:"100px"}}><button onClick={addRoute} className="btn btn-danger">ADD</button></td>
+        
+                </tr>
             </table>
             </center>
             </div>
@@ -181,7 +219,7 @@ function AdminHomePage() {
                     <td className="table-td"><input onChange={e => {setUserId(e.target.value)}} className="form-control" type="text" placeholder="User ID"></input></td>
                     <td className="table-td" style={{width:"100px"}}><button onClick={fireEmployee} className="btn btn-danger">Fire</button></td>
                 </tr>
-            </table>
+            </table><br></br>
             </center>
             </div>
         </div>

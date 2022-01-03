@@ -2301,3 +2301,20 @@ app.post("/companyFilter", async (req, res) => {
         }
 });
 
+
+app.post("/addRoute", async (req, res) => {
+    const {destinationID, departureID, distance, capacity} = req.body;
+    console.log(destinationID)
+    console.log(departureID)
+    console.log(distance)
+    const addVehicle = await db.query('INSERT INTO vehicle (capacity) VALUES($1) RETURNING *', [capacity]);
+    const addRoute = await db.query('INSERT INTO route VALUES($1, $2, $3, $4)', [destinationID, departureID, addVehicle.rows[0].v_id, distance]);
+
+    if (addRoute.rowCount > 0) {
+        res.json({success:true});
+    }
+    else {
+        console.log("bbbbbbbbbbbbbbbb")
+        res.json({success:false});
+    }
+})
