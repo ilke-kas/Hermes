@@ -15,7 +15,7 @@ function SeeReportPopup(props) {
         console.log("popup is opened");
         packageInfo();
         }
-        else{
+        else{ 
             setUserData([]);
         }
     },[props.trigger]);
@@ -28,19 +28,20 @@ function SeeReportPopup(props) {
             body: JSON.stringify(body)
         }).then(x => x.json())
         .then(data => {
-            setUserData(data);
-            console.log(data);
+            setUserData(data.ya);
+               
         });
         setLoading(true);
     }
 
     function loadedData() {
         return (
+
             <div>
                 <table>
             <tr>
                 <td><strong>Type:</strong></td>
-                <td>{userData.packageStatus}</td>   
+                <td>{userData?.packageStatus}</td>   
             </tr>
             <tr>
                 <td><strong>Weight:</strong></td>
@@ -91,7 +92,7 @@ function SeeReportPopup(props) {
     return (
         <div>
             
-            {props.trigger === true ? insidePopup() : null}
+            {props.trigger === true ? insidePopup() : console.log("girmedi")}
         </div>
     );
 }

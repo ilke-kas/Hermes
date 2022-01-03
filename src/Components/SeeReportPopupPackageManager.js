@@ -10,15 +10,14 @@ function SeeReportPopupPackageManager(props) {
     const [userData, setUserData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);  
     const [reportStatusState,setReportStatusState] = React.useState("");  
+    console.log(props.id);
 
     React.useEffect(() => {
         if(props.trigger){
         console.log("popup is opened");
         packageInfo();
         }
-        else{
-            setUserData([]);
-        }
+       
     },[props.trigger]);
     async function packageInfo() {
         const body = {userid,packageid}
@@ -29,8 +28,8 @@ function SeeReportPopupPackageManager(props) {
             body: JSON.stringify(body)
         }).then(x => x.json())
         .then(data => {
-            setUserData(data);
-            console.log(data);
+            setUserData(data.ya);
+            console.log(userData);
         });
         setLoading(true);
     }
@@ -85,35 +84,32 @@ function SeeReportPopupPackageManager(props) {
                 <table>
             <tr>
                 <td><strong>Type:</strong></td>
-                <td>{userData.packageStatus}</td>   
+                <td>{userData[0]?.packageStatus}</td>   
             </tr>
             <tr>
                 <td><strong>Weight:</strong></td>
-                <td>{userData.weight}kg</td>
+                <td>{userData[0]?.weight}kg</td>
             </tr>
             <tr>
                 <td><strong>Volume:</strong></td>
-                <td>{userData.volume}m³</td>
+                <td>{userData[0]?.volume}m³</td>
             </tr>
             <tr>
                 <td><strong>Recipient ID:</strong></td>
-                <td>{userData.receptient}</td>
+                <td>{userData[0]?.receptient}</td>
             </tr>
             <tr>
                 <td><strong>Branch Name:</strong></td>
-                <td>{userData.branchname}</td>
-            </tr>
-            <tr>
-                <td><strong>Employee Name:</strong></td>
-                <td>{userData.branchmanager}</td>
+                <td>{userData[0]?.branchname}</td>
             </tr>
             <tr>
                 <td><strong>Description:</strong></td>
-                <td>{userData.description}</td>
+                <td>{userData[0]?.description}</td>
             </tr>
         </table>
         <button type="button" onClick={e => {props.setTrigger(false);acceptit();}} className="btn btn-success mt-3">Accept Complaint</button>&emsp;
         <button type="button" onClick={e => {props.setTrigger(false);denyit();}} className="btn btn-danger mt-3">Deny Complaint</button>
+        <button type="button" onClick={e => {props.setTrigger(false);}} className="btn btn-danger mt-3">Close</button>
 
             </div>
         );
