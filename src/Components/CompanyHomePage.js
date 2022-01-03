@@ -57,6 +57,7 @@ function CompanyHomePage() {
             console.log('here');
             console.log(size);
             console.log(orders);
+            console.log("BUTTON CONTROL -----------"+orders.buttonControl);
             radiobuttons(selected);
         });
     }
@@ -117,9 +118,10 @@ function CompanyHomePage() {
                     </form>
                 </div>
             </nav>
+            <center>
             <table>
                 <tr>
-            <td className="mt-7" ><label for="price">Price Range:</label> &emsp;</td>
+            <td><label for="price" style={{margin:"5px", paddingTop:"15px"}}>Price Range:</label> &emsp;</td>
             <td><div><button className="btn btn-light mt-3" data-toggle="dropdown">{clickedRange == [] ? <a>Range</a>: clickedRange }</button>&emsp;
                 <ul class="dropdown-menu">
                 <li><button class="unstyled-button" value="0-50" onClick={e =>handleInputUser(e,"value")}>0-50</button></li>
@@ -130,9 +132,10 @@ function CompanyHomePage() {
                 <li><button class="unstyled-button" value="250-300" onClick={e =>handleInputUser(e,"value")}>250-300</button></li>
                 <li><button class="unstyled-button" value="300-higher" onClick={e =>handleInputUser(e,"value")}>300-higher</button></li>
             </ul></div></td>
-            <td><button  className="btn btn-secondary mt-3" onClick={filterPrice}>Filter</button></td>
+            <td><button  className="btn btn-success mt-3" onClick={filterPrice}>Filter</button></td>
             </tr>
             </table>
+            </center>
             <br></br>
             <br></br> 
 
@@ -184,6 +187,7 @@ function CompanyHomePage() {
                       </tr>})
                     :
                     (selected == "" ?
+                    
                     userData.map((data,id) => {
                         //for all orders
                         return  <tr key={id}> 
@@ -196,7 +200,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
+                        <td><button disabled = {data.buttonControl} type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
                     }) : (selected== "delivered" ? 
@@ -214,7 +218,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button" onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
+                        <td><button disabled = {data.buttonControl} type="button" onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     }
                     }) :
@@ -231,7 +235,7 @@ function CompanyHomePage() {
                         <td  className="table-td">{data.sendbid}</td>
                         <td  className="table-td">{data.packagestatus}</td>
                         <td  className="table-td">{data.price}</td>
-                        <td><button type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
+                        <td><button disabled = {data.buttonControl} type="button"  onClick={e => { setPopup(true);setPopid(data.pid);}} className="btn btn-info">See Report</button></td>
                         </tr>
                     
                     }

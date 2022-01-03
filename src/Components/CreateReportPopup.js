@@ -82,7 +82,7 @@ function CreateReportPopup(props) {
                             <td><textarea name="textarea" cols="40" rows="5" onChange={e => setReportDescription(e.target.value)}  id="reportDescription"></textarea></td>
                         </tr>
                     </table>
-                    <button type="button" className="btn btn-success mt-3" onClick={createReport}>Submit</button>&emsp;
+                    <button type="button" className="btn btn-success mt-3" onClick={e => {props.setTrigger(false); createReport();}}>Submit</button>&emsp;
                     <button type="button" onClick={e => props.setTrigger(false)} className="btn btn-danger mt-3">Close</button>
                     </center>
                 </div>
