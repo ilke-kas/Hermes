@@ -1906,6 +1906,7 @@ app.post("/submitReportMalformed", async (req, res) => {
         
         const newreport = await db.query('INSERT INTO report (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed Report",currentdate]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,o_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,packageInfo.rows[0].o_id]);
         
         res.json({success:true, reason:""});
         
@@ -1941,6 +1942,7 @@ app.post("/submitReportLost", async (req, res) => {
         
         const newreport = await db.query('INSERT INTO "report" (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost Report",currentdate]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,o_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,packageInfo.rows[0].o_id]);
         res.json({success:true, reason:""});
     }
     else {
@@ -1990,7 +1992,7 @@ app.post("/acceptLostReport", async (req, res) => {
         const newreport = await db.query('INSERT INTO "lostpackages" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume,packageInfo.rows[0].r_id]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost",currentdate]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["LAccepted",packageInfo.rows[0].r_id]);
-
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,o_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,packageInfo.rows[0].o_id]);
         res.json({success:true, reason:""});
     }
     else {
@@ -2020,6 +2022,7 @@ app.post("/acceptMalformedReport", async (req, res) => {
         
         const newreport = await db.query('INSERT INTO "malformeddeliveredpackage" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].r_id]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed",currentdate]);
+        const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,o_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,packageInfo.rows[0].o_id]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["MAccepted",packageInfo.rows[0].r_id]);
 
         res.json({success:true, reason:""});
