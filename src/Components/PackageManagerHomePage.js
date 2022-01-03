@@ -8,31 +8,50 @@ function PackageManagerHomePage() {
     const [popup, setPopup] = React.useState(false);
     const cookies = new Cookies();
     const userid = cookies.get(["userId"]);
+    const [reports,setReports] = useState([]);
+    const [reportSize,setReportSize]=useState("");
+    const [popid,setPopId]=useState("");
 
+    React.useEffect(() => {
+        getAllReports();
+    },[]);
+
+    async function getAllReports() {
+        const body = {userid};
+       
+        const response = await fetch('http://localhost:3001/getAllReportsInBranch', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
+        }).then(x => x.json())
+        .then(data => {
+            setReports(data.reports);
+            console.log(reports);
+            setReportSize(data.size);
+            console.log(data);
+        });
+        
+    }
     return (
         <div>
             <NavBar></NavBar>
             <ManagerPackageAcceptance/>
-            {/* <div className="info-tablecomp23">
-                <table>
-                    <tr>
-                        <td><h5>Reports</h5></td>
+            {
+                reports.map((x) => {
+                    console.log("there" + x);
+                    return <tr> 
+                    <td  className="table-td">{x.reportid}</td>
+                    <td  className="table-td">{x.userreport}</td>
+                    
+                    <td><button type="button" onClick={e => { setPopup(true);setPopId(x.pid);}} className="btn btn-info">See Report</button></td>
                     </tr>
-                    <tr>
-                        <td><h6>Package ID</h6></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>725</td>
-                        <td>&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></td>
-                    </tr>
-                    <tr>
-                        <td>532</td>
-                        <td>&emsp;<button type="button" onClick={e => { setPopup(true);}} className="btn btn-success">See Details</button></td>
-                    </tr>
-                </table>
-            </div>
-            <SeeReportPopupPackageManager trigger={popup} setTrigger={setPopup}></SeeReportPopupPackageManager> */}
+                    
+                
+            })
+                
+            }<SeeReportPopupPackageManager trigger={popup} setTrigger={setPopup} id={popid}></SeeReportPopupPackageManager>
+
+            
         </div>
 
     );

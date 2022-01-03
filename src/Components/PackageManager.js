@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import NavBar from "./NavBar";
-import SeeReportPopup from "./SeeReportPopup";
+import SeeReportPopupPackageManager from "./SeeReportPopupPackageManager";
 import PackageManagerInfo from "./PackageManagerInfo";
 import {Cookies, useCookies} from "react-cookie";
 import {TextField, RadioGroup, FormControlLabel, Radio} from '@material-ui/core';
@@ -21,6 +21,7 @@ function PackageManager() {
     const [userData, setUserData] =useState([]);
     const [userData2, setUserData2] =useState([]);
     const [selected, setSelected] = useState('all');
+    
     useEffect(() => {
         console.log(selected);
        if (selected == 'all'){
@@ -91,7 +92,7 @@ function PackageManager() {
         });
         setLoading2(true);
     }
-    
+   
     return (
 
         <div>
@@ -236,8 +237,8 @@ function PackageManager() {
                     <td className="package-manager-info"><PackageManagerInfo/></td>
                 </tr>
             </table>
+           
             </center></div> : <center><ReactBootStrap.Spinner style={{width: "75px", height:"75px"}} variant="primary" className="loading-position" animation="border" /></center> }
-            <SeeReportPopup trigger={popup} setTrigger={setPopup}></SeeReportPopup>
         </div>
 
     );  

@@ -1943,16 +1943,16 @@ app.post("/submitReportLost", async (req, res) => {
 app.post("/SeeReport", async (req, res) => {
     const {userid,packageid}= req.body;
     console.log("in create report " + packageid );
-    const packageInfo = await db.query('SELECT * FROM ONLY report NATURAL JOIN package WHERE p_id =$1', [packageid]);
+    const packageInfo = await db.query('SELECT * FROM report NATURAL JOIN package WHERE p_id =$1', [packageid]);
     const packageStatus =  await db.query('SELECT * FROM ONLY package NATURAL JOIN pac_state NATURAL JOIN packagestate WHERE p_id =$1 and ps_id >= ALL(SELECT ps_id FROM pac_state WHERE p_id =$1)', [packageid]);
-    const packagebranch = await db.query('SELECT b_id,name,take_indv_id FROM ONLY package NATURAL JOIN Order NATURAL JOIN branch WHERE p_id =$1', [packageid]);
-    const receptient = await db.query('SELECT name FROM ONLY User WHERE u_id =$1', [packagebranch.rows[0].take_indv_id]);
-    const branch = await db.query('SELECT Y.name AS yname FROM ONLY packagemanager NATURAL JOIN branch WHERE b_id =$1', [packagebranch.rows[0].b_id]);
+    const packagebranch = await db.query('SELECT b_id,name,take_indv_id FROM ONLY package NATURAL JOIN "Order" NATURAL JOIN branch WHERE p_id =$1', [packageid]);
+    const receptient = await db.query('SELECT name FROM individual WHERE u_id =$1', [packagebranch.rows[0].take_indv_id]);
+    const branch = await db.query('SELECT name FROM  branch  WHERE b_id =$1', [packagebranch.rows[0].b_id]);
+    ya=[];
     if(packageInfo.rowCount != 0){
-        
-        console.log({description: packageInfo.rows[0].item_dscrptn,packageid: packageid});
-        res.json({reportid: packageInfo.rows[0].r_id,packageStatus: packageStatus, description: packageInfo.rows[0].explanation ,packageid: packageid,weight:packageInfo.rows[0].weight,
-            volume:packageInfo.rows[0].volume,receptient:receptient,branchname:packagebranch.rows[0].name,branchmanager:branch.rows[0].yname});
+        y={reportid: packageInfo.rows[0].r_id,packageStatus: packageStatus.rows[0].name, description: packageInfo.rows[0].explanation ,packageid: packageid,weight:packageInfo.rows[0].weight,volume:packageInfo.rows[0].volume,receptient:receptient.rows[0].name,branchname:packagebranch.rows[0].name,branchmanager:branch.rows[0].name};
+        ya.push(y);
+        res.json({ya:ya});
     }
     else {
         console.log("There is an error");
@@ -2009,7 +2009,7 @@ app.post("/acceptMalformedReport", async (req, res) => {
     const packageInfo = await db.query('SELECT * FROM ONLY package NATURAL JOIN report  WHERE p_id =$1', [packageid]);
     if(packageInfo.rowCount != 0){
         
-        const newreport = await db.query('INSERT INTO "malformeddeliveredpackage" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].r_id]);
+        const newreport = await db.query('INSERT INTO "malformeddeliveredpackage" (p_id,o_id,weight,item_dscrptn,volume,report_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *', [packageid,packageInfo.rows[0].o_id,packageInfo.rows[0].weight,packageInfo.rows[0].item_dscrptn,packageInfo.rows[0].volume,packageInfo.rows[0].r_id]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed",currentdate]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["MAccepted",packageInfo.rows[0].r_id]);
 
@@ -2057,16 +2057,16 @@ app.post("/denyReport", async (req, res) => {
 app.post("/getAllReportsInBranch", async (req, res) => {
     const {userid} = req.body;
     console.log("getAllBranch");
-    branches =[];
-    const allBranches = await db.query('SELECT b_id FROM branch NATURAL JOIN packagemanager');
-    const  repo  = await db.query('SELECT * FROM Order NATURAL JOIN package NATURAL JOIN reports WHERE send_b_id=$1 OR  destination_b_id =$1',[allBranches.rows[0].b_id]);
+    repos =[];
+    const allBranches = await db.query('SELECT b_id FROM packagemanager WHERE u_id =$1',[userid]);
+    const  repo  = await db.query('SELECT DISTINCT r_id, u_id,p_id, explanation,date FROM "Order" NATURAL JOIN package NATURAL JOIN report WHERE send_b_id =$1',[allBranches.rows[0].b_id]);
     rowcount = (repo).rowCount;
     console.log(rowcount);
     if(rowcount != 0){
         //create address
         console.log(rowcount);
         for(let i = 0; i <rowcount; i++){
-            x ={ reportis: repo.rows[i].r_id, userreport: allBranches.rows[i].u_id};
+            x ={ reportid: repo.rows[i].r_id, userreport: repo.rows[i].u_id,pid:repo.rows[i].p_id, descprition:repo.rows[i].explanation,date:repo.rows[i].date };
             repos.push(x);
         }
         console.log({size:rowcount,reports: repos});
@@ -2074,7 +2074,7 @@ app.post("/getAllReportsInBranch", async (req, res) => {
     }
     else {
         console.log("There is an error");
-        res.json({size:0,branches: []});
+        
     }
 });
 
