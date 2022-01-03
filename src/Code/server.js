@@ -1912,7 +1912,9 @@ app.post("/submitReportMalformed", async (req, res) => {
         
         const newreport = await db.query('INSERT INTO report (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed Report",currentdate]);
+
         const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
+
         
         res.json({success:true, reason:""});
         
@@ -1948,7 +1950,9 @@ app.post("/submitReportLost", async (req, res) => {
         
         const newreport = await db.query('INSERT INTO "report" (u_id,p_id,explanation,result,date) VALUES($1, $2, $3, $4,$5) RETURNING *', [userid,packageid,reportDescription,null,currentdate]);
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Lost Report",currentdate]);
+
         const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0 ]);
+
         res.json({success:true, reason:""});
     }
     else {
@@ -2030,6 +2034,19 @@ app.post("/acceptMalformedReport", async (req, res) => {
         const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Malformed",currentdate]);
         const newPacState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)RETURNING *', [newPackageStatus.rows[0].ps_id,packageid,0]);
         const updateEmployeeNum = await db.query("UPDATE report SET result = $1 WHERE r_id = $2", ["MAccepted",packageInfo.rows[0].r_id]);
+
+        const sender = await db.query('SELECT * FROM "Order" WHERE o_id =$1',[packageInfo.rows[0].o_id]);
+        console.log("HERE PRICE IS" +sender.rows[0].price);
+        if(sender.rows[0].send_corporate_id != null){
+            //corporate
+            const repayment = await db.query('UPDATE corporate SET budget = budget + $1 WHERE u_id = $2',[sender.rows[0].price,sender.rows[0].send_corporate_id]);
+            const repaymentadmin = await db.query('UPDATE administrator SET budget = budget - $1',[sender.rows[0].price]);
+        }
+        else{
+            //individual
+            const repayment = await db.query('UPDATE customercard SET money = money + $1 WHERE u_id = $2',[sender.rows[0].price,sender.rows[0].send_individual_id]);
+            const repaymentadmin = await db.query('UPDATE administrator SET budget = budget - $1',[sender.rows[0].price]);
+        }
 
         res.json({success:true, reason:""});
     }
@@ -2230,3 +2247,4 @@ app.post("/companyFilter", async (req, res) => {
             res.json({size: 0, orders: []});
         }
 });
+
