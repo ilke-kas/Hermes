@@ -952,7 +952,7 @@ else{
                                                                                                 ' EXECUTE PROCEDURE indv_point_function("' + userid + '")');
                 const newOrder = await db.query('INSERT INTO "Order" (take_indv_id,send_corporate_id,price,rate,send_individual_id,destination_b_id,send_b_id) VALUES($1, $2, $3, $4,$5,$6,$7) RETURNING *', [clickedUser, null, price, null,userid,destinationBranchId,senderBranchId]);
                 const newPackage = await db.query('INSERT INTO package (o_id,weight,item_dscrptn,volume) VALUES($1, $2, $3, $4) RETURNING *', [newOrder.rows[0].o_id,weight,description,volume]);
-                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2)RETURNING *', ["Submitted",currentdate]);
+                const newPackageStatus = await db.query('INSERT INTO packagestate (name,state_date) VALUES($1, $2) RETURNING *', ["Submitted",currentdate]);
                 const newPackageState = await db.query('INSERT INTO pac_state (ps_id,p_id,v_id) VALUES($1, $2,$3)', [newPackageStatus.rows[0].ps_id,newPackage.rows[0].p_id,allCouriers[randomindex].vehicleid]);
                 res.json({success:true, reason:""});
             }
