@@ -1,70 +1,127 @@
-# Getting Started with Create React App
+# 📦 Hermes Shipping Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web-based shipping platform developed as a course project for **CS353 - Database Systems** at **Bilkent University**. Inspired by the Greek god Hermes—the herald and messenger of the gods—this platform facilitates the sending, receiving, and tracking of packages by individual and corporate customers.
 
-## Available Scripts
+![Hermes Banner](https://ilke-kas.github.io/banner.jpg) <!-- Add image if available -->
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 👥 User Roles
+- **Individual Customers:** Submit packages via courier or branch, earn points, track deliveries, submit reports.
+- **Corporate Customers:** Manage shipments, view reports, filter and search package records.
+- **Couriers:** Handle pickups and deliveries; manage status updates.
+- **Shippers:** Transport packages between branches.
+- **Package Managers:** Assign couriers/shippers, handle lost/damaged reports.
+- **Admins:** Manage branches, employees, and logistics routes.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### 📦 Package Workflow
+- Call courier or submit in branch
+- Dynamic assignment of available couriers/shippers
+- Package tracking and status updates
+- Reporting system for lost/malformed deliveries
 
-### `npm test`
+### 🛠️ Database Features
+- **Triggers:** Automatically reward customers with points upon package submission.
+- **Views:** Display employees with roles on the admin page.
+- **Relational integrity:** 22 normalized relational schemas with keys and constraints.
+- **Advanced queries:** Filtering, searching, conditional display logic.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🧰 Tech Stack
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+| Layer         | Technology Used            |
+|---------------|-----------------------------|
+| Front-End     | React.js, CSS               |
+| Back-End      | Node.js                     |
+| Database      | PostgreSQL on Google Cloud  |
+| Development   | Visual Studio Code, IntelliJ |
+| Diagrams      | GitMind                     |
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📊 ER Diagram & Database Schema
 
-### `npm run eject`
+The database schema includes detailed relations for:
+- Users (individual, corporate, employee types)
+- Packages and Orders
+- Branches and Routes
+- Reports and States
+- Vehicles and Assignments
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+➡️ See full ER diagram and relational schema in the [Final Report](https://github.com/zeynepziyagil/db).
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## 🔐 Functionality by User Type
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Individual Customers
+- Sign up / log in
+- Submit packages (Courier / Branch)
+- Track delivery status
+- View and manage profile
+- File lost/damaged package reports
+- Earn points for each submission
 
-## Learn More
+### Corporate Customers
+- Filter/search shipments by status or price
+- Access report details
+- Load money to account
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Couriers & Shippers
+- Accept/decline pickup or delivery jobs
+- Report delivery issues
+- View assigned tasks and vehicle info
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Package Managers
+- Assign shippers or couriers
+- Review customer reports (approve/deny)
+- Monitor all packages associated with their branch
 
-### Code Splitting
+### Admins
+- Create/close branches
+- Create routes
+- Fire employees
+- View all branches and associated employees
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📷 Sample Screenshots
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+> Example screenshots include:
+- Login & Registration
+- Individual/Corporate customer dashboards
+- Courier & Shipper task views
+- Package manager report handling
+- Admin branch creation and employee management
 
-### Making a Progressive Web App
+> 📎 Full walkthrough available in the [Final Report]()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 📝 Team Members
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+| Name                    | Student ID  | Contribution                                   |
+|-------------------------|-------------|------------------------------------------------|
+| İlke Kaş                | 21803184    | Backend (Node.js), Database Setup              |
+| Zeynep Büşra Ziyagil    | 21802646    | Frontend (UI), SQL Queries                     |
+| Bilgehan Akcan          | 21802901    | UI Implementation, Schema Design               |
+| Ömer Onat Postacı       | 21802349    | API and SQL Query Implementation               |
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🌐 Project Links
 
-### `npm run build` fails to minify
+- 🔗 GitHub Repository: [https://github.com/zeynepziyagil/db]()
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📣 Notes
+
+✅ This project was developed as part of **CS353 - Database Systems** at **Bilkent University**.  
+✅ All functionality was tested by the team, and the full stack system is operational and deployed for demo purposes.
+
+---
+
