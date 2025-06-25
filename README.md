@@ -2,7 +2,10 @@
 
 A full-stack web-based shipping platform developed as a course project for **CS353 - Database Systems** at **Bilkent University**. Inspired by the Greek god Hermes—the herald and messenger of the gods—this platform facilitates the sending, receiving, and tracking of packages by individual and corporate customers.
 
-![Hermes Banner](./logo.png) <!-- Add image if available -->
+<p align="center">
+  <img src="./logo.png" alt="Hermes Banner" width="400"/>
+</p>
+
 
 ---
 
