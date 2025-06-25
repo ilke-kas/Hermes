@@ -54,7 +54,7 @@ The database schema includes detailed relations for:
 - Reports and States
 - Vehicles and Assignments
 
-➡️ See full ER diagram and relational schema in the [Final Report](https://github.com/zeynepziyagil/db).
+➡️ See full ER diagram and relational schema in the [Final Report](https://github.com/ilke-kas/Hermes/blob/bdc1b622957b653628b2adac24c743949267f710/reports/Final%20Report%20CS353.pdf).
 
 ---
 
@@ -94,13 +94,31 @@ The database schema includes detailed relations for:
 ## 📷 Sample Screenshots
 
 > Example screenshots include:
-- Login & Registration
-- Individual/Corporate customer dashboards
-- Courier & Shipper task views
-- Package manager report handling
-- Admin branch creation and employee management
+- Login
+  ![Sign in](./images/signin.png)
+- Registration - Individual
+  ![Registration](./images/register.png)
+- Registration - Employee
+  ![Registration](./images/register_employee.png)
+- Individual Customer Dashboard
+  ![Individual Customer Dashboard](./images/individual_customer_home_page.png)
+- Corporate Customer Dashboard
+  ![Corporate Customer Dashboard](./images/corporate_customer_page.png)
+- Courier Dashboard
+  ![Courier Dashboard](./images/courier_home_page.png)
+- Shipper Dashboard
+  ![Shipper Dashboard](./images/shipper_home_page.png)
+- Package Manager Dashboard
+  ![Package Manager Dashboard](./images/package_manager_home_page.png)
+- Individual Customer Profile
+  ![Individual Customer Profile](./images/profile_1.png)
+  ![Individual Customer Profile](./images/profile_2.png)
+- Lost Package Reporting
+  ![Lost Package Reporting](./images/lost_package_report.png)
+- Package Manager Reports
+  ![Package Manager Reports](./images/package_manager_reports.png)
 
-> 📎 Full walkthrough available in the [Final Report]()
+> 📎 Full walkthrough available in the [Final Report](https://github.com/ilke-kas/Hermes/blob/bdc1b622957b653628b2adac24c743949267f710/reports/Final%20Report%20CS353.pdf)
 
 ---
 
@@ -108,16 +126,10 @@ The database schema includes detailed relations for:
 
 | Name                    | Student ID  | Contribution                                   |
 |-------------------------|-------------|------------------------------------------------|
-| İlke Kaş                | 21803184    | Backend (Node.js), Database Setup              |
+| İlke Kaş                | 21803184    | Backend (Node.js), Database Setup ,Frontend (UI), SQL Queries               |
 | Zeynep Büşra Ziyagil    | 21802646    | Frontend (UI), SQL Queries                     |
 | Bilgehan Akcan          | 21802901    | UI Implementation, Schema Design               |
 | Ömer Onat Postacı       | 21802349    | API and SQL Query Implementation               |
-
----
-
-## 🌐 Project Links
-
-- 🔗 GitHub Repository: [https://github.com/zeynepziyagil/db]()
 
 ---
 
